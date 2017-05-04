@@ -1,0 +1,7 @@
+
+mirror:
+    image: alpine-package-mirror:latest
+    ports:
+     - "80:80"
+    volumes:
+     - /home/ubuntu/efs/packages:/var/www/localhost/htdocs/alpine
