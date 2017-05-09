@@ -105,6 +105,29 @@ resource "aws_instance" "cosmos-vrouter" {
     }
   }
 
+  resource "aws_instance" "cosmos-testbox-region1" {
+      provider = "aws.oregon"
+      ami = "${var.ami_region1}"
+      availability_zone = "us-west-2a"
+      instance_type = "t2.small"
+      key_name = "${aws_key_pair.cosmos-admin.key_name}"
+      vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region1.id}"]
+      subnet_id = "${aws_subnet.us-west-2a-public.id}"
+      associate_public_ip_address = true
+      source_dest_check = false
+
+
+      tags {
+          Name = "cosmos-testbox-TF"
+      }
+
+    connection {
+        user = "${var.INSTANCE_USERNAME}"
+        private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+      }
+    }
+
+
   /*
     Vrouter Region2
   */
@@ -211,3 +234,27 @@ resource "aws_instance" "cosmos-vrouter" {
         private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
       }
     }
+
+    resource "aws_instance" "cosmos-testbox-region2" {
+        provider = "aws.ohio"
+        count = "${var.requirevrouter}"
+        ami = "${var.ami_region2}"
+        availability_zone = "us-east-2a"
+        instance_type = "t2.small"
+        key_name = "${aws_key_pair.cosmos-admin_region2.key_name}"
+        vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter-region2.id}"]
+        subnet_id = "${aws_subnet.us-east-2a-public.id}"
+        associate_public_ip_address = true
+        source_dest_check = false
+
+
+        tags {
+            Name = "cosmos-testbox-TF"
+        }
+
+
+      connection {
+          user = "${var.INSTANCE_USERNAME}"
+          private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+        }
+      }
