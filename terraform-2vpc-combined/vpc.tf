@@ -1,19 +1,19 @@
-resource "aws_vpc" "cosmos-vrouter-edgerouter-oregon-vpc" {
-    cidr_block = "${var.vpc_cidr}"
+resource "aws_vpc" "cosmos-vrouter-edgerouter-region1-vpc" {
+    cidr_block = "${var.vpc_cidr_region1}"
     enable_dns_hostnames = true
     tags {
-        Name = "cosmos-vrouter-edgerouter-oregon-vpc-TF"
+        Name = "cosmos-vrouter-edgerouter-region1-vpc-TF"
     }
 }
 
-resource "aws_internet_gateway" "cosmos-vrouter-edgerouter-oregon-vpc" {
-    vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-oregon-vpc.id}"
+resource "aws_internet_gateway" "cosmos-vrouter-edgerouter-region1-vpc" {
+    vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.id}"
 }
 
 resource "aws_subnet" "us-west-2a-public" {
-    vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-oregon-vpc.id}"
+    vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.id}"
 
-    cidr_block = "${var.public_subnet_cidr}"
+    cidr_block = "${var.public_subnet_cidr_region1}"
     availability_zone = "us-west-2a"
 
     tags {
@@ -22,11 +22,11 @@ resource "aws_subnet" "us-west-2a-public" {
 }
 
 resource "aws_route_table" "us-west-2a-public" {
-    vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-oregon-vpc.id}"
+    vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.id}"
 
     route {
         cidr_block = "0.0.0.0/0"
-        gateway_id = "${aws_internet_gateway.cosmos-vrouter-edgerouter-oregon-vpc.id}"
+        gateway_id = "${aws_internet_gateway.cosmos-vrouter-edgerouter-region1-vpc.id}"
     }
 
     tags {
@@ -39,3 +39,45 @@ resource "aws_route_table_association" "us-west-2a-public" {
     route_table_id = "${aws_route_table.us-west-2a-public.id}"
 }
 
+#----------------------VPC2----------------------------------------
+
+resource "aws_vpc" "cosmos-vrouter-edgerouter-region2-vpc" {
+    cidr_block = "${var.vpc_cidr_region2}"
+    enable_dns_hostnames = true
+    tags {
+        Name = "cosmos-vrouter-edgerouter-region2-vpc-TF"
+    }
+}
+
+resource "aws_internet_gateway" "cosmos-vrouter-edgerouter-region2-vpc" {
+    vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region2-vpc.id}"
+}
+
+resource "aws_subnet" "us-east-2a-public" {
+    vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region2-vpc.id}"
+
+    cidr_block = "${var.public_subnet_cidr_region2}"
+    availability_zone = "us-east-2a"
+
+    tags {
+        Name = "Public Subnet"
+    }
+}
+
+resource "aws_route_table" "us-east-2a-public" {
+    vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region2-vpc.id}"
+
+    route {
+        cidr_block = "0.0.0.0/0"
+        gateway_id = "${aws_internet_gateway.cosmos-vrouter-edgerouter-region2-vpc.id}"
+    }
+
+    tags {
+        Name = "Public Subnet"
+    }
+}
+
+resource "aws_route_table_association" "us-east-2a-public" {
+    subnet_id = "${aws_subnet.us-east-2a-public.id}"
+    route_table_id = "${aws_route_table.us-east-2a-public.id}"
+}
