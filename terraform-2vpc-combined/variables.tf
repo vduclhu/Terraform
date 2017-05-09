@@ -21,12 +21,12 @@ variable "aws_region2" {
     default = "us-east-2"
 }
 
-variable "ami-region1" {
+variable "ami_region1" {
     description = "AMIs by region"
     default = "ami-efd0428f" # ubuntu-oregon 16.04 LTS
 }
 
-variable "ami-region2" {
+variable "ami_region2" {
     description = "AMIs by region"
     default = "ami-fcc19b99" # ubuntu-oregon 16.04 LTS
 }

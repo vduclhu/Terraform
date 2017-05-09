@@ -1,4 +1,5 @@
 resource "aws_vpc" "cosmos-vrouter-edgerouter-region1-vpc" {
+    provider = "aws.oregon"
     cidr_block = "${var.vpc_cidr_region1}"
     enable_dns_hostnames = true
     tags {
@@ -7,10 +8,12 @@ resource "aws_vpc" "cosmos-vrouter-edgerouter-region1-vpc" {
 }
 
 resource "aws_internet_gateway" "cosmos-vrouter-edgerouter-region1-vpc" {
+    provider = "aws.oregon"
     vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.id}"
 }
 
 resource "aws_subnet" "us-west-2a-public" {
+    provider = "aws.oregon"
     vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.id}"
 
     cidr_block = "${var.public_subnet_cidr_region1}"
@@ -22,6 +25,7 @@ resource "aws_subnet" "us-west-2a-public" {
 }
 
 resource "aws_route_table" "us-west-2a-public" {
+    provider = "aws.oregon"
     vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.id}"
 
     route {
@@ -35,6 +39,7 @@ resource "aws_route_table" "us-west-2a-public" {
 }
 
 resource "aws_route_table_association" "us-west-2a-public" {
+    provider = "aws.oregon"
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     route_table_id = "${aws_route_table.us-west-2a-public.id}"
 }
@@ -42,6 +47,7 @@ resource "aws_route_table_association" "us-west-2a-public" {
 #----------------------VPC2----------------------------------------
 
 resource "aws_vpc" "cosmos-vrouter-edgerouter-region2-vpc" {
+    provider = "aws.ohio"
     cidr_block = "${var.vpc_cidr_region2}"
     enable_dns_hostnames = true
     tags {
@@ -50,10 +56,12 @@ resource "aws_vpc" "cosmos-vrouter-edgerouter-region2-vpc" {
 }
 
 resource "aws_internet_gateway" "cosmos-vrouter-edgerouter-region2-vpc" {
+    provider = "aws.ohio"
     vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region2-vpc.id}"
 }
 
 resource "aws_subnet" "us-east-2a-public" {
+    provider = "aws.ohio"
     vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region2-vpc.id}"
 
     cidr_block = "${var.public_subnet_cidr_region2}"
@@ -65,6 +73,7 @@ resource "aws_subnet" "us-east-2a-public" {
 }
 
 resource "aws_route_table" "us-east-2a-public" {
+    provider = "aws.ohio"
     vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region2-vpc.id}"
 
     route {
@@ -78,6 +87,7 @@ resource "aws_route_table" "us-east-2a-public" {
 }
 
 resource "aws_route_table_association" "us-east-2a-public" {
+    provider = "aws.ohio"
     subnet_id = "${aws_subnet.us-east-2a-public.id}"
     route_table_id = "${aws_route_table.us-east-2a-public.id}"
 }

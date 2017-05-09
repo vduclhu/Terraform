@@ -2,6 +2,7 @@
   Vrouter
 */
 resource "aws_security_group" "cosmos-vrouter_region1" {
+    provider = "aws.oregon"
     name = "cosmos-vrouter-sg"
     description = "Allow incoming traffic"
 
@@ -50,11 +51,13 @@ resource "aws_security_group" "cosmos-vrouter_region1" {
     }
 }
 resource "aws_key_pair" "cosmos-admin" {
+  provider = "aws.oregon"
   key_name = "cosmos-admin3"
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
 }
 
 resource "aws_instance" "cosmos-vrouter" {
+    provider = "aws.oregon"
     count = "${var.requirevrouter}"
     ami = "${var.ami_region1}"
     availability_zone = "us-west-2a"
@@ -83,16 +86,16 @@ resource "aws_instance" "cosmos-vrouter" {
          "echo Y | sudo apt-get update",
          "echo Y | sudo apt-get install python",
          "echo Y | sudo apt-get install docker.io",
-         "echo ${aws_security_group.cosmos-vrouter.id} >> test",
+         "echo ${aws_security_group.cosmos-vrouter_region1.id} >> test",
          "sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
-         "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-204",
-         "sudo docker run --net host --privileged -e USERNAME=${USERNAME} -e PASSWORD=${PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-204",
+         "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:master",
+         "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:master",
          "HOSTNAME=$(hostname | tr - _)",
-         "curl -X PUT https://${USERNAME}:${PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/sec_group -d value=\"${aws_security_group.cosmos-vrouter_region1.id}\"",
-         "curl -X PUT https://${USERNAME}:${PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_route_table.us-west-2a-public.id}\"",
-         "curl -X PUT https://${USERNAME}:${PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-west-2a-public.cidr_block}\"",
-         "curl -X PUT https://${USERNAME}:${PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.cidr_block}}\"",
-         "curl -X PUT https://${USERNAME}:${PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_instance.cosmos-vrouter.public_ip}}\"",
+         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_route_table.us-west-2a-public.id}\"",
+         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-west-2a-public.cidr_block}\"",
+         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.cidr_block}\"",
+         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_security_group.cosmos-vrouter_region1.id}\"",
+         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_instance.cosmos-vrouter.public_ip}\""
 
       ]
   }
@@ -105,7 +108,8 @@ resource "aws_instance" "cosmos-vrouter" {
   /*
     Vrouter Region2
   */
-  resource "aws_security_group" "cosmos-vrouter_region2" {
+  resource "aws_security_group" "cosmos-vrouter-region2" {
+      provider = "aws.ohio"
       name = "cosmos-vrouter-sg"
       description = "Allow incoming traffic"
 
@@ -153,18 +157,20 @@ resource "aws_instance" "cosmos-vrouter" {
           Name = "cosmos-vrouter-SG"
       }
   }
-  resource "aws_key_pair" "cosmos-admin" {
+  resource "aws_key_pair" "cosmos-admin_region2" {
+    provider = "aws.ohio"
     key_name = "cosmos-admin3"
     public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
   }
 
-  resource "aws_instance" "cosmos-vrouter_region2" {
+  resource "aws_instance" "cosmos-vrouter-region2" {
+      provider = "aws.ohio"
       count = "${var.requirevrouter}"
       ami = "${var.ami_region2}"
       availability_zone = "us-east-2a"
       instance_type = "t2.small"
-      key_name = "${aws_key_pair.cosmos-admin.key_name}"
-      vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region2.id}"]
+      key_name = "${aws_key_pair.cosmos-admin_region2.key_name}"
+      vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter-region2.id}"]
       subnet_id = "${aws_subnet.us-east-2a-public.id}"
       associate_public_ip_address = true
       source_dest_check = false
@@ -187,16 +193,16 @@ resource "aws_instance" "cosmos-vrouter" {
            "echo Y | sudo apt-get update",
            "echo Y | sudo apt-get install python",
            "echo Y | sudo apt-get install docker.io",
-           "echo ${aws_security_group.cosmos-vrouter.id} >> test",
+           "echo ${aws_security_group.cosmos-vrouter-region2.id} >> test",
            "sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
-           "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-204",
-           "sudo docker run --net host --privileged -e USERNAME=${USERNAME} -e PASSWORD=${PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-204",
+           "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:master",
+           "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:master",
            "HOSTNAME=$(hostname | tr - _)",
-           "curl -X PUT https://${USERNAME}:${PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/sec_group -d value=\"${aws_security_group.cosmos-vrouter_region2.id}\"",
-           "curl -X PUT https://${USERNAME}:${PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_route_table.us-east-2a-public.id}\"",
-           "curl -X PUT https://${USERNAME}:${PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-east-2a-public.cidr_block}\"",
-           "curl -X PUT https://${USERNAME}:${PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_vpc.cosmos-vrouter-edgerouter-region2-vpc.cidr_block}}\"",
-           "curl -X PUT https://${USERNAME}:${PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_instance.cosmos-vrouter_region2.public_ip}}\"",
+           "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_route_table.us-east-2a-public.id}\"",
+           "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-east-2a-public.cidr_block}\"",
+           "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_vpc.cosmos-vrouter-edgerouter-region2-vpc.cidr_block}\"",
+           "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_security_group.cosmos-vrouter-region2.id}\"",
+           "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_instance.cosmos-vrouter-region2.public_ip}\""
 
         ]
     }
