@@ -32,7 +32,6 @@ resource "aws_route_table" "us-west-2a-public" {
         cidr_block = "0.0.0.0/0"
         gateway_id = "${aws_internet_gateway.cosmos-vrouter-edgerouter-region1-vpc.id}"
     }
-
     tags {
         Name = "Public Subnet"
     }
@@ -80,7 +79,6 @@ resource "aws_route_table" "us-east-2a-public" {
         cidr_block = "0.0.0.0/0"
         gateway_id = "${aws_internet_gateway.cosmos-vrouter-edgerouter-region2-vpc.id}"
     }
-
     tags {
         Name = "Public Subnet"
     }
