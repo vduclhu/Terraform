@@ -88,8 +88,8 @@ resource "aws_instance" "cosmos-vrouter" {
          "echo Y | sudo apt-get install docker.io",
          "echo ${aws_security_group.cosmos-vrouter_region1.id} >> test",
          "sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
-         "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-209",
-         "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-209",
+         "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-175",
+         "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-175",
          "HOSTNAME=$(hostname | tr - _)",
          "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_route_table.us-west-2a-public.id}\"",
          "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-west-2a-public.cidr_block}\"",
@@ -218,8 +218,8 @@ resource "aws_instance" "cosmos-vrouter" {
            "echo Y | sudo apt-get install docker.io",
            "echo ${aws_security_group.cosmos-vrouter-region2.id} >> test",
            "sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
-           "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-209",
-           "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-209",
+           "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-175",
+           "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-175",
            "HOSTNAME=$(hostname | tr - _)",
            "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_route_table.us-east-2a-public.id}\"",
            "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-east-2a-public.cidr_block}\"",
@@ -275,6 +275,10 @@ resource "aws_route" "route2" {
   instance_id = "${aws_instance.cosmos-vrouter-region2.id}"
 }
 
-output "MEOW" {
-  value = "${aws_instance.cosmos-vrouter-region2.id}"
+output "Region1 Vouter Public IP:" {
+  value = "${aws_instance.cosmos-vrouter-region1.public_ip}"
+}
+
+output "Region2 Vouter Public IP:" {
+  value = "${aws_instance.cosmos-vrouter-region2.public_ip}"
 }
