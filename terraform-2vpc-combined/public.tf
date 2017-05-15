@@ -1,6 +1,81 @@
 /*
   Vrouter
 */
+#Create IAM role/policy
+resource "aws_iam_role" "cosmos_role" {
+	name = "cosmos_route_secgroup_iam_role"		    
+	assume_role_policy = <<EOF		
+	{
+		"Version": "2012-10-17",		  
+		"Statement": [		    
+			{		      
+				"Action": "sts:AssumeRole",		     
+				"Principal": {		        
+				"Service": "ec2.amazonaws.com"		      
+                },		      
+				"Effect": "Allow",		      
+				"Sid": ""		    
+			}		  
+		]		
+	}		
+	EOF		
+  }
+
+#Create iam resource profile
+
+resource "aws_iam_instance_profile" "cosmos_instance_profile" {		    
+	name = "cosmos_instance_profile"		    
+	roles = ["cosmos_route_secgroup_iam_role"]		
+}
+
+#Create cosmos IAM policy
+
+resource "aws_iam_role_policy" "cosmos_iam_role_policy" {		  
+	name = "cosmos_iam_role_policy"		  
+	role = "${aws_iam_role.cosmos_iam_role.id}"		  
+	policy = <<EOF		{
+    "Version": "2012-10-17",
+    "Statement":[{
+    "Effect":"Allow",
+    "Action": [
+       "ec2:AuthorizeSecurityGroupIngress",
+       "ec2:AuthorizeSecurityGroupEgress",
+       "ec2:RevokeSecurityGroupIngress",
+       "ec2:RevokeSecurityGroupEgress"],
+     "Resource": "arn:aws:ec2:region:account:security-group/*",
+        "Condition": {
+            "StringEquals": {
+                "ec2:RequestTag/environment": "cosmos-test"
+            },
+            "ForAllValues:StringEquals": {
+                "aws:TagKeys": [
+                    "environment"
+                ]
+            }
+        }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ec2:DescribeSecurityGroups",
+      "Resource": "*",
+        "Condition": {
+            "StringEquals": {
+                "ec2:RequestTag/environment": "cosmos-test"
+            },
+            "ForAllValues:StringEquals": {
+                "aws:TagKeys": [
+                    "environment"
+                ]
+            }
+        }
+    }
+  ]
+}
+EOF
+}
+
+
+
 resource "aws_security_group" "cosmos-vrouter_region1" {
     provider = "aws.oregon"
     name = "cosmos-vrouter-sg"
@@ -48,6 +123,7 @@ resource "aws_security_group" "cosmos-vrouter_region1" {
 
     tags {
         Name = "cosmos-vrouter-SG"
+        environment = "cosmos-test"
     }
 }
 resource "aws_key_pair" "cosmos-admin" {
@@ -67,7 +143,7 @@ resource "aws_instance" "cosmos-vrouter" {
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
-
+        iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.id}"		
 
     tags {
         Name = "cosmos-vrouter-TF"
