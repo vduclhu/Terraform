@@ -1,0 +1,38 @@
+{
+    "Version": "2012-10-17",
+    "Statement":[{
+    "Effect":"Allow",
+    "Action": [
+       "ec2:AuthorizeSecurityGroupIngress",
+       "ec2:AuthorizeSecurityGroupEgress",
+       "ec2:RevokeSecurityGroupIngress",
+       "ec2:RevokeSecurityGroupEgress"],
+     "Resource": "arn:aws:ec2:region:account:security-group/*",
+        "Condition": {
+            "StringEquals": {
+                "ec2:RequestTag/environment": "cosmos-test"
+            },
+            "ForAllValues:StringEquals": {
+                "aws:TagKeys": [
+                    "environment"
+                ]
+            }
+        }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ec2:DescribeSecurityGroups",
+      "Resource": "*",
+        "Condition": {
+            "StringEquals": {
+                "ec2:RequestTag/environment": "cosmos-test"
+            },
+            "ForAllValues:StringEquals": {
+                "aws:TagKeys": [
+                    "environment"
+                ]
+            }
+        }
+    }
+  ]
+}

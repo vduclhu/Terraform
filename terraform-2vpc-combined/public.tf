@@ -2,76 +2,27 @@
   Vrouter
 */
 #Create IAM role/policy
-resource "aws_iam_role" "cosmos_role" {
+resource "aws_iam_role" "cosmos_role" 
+{
 	name = "cosmos_route_secgroup_iam_role"		    
-	assume_role_policy = <<EOF		
-	{
-		"Version": "2012-10-17",		  
-		"Statement": [		    
-			{		      
-				"Action": "sts:AssumeRole",		     
-				"Principal": {		        
-				"Service": "ec2.amazonaws.com"		      
-                },		      
-				"Effect": "Allow",		      
-				"Sid": ""		    
-			}		  
-		]		
-	}		
-	EOF		
+	assume_role_policy = "${file("cosmos_iam_role.json")}"	
   }
 
 #Create iam resource profile
 
-resource "aws_iam_instance_profile" "cosmos_instance_profile" {		    
+resource "aws_iam_instance_profile" "cosmos_instance_profile" 
+{		    
 	name = "cosmos_instance_profile"		    
 	roles = ["cosmos_route_secgroup_iam_role"]		
 }
 
 #Create cosmos IAM policy
 
-resource "aws_iam_role_policy" "cosmos_iam_role_policy" {		  
+resource "aws_iam_role_policy" "cosmos_iam_role_policy" 
+{		  
 	name = "cosmos_iam_role_policy"		  
 	role = "${aws_iam_role.cosmos_iam_role.id}"		  
-	policy = <<EOF		{
-    "Version": "2012-10-17",
-    "Statement":[{
-    "Effect":"Allow",
-    "Action": [
-       "ec2:AuthorizeSecurityGroupIngress",
-       "ec2:AuthorizeSecurityGroupEgress",
-       "ec2:RevokeSecurityGroupIngress",
-       "ec2:RevokeSecurityGroupEgress"],
-     "Resource": "arn:aws:ec2:region:account:security-group/*",
-        "Condition": {
-            "StringEquals": {
-                "ec2:RequestTag/environment": "cosmos-test"
-            },
-            "ForAllValues:StringEquals": {
-                "aws:TagKeys": [
-                    "environment"
-                ]
-            }
-        }
-    },
-    {
-      "Effect": "Allow",
-      "Action": "ec2:DescribeSecurityGroups",
-      "Resource": "*",
-        "Condition": {
-            "StringEquals": {
-                "ec2:RequestTag/environment": "cosmos-test"
-            },
-            "ForAllValues:StringEquals": {
-                "aws:TagKeys": [
-                    "environment"
-                ]
-            }
-        }
-    }
-  ]
-}
-EOF
+	policy = "${file("cosmos_iam_role_policy.json")}"
 }
 
 
@@ -358,3 +309,6 @@ output "Region1 Vouter Public IP:" {
 output "Region2 Vouter Public IP:" {
   value = "${aws_instance.cosmos-vrouter-region2.public_ip}"
 }
+
+
+
