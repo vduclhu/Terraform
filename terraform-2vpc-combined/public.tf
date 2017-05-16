@@ -2,38 +2,16 @@
   Vrouter
 */
 #Create IAM role/policy
-<<<<<<< HEAD
 resource "aws_iam_role" "cosmos_role" 
 {
-	name = "cosmos_route_secgroup_iam_role"		    
+	provider ="aws.oregon"
+        name = "cosmos_role"		    
 	assume_role_policy = "${file("cosmos_iam_role.json")}"	
-  }
-=======
-resource "aws_iam_role" "cosmos_role" {
-  name = "cosmos_route_secgroup_iam_role"		    
-  
-assume_role_policy = <<EOF
-{
-  "Version": "2012-10-17",		  
-  "Statement": [		    
-	   {		      
-	     "Action": "sts:AssumeRole",		     
-	     "Principal": {		        
-	      "Service": "ec2.amazonaws.com"		      
-             },		      
-	     "Effect": "Allow",		      
-	     "Sid": ""		    
-	   }		  
-	  ]		
-	}		
-	EOF		
 }
->>>>>>> be81b056051c94432482fa076377f6044d73c4ff
-
-#Create iam resource profile
 
 resource "aws_iam_instance_profile" "cosmos_instance_profile" 
-{		    
+{		   
+        provider ="aws.oregon" 
 	name = "cosmos_instance_profile"		    
 	roles = ["cosmos_role"]		
 }
@@ -41,58 +19,11 @@ resource "aws_iam_instance_profile" "cosmos_instance_profile"
 #Create cosmos IAM policy
 
 resource "aws_iam_role_policy" "cosmos_iam_role_policy" 
-<<<<<<< HEAD
 {		  
+        provider ="aws.oregon"
 	name = "cosmos_iam_role_policy"		  
-	role = "${aws_iam_role.cosmos_iam_role.id}"		  
+	role = "${aws_iam_role.cosmos_role.id}"		  
 	policy = "${file("cosmos_iam_role_policy.json")}"
-=======
-{
-  name = "cosmos_iam_role_policy"
-  role = "${aws_iam_role.cosmos_role.id}"
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ec2:AuthorizeSecurityGroupIngress",
-                "ec2:AuthorizeSecurityGroupEgress",
-                "ec2:RevokeSecurityGroupIngress",
-                "ec2:RevokeSecurityGroupEgress"
-            ],
-            "Resource": "arn:aws:ec2:region:account:security-group/*",
-            "Condition": {
-                "StringEquals": {
-                    "ec2:RequestTag/environment": "cosmos-test"
-                },
-                "ForAllValues:StringEquals": {
-                    "aws:TagKeys": [
-                        "environment"
-                    ]
-                }
-            }
-        },
-        {
-            "Effect": "Allow",
-            "Action": "ec2:DescribeSecurityGroups",
-            "Resource": "*",
-            "Condition": {
-                "StringEquals": {
-                    "ec2:RequestTag/environment": "cosmos-test"
-                },
-                "ForAllValues:StringEquals": {
-                    "aws:TagKeys": [
-                        "environment"
-                    ]
-                }
-            }
-        }
-    ]
-}
-EOF
->>>>>>> be81b056051c94432482fa076377f6044d73c4ff
 }
 
 
@@ -164,7 +95,7 @@ resource "aws_instance" "cosmos-vrouter" {
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
-    iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.id}"
+    iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
     tags {
         Name = "cosmos-vrouter-TF"
     }
@@ -187,11 +118,10 @@ resource "aws_instance" "cosmos-vrouter" {
          "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-175",
          "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-175",
          "HOSTNAME=$(hostname | tr - _)",
-         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_route_table.us-west-2a-public.id}\"",
+         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/routetableid -d value=\"${aws_route_table.us-west-2a-public.id}\"",
          "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-west-2a-public.cidr_block}\"",
-         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.cidr_block}\"",
-         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_security_group.cosmos-vrouter_region1.id}\"",
-         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/vpcid -d value=\"${aws_instance.cosmos-vrouter.public_ip}\""
+         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/securitygroup -d value=\"${aws_security_group.cosmos-vrouter_region1.id}\"",
+         "curl -X PUT https://${var.USERNAME}:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io/v2/keys/$HOSTNAME/publicip -d value=\"${aws_instance.cosmos-vrouter.public_ip}\""
 
       ]
   }
@@ -371,13 +301,13 @@ resource "aws_route" "route2" {
   instance_id = "${aws_instance.cosmos-vrouter-region2.id}"
 }
 
-output "Region1 Vouter Public IP:" {
-  value = "${aws_instance.cosmos-vrouter-region1.public_ip}"
-}
+#output "Region1 Vouter Public IP:" {
+#  value = "${aws_instance.cosmos-vrouter-region1.public_ip}"
+#}
 
-output "Region2 Vouter Public IP:" {
-  value = "${aws_instance.cosmos-vrouter-region2.public_ip}"
-}
+#output "Region2 Vouter Public IP:" {
+#  value = "${aws_instance.cosmos-vrouter-region2.public_ip}"
+#}
 
 
 
