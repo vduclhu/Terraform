@@ -4,38 +4,47 @@
         {
             "Sid": "TheseActionsDontSupportResourceLevelPermissions",
             "Effect": "Allow",
-            "Action": ["ec2:Describe*"],
+            "Action": [
+                "ec2:Describe*"
+            ],
             "Resource": "*"
         },
         {
             "Sid": "ThisActionSupportsResourceLevelPermissionsWithInstancesButNotWithTags",
             "Effect": "Allow",
-            "Action": ["ec2:RunInstances"],
+            "Action": [
+                "ec2:RunInstances"
+            ],
             "Resource": [
-               "arn:aws:ec2:us-west-2:accountid:instance/*",
-               "arn:aws:ec2:us-west-2:accountid:key-pair/*",
-               "arn:aws:ec2:us-west-2:accountid:security-group/*",
-               "arn:aws:ec2:us-west-2:accountid:volume/*"]
+                "arn:aws:ec2:us-west-2::instance/*",
+                "arn:aws:ec2:us-west-2::key-pair/*",
+                "arn:aws:ec2:us-west-2::security-group/*",
+                "arn:aws:ec2:us-west-2::volume/*"
+            ]
         },
         {
-            "Sid": "ThisActionSupportsResourceLevelPermissionsWithAMIsAndTags",
-            "Effect": "Allow",
-            "Action": ["ec2:RunInstances"],
-            "Resource": ["arn:aws:ec2:us-west-2::image/ami-*"],
-            "Condition": {
-              "StringEquals": {"ec2:ResourceTag/environment":"cosmos-test"}
-           }
-        },
-        {
-            "Sid": "TheseActionsSupportResourceLevelPermissionsWithInstancesAndTags",
+            "Sid": "ThisActionSupportsResourceLevelPermissionsAndTags",
             "Effect": "Allow",
             "Action": [
-               "ec2:TerminateInstances",
-               "ec2:StopInstances",
-               "ec2:StartInstances"],
-            "Resource": "arn:aws:ec2:us-west-2:accountid:instance/*",
+                "ec2:AuthorizeSecurityGroupEgress",
+                "ec2:AuthorizeSecurityGroupIngress",
+                "ec2:CreateSecurityGroup",
+                "ec2:DeleteSecurityGroup",
+                "ec2:DescribeInstanceAttribute",
+                "ec2:DescribeInstanceStatus",
+                "ec2:DescribeInstances",
+                "ec2:DescribeNetworkAcls",
+                "ec2:DescribeSecurityGroups",
+                "ec2:RevokeSecurityGroupEgress",
+                "ec2:RevokeSecurityGroupIngress"
+            ],
+            "Resource": [
+                "arn:aws:ec2:us-west-2::security-group/*"
+            ],
             "Condition": {
-                "StringEquals": {"ec2:ResourceTag/environment": "cosmos-test"}
+                "StringEquals": {
+                    "ec2:ResourceTag/environment": "cosmos-test"
+                }
             }
         }
     ]
