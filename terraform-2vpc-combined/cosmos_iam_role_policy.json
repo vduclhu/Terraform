@@ -1,38 +1,42 @@
 {
     "Version": "2012-10-17",
-    "Statement":[{
-    "Effect":"Allow",
-    "Action": [
-       "ec2:AuthorizeSecurityGroupIngress",
-       "ec2:AuthorizeSecurityGroupEgress",
-       "ec2:RevokeSecurityGroupIngress",
-       "ec2:RevokeSecurityGroupEgress"],
-     "Resource": "*",
-        "Condition": {
-            "StringEquals": {
-                "ec2:RequestTag/environment": "cosmos-test"
-            },
-            "ForAllValues:StringEquals": {
-                "aws:TagKeys": [
-                    "environment"
-                ]
+    "Statement": [
+        {
+            "Sid": "TheseActionsDontSupportResourceLevelPermissions",
+            "Effect": "Allow",
+            "Action": ["ec2:Describe*"],
+            "Resource": "*"
+        },
+        {
+            "Sid": "ThisActionSupportsResourceLevelPermissionsWithInstancesButNotWithTags",
+            "Effect": "Allow",
+            "Action": ["ec2:RunInstances"],
+            "Resource": [
+               "arn:aws:ec2:us-west-2:accountid:instance/*",
+               "arn:aws:ec2:us-west-2:accountid:key-pair/*",
+               "arn:aws:ec2:us-west-2:accountid:security-group/*",
+               "arn:aws:ec2:us-west-2:accountid:volume/*"]
+        },
+        {
+            "Sid": "ThisActionSupportsResourceLevelPermissionsWithAMIsAndTags",
+            "Effect": "Allow",
+            "Action": ["ec2:RunInstances"],
+            "Resource": ["arn:aws:ec2:us-west-2::image/ami-*"],
+            "Condition": {
+              "StringEquals": {"ec2:ResourceTag/environment":"cosmos-test"}
+           }
+        },
+        {
+            "Sid": "TheseActionsSupportResourceLevelPermissionsWithInstancesAndTags",
+            "Effect": "Allow",
+            "Action": [
+               "ec2:TerminateInstances",
+               "ec2:StopInstances",
+               "ec2:StartInstances"],
+            "Resource": "arn:aws:ec2:us-west-2:accountid:instance/*",
+            "Condition": {
+                "StringEquals": {"ec2:ResourceTag/environment": "cosmos-test"}
             }
         }
-    },
-    {
-      "Effect": "Allow",
-      "Action": "ec2:DescribeSecurityGroups",
-      "Resource": "*",
-        "Condition": {
-            "StringEquals": {
-                "ec2:RequestTag/environment": "cosmos-test"
-            },
-            "ForAllValues:StringEquals": {
-                "aws:TagKeys": [
-                    "environment"
-                ]
-            }
-        }
-    }
-  ]
+    ]
 }
