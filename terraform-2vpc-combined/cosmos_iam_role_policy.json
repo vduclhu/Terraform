@@ -7,7 +7,6 @@
        "ec2:AuthorizeSecurityGroupEgress",
        "ec2:RevokeSecurityGroupIngress",
        "ec2:RevokeSecurityGroupEgress"],
-     "Resource": "*",
         "Condition": {
             "StringEquals": {
                 "ec2:RequestTag/environment": "cosmos-test"
@@ -22,7 +21,6 @@
     {
       "Effect": "Allow",
       "Action": "ec2:DescribeSecurityGroups",
-      "Resource": "*",
         "Condition": {
             "StringEquals": {
                 "ec2:RequestTag/environment": "cosmos-test"
