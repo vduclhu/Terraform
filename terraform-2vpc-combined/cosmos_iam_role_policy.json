@@ -7,7 +7,7 @@
        "ec2:AuthorizeSecurityGroupEgress",
        "ec2:RevokeSecurityGroupIngress",
        "ec2:RevokeSecurityGroupEgress"],
-     "Resource": "arn:aws:ec2:region:account:security-group/*",
+     "Resource": "*",
         "Condition": {
             "StringEquals": {
                 "ec2:RequestTag/environment": "cosmos-test"
