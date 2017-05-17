@@ -39,7 +39,7 @@
                 "ec2:RevokeSecurityGroupIngress"
             ],
             "Resource": [
-                "arn:aws:ec2:us-west-2::security-group/*"
+                "*"
             ],
             "Condition": {
                 "StringEquals": {
