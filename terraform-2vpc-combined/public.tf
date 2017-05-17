@@ -126,7 +126,7 @@ resource "aws_instance" "cosmos-vrouter" {
          "aws_secret_access_key=`curl http://169.254.169.254/latest/meta-data/iam/security-credentials/${instance_profile} | grep SecretAccessKey | cut -d':' -f2 | sed 's/[^0-9A-Za-z/+=]*//g'`",
          "export AWS_ACCESS_KEY_ID=${aws_access_key_id}",
          "export AWS_SECRET_ACCESS_KEY=${aws_secret_access_key}",
-         "sudo aws ec2 authorize-security-group-ingress --group-name my-sg ${aws_security_group.cosmos-vrouter_region1.name} --protocol tcp --port 22 --cidr 203.0.113.0/24"
+         "sudo aws ec2 authorize-security-group-ingress --group-name my-sg ${aws_security_group.cosmos-vrouter_region1.name} --protocol tcp --port 22 --cidr 203.0.113.0/24",
          "sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
          "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-175",
          "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-175",
