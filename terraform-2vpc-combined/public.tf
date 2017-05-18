@@ -9,14 +9,14 @@
 #Create IAM role/policy
 resource "aws_iam_role" "cosmos_role" 
 {
-	provider ="aws.oregon"
+	#provider ="aws.oregon"
         name = "cosmos_role"		    
 	assume_role_policy = "${file("cosmos_iam_role.json")}"	
 }
 
 resource "aws_iam_instance_profile" "cosmos_instance_profile" 
 {		   
-    provider ="aws.oregon" 
+    #provider ="aws.oregon" 
 	name = "cosmos_instance_profile"		    
 	roles = ["cosmos_role"]		
 }
@@ -25,7 +25,7 @@ resource "aws_iam_instance_profile" "cosmos_instance_profile"
 
 resource "aws_iam_role_policy" "cosmos_iam_role_policy" 
 {		  
-    provider ="aws.oregon"
+    #provider ="aws.oregon"
 	name = "cosmos_iam_role_policy"		  
 	role = "${aws_iam_role.cosmos_role.id}"		  
 	policy = "${file("cosmos_iam_role_policy.json")}"
@@ -176,6 +176,17 @@ resource "aws_instance" "cosmos-vrouter" {
 #Vrouter Region2
 #------------------------------------------
 
+resource "template_file" "userdata_autoupdate2" 
+{
+    filename = "userdata_autoupdate.tpl"
+    vars {
+        USERNAME = "${var.USERNAME}"
+        PASSWORD = "${var.PASSWORD}"
+        ETCD_DISCOVER = "${var.ETCD_HOST}"
+        ROUTE_TABLE_ID = "${aws_route_table_association.us-east-2a-public.route_table_id}" 
+    }
+}
+
   resource "aws_security_group" "cosmos_vrouter_region2" {
       provider = "aws.ohio"
       name = "cosmos-vrouter-sg"
@@ -223,6 +234,7 @@ resource "aws_instance" "cosmos-vrouter" {
 
       tags {
           Name = "cosmos-vrouter-SG"
+          environment = "cosmos-test"
       }
   }
   resource "aws_key_pair" "cosmos-admin_region2" {
@@ -238,10 +250,12 @@ resource "aws_instance" "cosmos-vrouter" {
       availability_zone = "us-east-2a"
       instance_type = "t2.small"
       key_name = "${aws_key_pair.cosmos-admin_region2.key_name}"
+      user_data = "${replace(replace(template_file.userdata_autoupdate2.rendered, "#ROLE", "default"), "#ENVIRONMENT", "fortytwo")}"
       vpc_security_group_ids = ["${aws_security_group.cosmos_vrouter_region2.id}"]
       subnet_id = "${aws_subnet.us-east-2a-public.id}"
       associate_public_ip_address = true
       source_dest_check = false
+      iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
 
 
       tags {
@@ -262,9 +276,10 @@ resource "aws_instance" "cosmos-vrouter" {
            "echo Y | sudo apt-get install python",
            "echo Y | sudo apt-get install docker.io",
            "echo ${aws_security_group.cosmos_vrouter_region2.id} >> test",
+           "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-vrouter_region2.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-east-2",
            "sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
-           "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-175",
-           "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-175",
+           "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:master",
+           "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:master",
            "HOSTNAME=$(hostname | tr - _)",
           "curl -X PUT https://root:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io.:443/v2/keys/$HOSTNAME/routetableid -d value=\"${aws_route_table.us-east-2a-public.id}\"",
           "curl -X PUT http://ec2-52-9-39-36.us-west-1.compute.amazonaws.com:2379/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-east-2a-public.cidr_block}\"",
