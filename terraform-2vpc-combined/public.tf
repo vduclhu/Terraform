@@ -31,8 +31,8 @@ resource "aws_iam_role_policy" "cosmos_iam_role_policy"
 	policy = "${file("cosmos_iam_role_policy.json")}"
 }
 
+resource "template_file" "userdata_autoupdate" 
 {
-resource "template_file" "userdata_autoupdate" {
     filename = "userdata_autoupdate.tpl"
     vars {
         ETCD_DISCOVER = "${var.ETCD_HOST}"
