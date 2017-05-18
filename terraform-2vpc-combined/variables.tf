@@ -12,6 +12,10 @@ variable "PASSWORD" {
     description = "etcdpass/will be passed in at runtime"
     default = "test"
 }
+variable "ETCD_HOST" {
+    description = "etcdhostname/will be passed in at runtime"
+    default = "discover.blue-etcd.shared.prsn-dev.io"
+}
 variable "aws_region1" {
     description = "EC2 Region for the VPC"
     default = "us-west-2"
