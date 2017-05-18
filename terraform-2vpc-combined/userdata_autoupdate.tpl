@@ -30,7 +30,7 @@ curl -Ss -XPUT "$${ETCDCTL_PEERS}/v2/keys/vrouters/$${VPC_ID}/localip" -d value=
 
 monitor () {
   while true; do
-    curl -Ss "${ETCDCTL_PEERS}/v2/keys/tinc-vpn.org/peers/?wait=true&recursive=true"
+    curl -Ss "$${ETCDCTL_PEERS}/v2/keys/tinc-vpn.org/peers/?wait=true&recursive=true"
 
     # Don't fetch peers if curl returns an error
     if [ $? -ne 0 ]; then
@@ -38,7 +38,5 @@ monitor () {
       continue
     fi
 
-    updatePeers
-    killall -HUP tincd
   done
 }
