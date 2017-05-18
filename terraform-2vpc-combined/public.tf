@@ -9,14 +9,14 @@
 #Create IAM role/policy
 resource "aws_iam_role" "cosmos_role" 
 {
-	#provider ="aws.oregon"
+	provider ="aws.oregon"
         name = "cosmos_role"		    
 	assume_role_policy = "${file("cosmos_iam_role.json")}"	
 }
 
 resource "aws_iam_instance_profile" "cosmos_instance_profile" 
 {		   
-    #provider ="aws.oregon" 
+    provider ="aws.oregon" 
 	name = "cosmos_instance_profile"		    
 	roles = ["cosmos_role"]		
 }
@@ -25,15 +25,15 @@ resource "aws_iam_instance_profile" "cosmos_instance_profile"
 
 resource "aws_iam_role_policy" "cosmos_iam_role_policy" 
 {		  
-    #provider ="aws.oregon"
+    provider ="aws.oregon"
 	name = "cosmos_iam_role_policy"		  
 	role = "${aws_iam_role.cosmos_role.id}"		  
 	policy = "${file("cosmos_iam_role_policy.json")}"
 }
-/*
+
 resource "template_file" "userdata_autoupdate" 
 {
-    filename = "userdata_autoupdate.tpl"
+    template = "/instance_config_template/userdata_autoupdate.tpl"
     vars {
         USERNAME = "${var.USERNAME}"
         PASSWORD = "${var.PASSWORD}"
@@ -41,20 +41,7 @@ resource "template_file" "userdata_autoupdate"
         ROUTE_TABLE_ID = "${aws_route_table_association.us-west-2a-public.route_table_id}" 
     }
 }
-*/
-resource "template_dir" "config" 
-{
-  source_dir      = "/instance_config_templates"
-  destination_dir = "/instance_config"
 
-  vars 
-  {
-        USERNAME = "${var.USERNAME}"
-        PASSWORD = "${var.PASSWORD}"
-        ETCD_DISCOVER = "${var.ETCD_HOST}"
-        ROUTE_TABLE_ID = "${aws_route_table_association.us-west-2a-public.route_table_id}"
-  }
-}
 
 
 resource "aws_security_group" "cosmos-vrouter_region1" {
@@ -120,29 +107,25 @@ resource "aws_instance" "cosmos-vrouter" {
     availability_zone = "us-west-2a"
     instance_type = "t2.small"
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
-    #user_data = "${replace(replace(template_file.userdata_autoupdate.rendered, "#ROLE", "default"), "#ENVIRONMENT", "fortytwo")}"
+    user_data = "${replace(replace(template_file.userdata_autoupdate.rendered, "#ROLE", "default"), "#ENVIRONMENT", "fortytwo")}"
     vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region1.id}"]
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
-    #iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
+    iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
     tags {
         Name = "cosmos-vrouter-TF"
     }
 
-#provisioner "file" {
-#      source = "script.sh"
-#      destination = "/tmp/script.sh"
-#  }
+provisioner "file" {
+      content = "${template_file.userdata_autoupdate.rendered}"
+      destination = "/tmp/script.sh"
+  }
   provisioner "file" {
       source = "gcr-test.json"
       destination = "gcrtest.json"
   }
-    provisioner "file" {
-    # Referencing the template_dir resource ensures that it will be
-    # created or updated before this aws_instance resource is provisioned.
-    source      = "${template_dir.config.destination_dir}"
-    destination = "/tmp/scripts"
+
   }
   provisioner "remote-exec" {
       inline = [
@@ -196,16 +179,16 @@ resource "aws_instance" "cosmos-vrouter" {
 #Vrouter Region2
 #------------------------------------------
 
-#resource "template_file" "userdata_autoupdate2" 
-#{
-#    filename = "userdata_autoupdate.tpl"
-#    vars {
-#        USERNAME = "${var.USERNAME}"
-#        PASSWORD = "${var.PASSWORD}"
-#        ETCD_DISCOVER = "${var.ETCD_HOST}"
-#        ROUTE_TABLE_ID = "${aws_route_table_association.us-east-2a-public.route_table_id}" 
-#    }
-#}
+resource "template_file" "userdata_autoupdate2" 
+{
+    filename = "/instance_config_template/userdata_autoupdate.tpl"
+    vars {
+       USERNAME = "${var.USERNAME}"
+        PASSWORD = "${var.PASSWORD}"
+        ETCD_DISCOVER = "${var.ETCD_HOST}"
+       ROUTE_TABLE_ID = "${aws_route_table_association.us-east-2a-public.route_table_id}" 
+    }
+}
 
   resource "aws_security_group" "cosmos_vrouter_region2" {
       provider = "aws.ohio"
