@@ -38,6 +38,7 @@ resource "template_file" "userdata_autoupdate"
         USERNAME = "${var.USERNAME}"
         PASSWORD = "${var.PASSWORD}"
         ETCD_DISCOVER = "${var.ETCD_HOST}"
+        ROUTE_TABLE_ID = "${aws_route_table_association.us-west-2a-public.route_table_id}" 
     }
 }
 

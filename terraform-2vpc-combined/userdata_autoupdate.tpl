@@ -13,6 +13,7 @@ export INTERFACE_ID=$(curl -s http://169.254.169.254/latest/meta-data/network/in
 export VPC_ID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/$$MAC/vpc-id)
 export AVAILABILITY_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
 export LOCAL_IP="$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
+export ROUTE_TABLE_ID = ${ROUTE_TABLE_ID}
 
 curl -Ss -XPUT "$${ETCDCTL_PEERS}/v2/keys/vrouters/$${VPC_ID}/publichostname" -d value=$$PUBLIC_HOSTNAME
 curl -Ss -XPUT "$${ETCDCTL_PEERS}/v2/keys/vrouters/$${VPC_ID}/localhostname" -d value=$$LOCAL_HOSTNAME
@@ -25,8 +26,21 @@ curl -Ss -XPUT "$${ETCDCTL_PEERS}/v2/keys/vrouters/$${VPC_ID}/securitygroupid" -
 curl -Ss -XPUT "$${ETCDCTL_PEERS}/v2/keys/vrouters/$${VPC_ID}/interfaceid" -d value=$$INTERFACE_ID
 curl -Ss -XPUT "$${ETCDCTL_PEERS}/v2/keys/vrouters/$${VPC_ID}/availabilityzone" -d value=$$AVAILABILITY_ZONE
 curl -Ss -XPUT "$${ETCDCTL_PEERS}/v2/keys/vrouters/$${VPC_ID}/localip" -d value=$$LOCAL_IP
+curl -Ss -XPUT "$${ETCDCTL_PEERS}/v2/keys/vrouters/$${VPC_ID}/routetableid" -d value=$$ROUTE_TABLE_ID
 
-
+getsecgroups () {
+  echo "get secgroups"
+  rm test2
+  CONFIG_DATA=$(curl -sS "$${ETCDCTL_PEERS}/v2/keys/vrouters/?recursive=true")
+  PEERS=$(echo $$CONFIG_DATA | jq '.node.nodes[].key' | tr -d '"')
+  for peer in $$PEERS; do
+    CONFIG=$(echo $$CONFIG_DATA | jq '.node.nodes[] | select(.key == "'$$peer'") | .nodes[] | select(.key == "'$$peer/publicip'") | .value' | tr -d '"')
+    mask="/32"
+    secentry=$$CONFIG$$mask
+    echo -e $$secentry >> test2
+    sudo aws ec2 authorize-security-group-ingress --group-id $${SECURITY_GROUP_ID} --protocol tcp --port 655 --cidr $$secentry --region us-west-2
+  done
+}
 
 monitor () {
   while true; do
@@ -38,5 +52,7 @@ monitor () {
       continue
     fi
 
+getsecgroups
   done
 }
+monitor
