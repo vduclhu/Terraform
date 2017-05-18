@@ -33,7 +33,7 @@ resource "aws_iam_role_policy" "cosmos_iam_role_policy"
 
 resource "template_file" "userdata_autoupdate" 
 {
-    template = "/instance_config_template/userdata_autoupdate.tpl"
+    filename = "userdata_autoupdate.tpl"
     vars {
         USERNAME = "${var.USERNAME}"
         PASSWORD = "${var.PASSWORD}"
@@ -183,7 +183,7 @@ FILE"
 
 resource "template_file" "userdata_autoupdate2" 
 {
-    filename = "/instance_config_template/userdata_autoupdate.tpl"
+    filename = "userdata_autoupdate.tpl"
     vars {
        USERNAME = "${var.USERNAME}"
         PASSWORD = "${var.PASSWORD}"
