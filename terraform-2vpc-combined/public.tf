@@ -196,16 +196,16 @@ resource "aws_instance" "cosmos-vrouter" {
 #Vrouter Region2
 #------------------------------------------
 
-resource "template_file" "userdata_autoupdate2" 
-{
-    filename = "userdata_autoupdate.tpl"
-    vars {
-        USERNAME = "${var.USERNAME}"
-        PASSWORD = "${var.PASSWORD}"
-        ETCD_DISCOVER = "${var.ETCD_HOST}"
-        ROUTE_TABLE_ID = "${aws_route_table_association.us-east-2a-public.route_table_id}" 
-    }
-}
+#resource "template_file" "userdata_autoupdate2" 
+#{
+#    filename = "userdata_autoupdate.tpl"
+#    vars {
+#        USERNAME = "${var.USERNAME}"
+#        PASSWORD = "${var.PASSWORD}"
+#        ETCD_DISCOVER = "${var.ETCD_HOST}"
+#        ROUTE_TABLE_ID = "${aws_route_table_association.us-east-2a-public.route_table_id}" 
+#    }
+#}
 
   resource "aws_security_group" "cosmos_vrouter_region2" {
       provider = "aws.ohio"
