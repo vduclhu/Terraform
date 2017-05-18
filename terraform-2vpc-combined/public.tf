@@ -120,7 +120,7 @@ resource "aws_instance" "cosmos-vrouter" {
     availability_zone = "us-west-2a"
     instance_type = "t2.small"
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
-    user_data = "${replace(replace(template_file.userdata_autoupdate.rendered, "#ROLE", "default"), "#ENVIRONMENT", "fortytwo")}"
+    #user_data = "${replace(replace(template_file.userdata_autoupdate.rendered, "#ROLE", "default"), "#ENVIRONMENT", "fortytwo")}"
     vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region1.id}"]
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     associate_public_ip_address = true
@@ -270,12 +270,12 @@ resource "template_file" "userdata_autoupdate2"
       availability_zone = "us-east-2a"
       instance_type = "t2.small"
       key_name = "${aws_key_pair.cosmos-admin_region2.key_name}"
-      user_data = "${replace(replace(template_file.userdata_autoupdate2.rendered, "#ROLE", "default"), "#ENVIRONMENT", "fortytwo")}"
+      #user_data = "${replace(replace(template_file.userdata_autoupdate2.rendered, "#ROLE", "default"), "#ENVIRONMENT", "fortytwo")}"
       vpc_security_group_ids = ["${aws_security_group.cosmos_vrouter_region2.id}"]
       subnet_id = "${aws_subnet.us-east-2a-public.id}"
       associate_public_ip_address = true
       source_dest_check = false
-      iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
+      #iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
 
 
       tags {
