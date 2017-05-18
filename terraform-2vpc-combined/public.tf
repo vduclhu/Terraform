@@ -276,7 +276,7 @@ resource "template_file" "userdata_autoupdate2"
            "echo Y | sudo apt-get install python",
            "echo Y | sudo apt-get install docker.io",
            "echo ${aws_security_group.cosmos_vrouter_region2.id} >> test",
-           "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-vrouter_region2.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-east-2",
+           "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos_vrouter_region2.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-east-2",
            "sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
            "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:master",
            "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:master",
