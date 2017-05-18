@@ -30,7 +30,7 @@ resource "aws_iam_role_policy" "cosmos_iam_role_policy"
 	role = "${aws_iam_role.cosmos_role.id}"		  
 	policy = "${file("cosmos_iam_role_policy.json")}"
 }
-
+/*
 resource "template_file" "userdata_autoupdate" 
 {
     filename = "userdata_autoupdate.tpl"
@@ -41,7 +41,20 @@ resource "template_file" "userdata_autoupdate"
         ROUTE_TABLE_ID = "${aws_route_table_association.us-west-2a-public.route_table_id}" 
     }
 }
+*/
+resource "template_dir" "config" 
+{
+  source_dir      = "/instance_config_templates"
+  destination_dir = "/instance_config"
 
+  vars 
+  {
+        USERNAME = "${var.USERNAME}"
+        PASSWORD = "${var.PASSWORD}"
+        ETCD_DISCOVER = "${var.ETCD_HOST}"
+        ROUTE_TABLE_ID = "${aws_route_table_association.us-west-2a-public.route_table_id}"
+  }
+}
 
 
 resource "aws_security_group" "cosmos-vrouter_region1" {
@@ -112,7 +125,7 @@ resource "aws_instance" "cosmos-vrouter" {
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
-    iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
+    #iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
     tags {
         Name = "cosmos-vrouter-TF"
     }
@@ -124,6 +137,12 @@ resource "aws_instance" "cosmos-vrouter" {
   provisioner "file" {
       source = "gcr-test.json"
       destination = "gcrtest.json"
+  }
+    provisioner "file" {
+    # Referencing the template_dir resource ensures that it will be
+    # created or updated before this aws_instance resource is provisioned.
+    source      = "${template_dir.config.destination_dir}"
+    destination = "/tmp/scripts"
   }
   provisioner "remote-exec" {
       inline = [
@@ -148,6 +167,7 @@ resource "aws_instance" "cosmos-vrouter" {
       user = "${var.INSTANCE_USERNAME}"
       private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
     }
+
   }
 
   resource "aws_instance" "cosmos-testbox-region1" {
