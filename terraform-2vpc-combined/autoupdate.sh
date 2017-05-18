@@ -50,7 +50,7 @@ getsecgroups () {
 
 monitor () {
   while true; do
-    curl -Ss "${ETCDCTL_PEERS}/v2/keys/tinc-vpn.org/peers/?wait=true&recursive=true"
+    curl -sS "${ETCDCTL_PEERS}/v2/keys/tinc-vpn.org/peers/?wait=true&recursive=true"
 
     # Don't fetch peers if curl returns an error
     if [ $? -ne 0 ]; then
