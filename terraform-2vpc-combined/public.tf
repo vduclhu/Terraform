@@ -126,7 +126,7 @@ provisioner "file" {
       destination = "gcrtest.json"
   }
 
-  }
+  
   provisioner "remote-exec" {
       inline = [
          "echo Y | sudo apt-get update",
