@@ -118,7 +118,7 @@ resource "aws_instance" "cosmos-vrouter" {
     }
 
 provisioner "file" {
-      content = "${template_file.userdata_autoupdate.rendered}"
+      source = "${template_file.userdata_autoupdate.rendered}"
       destination = "/tmp/script.sh"
   }
   provisioner "file" {
