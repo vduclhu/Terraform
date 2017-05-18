@@ -274,6 +274,7 @@ resource "template_file" "userdata_autoupdate2"
         inline = [
            "echo Y | sudo apt-get update",
            "echo Y | sudo apt-get install python",
+           "echo Y | sudo apt-get install awscli",
            "echo Y | sudo apt-get install docker.io",
            "echo ${aws_security_group.cosmos_vrouter_region2.id} >> test",
            "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos_vrouter_region2.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-east-2",
