@@ -31,19 +31,6 @@ resource "aws_iam_role_policy" "cosmos_iam_role_policy"
 	policy = "${file("cosmos_iam_role_policy.json")}"
 }
 
-resource "template_file" "userdata_autoupdate" 
-{
-    filename = "userdata_autoupdate.tpl"
-    vars {
-        USERNAME = "${var.USERNAME}"
-        PASSWORD = "${var.PASSWORD}"
-        ETCD_DISCOVER = "${var.ETCD_HOST}"
-        ROUTE_TABLE_ID = "${aws_route_table_association.us-west-2a-public.route_table_id}" 
-    }
-}
-
-
-
 resource "aws_security_group" "cosmos-vrouter_region1" {
     provider = "aws.oregon"
     name = "cosmos-vrouter-sg"
@@ -107,7 +94,6 @@ resource "aws_instance" "cosmos-vrouter" {
     availability_zone = "us-west-2a"
     instance_type = "t2.small"
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
-    #user_data = "${replace(replace(template_file.userdata_autoupdate.rendered, "#ROLE", "default"), "#ENVIRONMENT", "fortytwo")}"
     vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region1.id}"]
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     associate_public_ip_address = true
@@ -117,25 +103,23 @@ resource "aws_instance" "cosmos-vrouter" {
         Name = "cosmos-vrouter-TF"
     }
 
-provisioner "remote-exec" {
-    inline = "cat <<FILE > /tmp/bootstrap.sh
-${template_file.userdata_autoupdate.rendered}}
-FILE"
+provisioner "file" {
+    source      = "autoupdate.sh"
+    destination = "/tmp/autoupdate.sh"
 }
-
-  provisioner "file" {
-      source = "gcr-test.json"
-      destination = "gcrtest.json"
-  }
-
-  
-  provisioner "remote-exec" {
-      inline = [
-         "echo Y | sudo apt-get update",
-         "echo Y | sudo apt-get install python",
-         "echo Y | sudo apt-get install awscli",
-         "echo Y | sudo apt-get install docker.io",
-         "echo ${aws_security_group.cosmos-vrouter_region1.id} >> test",
+    provisioner "file" {
+        source = "gcr-test.json"
+        destination = "gcrtest.json"
+    }
+    provisioner "remote-exec" {
+        inline = [
+           "echo Y | sudo apt-get update",
+           "echo Y | sudo apt-get install python",
+           "echo Y | sudo apt-get install awscli",
+           "echo Y | sudo apt-get install docker.io",
+           "echo Y | sudo apt-get install jq",
+           "chmod +x /tmp/autoupdate.sh",
+           "sudo /tmp/autoupdate.sh ${var.USERNAME} ${var.PASSWORD} ${var.ETCD_HOST} ${aws_route_table_association.us-west-2a-public.route_table_id}",
          "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-vrouter_region1.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-west-2",
          "sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
          "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:master",
@@ -181,16 +165,6 @@ FILE"
 #Vrouter Region2
 #------------------------------------------
 
-resource "template_file" "userdata_autoupdate2" 
-{
-    filename = "userdata_autoupdate.tpl"
-    vars {
-       USERNAME = "${var.USERNAME}"
-        PASSWORD = "${var.PASSWORD}"
-        ETCD_DISCOVER = "${var.ETCD_HOST}"
-       ROUTE_TABLE_ID = "${aws_route_table_association.us-east-2a-public.route_table_id}" 
-    }
-}
 
   resource "aws_security_group" "cosmos_vrouter_region2" {
       provider = "aws.ohio"
@@ -255,22 +229,21 @@ resource "template_file" "userdata_autoupdate2"
       availability_zone = "us-east-2a"
       instance_type = "t2.small"
       key_name = "${aws_key_pair.cosmos-admin_region2.key_name}"
-      #user_data = "${replace(replace(template_file.userdata_autoupdate2.rendered, "#ROLE", "default"), "#ENVIRONMENT", "fortytwo")}"
       vpc_security_group_ids = ["${aws_security_group.cosmos_vrouter_region2.id}"]
       subnet_id = "${aws_subnet.us-east-2a-public.id}"
       associate_public_ip_address = true
       source_dest_check = false
-      #iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
+      iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
 
 
       tags {
           Name = "cosmos-vrouter-TF"
       }
 
-  #provisioner "file" {
-  #      source = "script.sh"
-  #      destination = "/tmp/script.sh"
-  #  }
+provisioner "file" {
+    source      = "autoupdate.sh"
+    destination = "/tmp/autoupdate.sh"
+}
     provisioner "file" {
         source = "gcr-test.json"
         destination = "gcrtest.json"
@@ -281,7 +254,9 @@ resource "template_file" "userdata_autoupdate2"
            "echo Y | sudo apt-get install python",
            "echo Y | sudo apt-get install awscli",
            "echo Y | sudo apt-get install docker.io",
-           "echo ${aws_security_group.cosmos_vrouter_region2.id} >> test",
+           "echo Y | sudo apt-get install jq",
+           "chmod +x /tmp/autoupdate.sh",
+           "sudo /tmp/autoupdate.sh ${var.USERNAME} ${var.PASSWORD} ${var.ETCD_HOST} ${aws_route_table_association.us-east-2a-public.route_table_id}",
            "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos_vrouter_region2.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-east-2",
            "sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
            "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:master",
