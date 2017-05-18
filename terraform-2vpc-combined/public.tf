@@ -25,7 +25,7 @@ resource "aws_iam_instance_profile" "cosmos_instance_profile"
 
 resource "aws_iam_role_policy" "cosmos_iam_role_policy" 
 {		  
-        provider ="aws.oregon"
+    provider ="aws.oregon"
 	name = "cosmos_iam_role_policy"		  
 	role = "${aws_iam_role.cosmos_role.id}"		  
 	policy = "${file("cosmos_iam_role_policy.json")}"
@@ -35,6 +35,8 @@ resource "template_file" "userdata_autoupdate"
 {
     filename = "userdata_autoupdate.tpl"
     vars {
+        USERNAME = "${var.USERNAME}"
+        PASSWORD = "${var.PASSWORD}"
         ETCD_DISCOVER = "${var.ETCD_HOST}"
     }
 }
