@@ -21,7 +21,7 @@ export VPC_ID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfac
 export AVAILABILITY_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
 export LOCAL_IP="$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
 export ROUTE_TABLE_ID = ${ROUTE_TABLE_ID}
-export REGION="$(AVAILABILITY_ZONE%?)"
+export REGION="$(echo $AVAILABILITY_ZONE | rev | cut -c 2- | rev)"
 
 curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/publichostname" -d value=$PUBLIC_HOSTNAME
 curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/localhostname" -d value=$LOCAL_HOSTNAME
