@@ -78,6 +78,7 @@ monitor () {
     fi
 
 getsecgroups
+getroutes
   done
 }
 monitor
