@@ -38,7 +38,6 @@ curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/routetableid" -d val
 
 getsecgroups () {
   echo "get secgroups"
-  rm test2
   CONFIG_DATA=$(curl -sS "${ETCDCTL_PEERS}/v2/keys/vrouters/?recursive=true")
   PEERS=$(echo $CONFIG_DATA | jq '.node.nodes[].key' | tr -d '"')
   for peer in $PEERS; do
@@ -55,20 +54,23 @@ getsecgroups () {
 
 getroutes () {
   echo "get routes"
-  rm test2
   CONFIG_DATA=$(curl -sS "${ETCDCTL_PEERS}/v2/keys/vrouters/?recursive=true")
   PEERS=$(echo $CONFIG_DATA | jq '.node.nodes[].key' | tr -d '"')
   for peer in $PEERS; do
     CONFIG=$(echo $CONFIG_DATA | jq '.node.nodes[] | select(.key == "'$peer'") | .nodes[] | select(.key == "'$peer/vpccidr'") | .value' | tr -d '"')
+    echo $CONFIG
     ENTRYEXISTS=$( aws ec2 describe-route-tables --route-table-id ${ROUTE_TABLE_ID}  --region ${REGION} | grep -ic $CONFIG )
     if [ $ENTRYEXISTS -eq 0 ]
     then
-    sudo aws aws ec2 create-route --route-table-id ${ROUTE_TABLE_ID} --destination-cidr-block ${CIDR} --gateway-id ${INTERFACE_ID} --region ${REGION}
+    sudo aws ec2 create-route --route-table-id ${ROUTE_TABLE_ID} --destination-cidr-block ${CONFIG} --network-interface-id ${INTERFACE_ID} --region ${REGION}
+
   done
 }
 
 monitor () {
-  while true; do
+
+    #curl -sS "https://root:WKq3dU9Q@blue-etcd.shared.prsn-dev.io/v2/keys/tinc-vpn.org/peers/?wait=true&recursive=true"
+while true; do
     curl -sS "${ETCDCTL_PEERS}/v2/keys/tinc-vpn.org/peers/?wait=true&recursive=true"
 
     # Don't fetch peers if curl returns an error
@@ -76,7 +78,7 @@ monitor () {
       sleep 1m
       continue
     fi
-
+    echo "router added"
 getsecgroups
 getroutes
   done
