@@ -6,6 +6,7 @@ export ETCD_DISCOVER=$3
 export ROUTE_TABLE_ID=$4
 
 
+
 export ETCDCTL_PEERS=https://${USERNAME}:${PASSWORD}@$(dig +noall +answer ${ETCD_DISCOVER} srv | awk '{print $8 ":" $7}')
 
 #Add vRouter metadata to etcd for consumption
@@ -20,6 +21,7 @@ export VPC_ID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfac
 export AVAILABILITY_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
 export LOCAL_IP="$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
 export ROUTE_TABLE_ID = ${ROUTE_TABLE_ID}
+export REGION="$(AVAILABILITY_ZONE%?)"
 
 curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/publichostname" -d value=$PUBLIC_HOSTNAME
 curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/localhostname" -d value=$LOCAL_HOSTNAME
@@ -41,6 +43,20 @@ getsecgroups () {
   PEERS=$(echo $CONFIG_DATA | jq '.node.nodes[].key' | tr -d '"')
   for peer in $PEERS; do
     CONFIG=$(echo $CONFIG_DATA | jq '.node.nodes[] | select(.key == "'$peer'") | .nodes[] | select(.key == "'$peer/publicip'") | .value' | tr -d '"')
+    mask="/32"
+    secentry=$CONFIG$mask
+    echo -e $secentry >> test2
+    sudo aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 655 --cidr $secentry --region ${REGION}
+  done
+}
+
+getroutes () {
+  echo "get routes"
+  rm test2
+  CONFIG_DATA=$(curl -sS "${ETCDCTL_PEERS}/v2/keys/vrouters/?recursive=true")
+  PEERS=$(echo $CONFIG_DATA | jq '.node.nodes[].key' | tr -d '"')
+  for peer in $PEERS; do
+    CONFIG=$(echo $CONFIG_DATA | jq '.node.nodes[] | select(.key == "'$peer'") | .nodes[] | select(.key == "'$peer/vpccidr'") | .value' | tr -d '"')
     mask="/32"
     secentry=$CONFIG$mask
     echo -e $secentry >> test2
