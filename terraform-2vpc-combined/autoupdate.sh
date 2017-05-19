@@ -69,7 +69,7 @@ getroutes () {
 
 monitor () {
 
-    #curl -sS "https://root:WKq3dU9Q@blue-etcd.shared.prsn-dev.io/v2/keys/tinc-vpn.org/peers/?wait=true&recursive=true"
+   
 while true; do
     curl -sS "${ETCDCTL_PEERS}/v2/keys/tinc-vpn.org/peers/?wait=true&recursive=true"
 
