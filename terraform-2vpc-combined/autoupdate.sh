@@ -63,7 +63,7 @@ getroutes () {
     if [ $ENTRYEXISTS -eq 0 ]
     then
     sudo aws ec2 create-route --route-table-id ${ROUTE_TABLE_ID} --destination-cidr-block ${CONFIG} --network-interface-id ${INTERFACE_ID} --region ${REGION}
-
+    fi
   done
 }
 

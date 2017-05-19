@@ -5,7 +5,9 @@
             "Sid": "TheseActionsDontSupportResourceLevelPermissions",
             "Effect": "Allow",
             "Action": [
-                "ec2:Describe*"
+                "ec2:Describe*",
+                "ec2:CreateRoute",
+                "ec2:DeleteRoute"
             ],
             "Resource": "*"
         },
