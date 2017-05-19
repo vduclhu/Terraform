@@ -45,8 +45,11 @@ getsecgroups () {
     CONFIG=$(echo $CONFIG_DATA | jq '.node.nodes[] | select(.key == "'$peer'") | .nodes[] | select(.key == "'$peer/publicip'") | .value' | tr -d '"')
     mask="/32"
     secentry=$CONFIG$mask
-    echo -e $secentry >> test2
+    ENTRYEXISTS=$( aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --region ${REGION} | grep -ic $secentry )
+    if [ $ENTRYEXISTS -eq 0 ]
+    then
     sudo aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 655 --cidr $secentry --region ${REGION}
+    fi
   done
 }
 
@@ -57,10 +60,10 @@ getroutes () {
   PEERS=$(echo $CONFIG_DATA | jq '.node.nodes[].key' | tr -d '"')
   for peer in $PEERS; do
     CONFIG=$(echo $CONFIG_DATA | jq '.node.nodes[] | select(.key == "'$peer'") | .nodes[] | select(.key == "'$peer/vpccidr'") | .value' | tr -d '"')
-    mask="/32"
-    secentry=$CONFIG$mask
-    echo -e $secentry >> test2
-    sudo aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 655 --cidr $secentry --region us-west-2
+    ENTRYEXISTS=$( aws ec2 describe-route-tables --route-table-id ${ROUTE_TABLE_ID}  --region ${REGION} | grep -ic $CONFIG )
+    if [ $ENTRYEXISTS -eq 0 ]
+    then
+    sudo aws aws ec2 create-route --route-table-id ${ROUTE_TABLE_ID} --destination-cidr-block ${CIDR} --gateway-id ${INTERFACE_ID} --region ${REGION}
   done
 }
 

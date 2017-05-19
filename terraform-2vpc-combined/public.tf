@@ -299,6 +299,7 @@ provisioner "file" {
         }
       }
 
+/*
 
 resource "aws_route" "route" {
   provider = "aws.oregon"
@@ -314,7 +315,7 @@ resource "aws_route" "route2" {
   destination_cidr_block = "${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.cidr_block}"
   instance_id = "${aws_instance.cosmos-vrouter-region2.id}"
 }
-
+*/
 #output "Region1 Vouter Public IP:" {
 #  value = "${aws_instance.cosmos-vrouter-region1.public_ip}"
 #}

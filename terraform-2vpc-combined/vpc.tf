@@ -34,6 +34,7 @@ resource "aws_route_table" "us-west-2a-public" {
     }
     tags {
         Name = "Public Subnet"
+        environment = "cosmos-test"
     }
 }
 
@@ -81,6 +82,7 @@ resource "aws_route_table" "us-east-2a-public" {
     }
     tags {
         Name = "Public Subnet"
+        environment = "cosmos-test"
     }
 }
 
