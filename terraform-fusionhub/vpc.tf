@@ -3,7 +3,7 @@ resource "aws_vpc" "cosmos-vrouter-corerouter-region1-vpc" {
     cidr_block = "${var.vpc_cidr_region1}"
     enable_dns_hostnames = true
     tags {
-        Name = "cosmos-vrouter-corerouter-region1-vpc-COREROUTER-TF"
+        Name = "cosmos-vrouter-corerouter-region1-vpc-FUSION-HUB-NONPROD-TF"
     }
 }
 
@@ -51,7 +51,7 @@ resource "aws_vpc" "cosmos-vrouter-corerouter-region2-vpc" {
     cidr_block = "${var.vpc_cidr_region2}"
     enable_dns_hostnames = true
     tags {
-        Name = "cosmos-vrouter-corerouter-region2-vpc-COREROUTER-TF"
+        Name = "cosmos-vrouter-corerouter-region2-vpc-FUSION-HUB-NONPROD-TF"
     }
 }
 
