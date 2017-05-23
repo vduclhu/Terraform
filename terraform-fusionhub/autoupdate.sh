@@ -83,4 +83,5 @@ getsecgroups
 getroutes
   done
 }
+getsecgroups
 monitor
