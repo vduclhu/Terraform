@@ -74,7 +74,7 @@ resource "aws_security_group" "cosmos-vrouter_region1" {
     }
 
 
-    vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.id}"
+    vpc_id = "${aws_vpc.cosmos-vrouter-corerouter-region1-vpc.id}"
 
     tags {
         Name = "cosmos-vrouter-SG"
@@ -209,7 +209,7 @@ provisioner "file" {
       }
 
 
-      vpc_id = "${aws_vpc.cosmos-vrouter-edgerouter-region2-vpc.id}"
+      vpc_id = "${aws_vpc.cosmos-vrouter-corerouter-region2-vpc.id}"
 
       tags {
           Name = "cosmos-vrouter-SG"
@@ -304,7 +304,7 @@ provisioner "file" {
 resource "aws_route" "route" {
   provider = "aws.oregon"
   route_table_id = "${aws_route_table_association.us-west-2a-public.route_table_id}"
-  destination_cidr_block = "${aws_vpc.cosmos-vrouter-edgerouter-region2-vpc.cidr_block}"
+  destination_cidr_block = "${aws_vpc.cosmos-vrouter-corerouter-region2-vpc.cidr_block}"
   instance_id = "${aws_instance.cosmos-vrouter.id}"
 }
 
@@ -312,7 +312,7 @@ resource "aws_route" "route" {
 resource "aws_route" "route2" {
   provider = "aws.ohio"
   route_table_id = "${aws_route_table_association.us-east-2a-public.route_table_id}"
-  destination_cidr_block = "${aws_vpc.cosmos-vrouter-edgerouter-region1-vpc.cidr_block}"
+  destination_cidr_block = "${aws_vpc.cosmos-vrouter-corerouter-region1-vpc.cidr_block}"
   instance_id = "${aws_instance.cosmos-vrouter-region2.id}"
 }
 */
