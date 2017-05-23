@@ -37,20 +37,20 @@ variable "ami_region2" {
 
 variable "vpc_cidr_region1" {
     description = "CIDR for the whole VPC"
-    default = "10.10.0.0/16"
+    default = "10.20.0.0/16"
 }
 variable "vpc_cidr_region2" {
     description = "CIDR for the whole VPC"
-    default = "10.15.0.0/16"
+    default = "10.30.0.0/16"
 }
 
 variable "public_subnet_cidr_region1" {
     description = "Vrouter Eth0 Net"
-    default = "10.10.1.0/24"
+    default = "10.20.1.0/24"
 }
 variable "public_subnet_cidr_region2" {
     description = "Vrouter Eth0 Net"
-    default = "10.15.1.0/24"
+    default = "10.30.1.0/24"
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
