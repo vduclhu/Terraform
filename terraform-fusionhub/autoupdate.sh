@@ -68,20 +68,11 @@ getroutes () {
   done
 }
 
-monitor () {
-
-   
+monitor () {   
 while true; do
-    curl -sS "${ETCDCTL_PEERS}/v2/keys/tinc-vpn.org/peers/?wait=true&recursive=true"
-
-    # Don't fetch peers if curl returns an error
-    if [ $? -ne 0 ]; then
-      sleep 1m
-      continue
-    fi
-    echo "router added"
+    echo "sec group updated"
 getsecgroups
-getroutes
+sleep 1m
   done
 }
 getsecgroups
