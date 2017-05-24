@@ -16,6 +16,7 @@ export PUBLIC_HOSTNAME=$(curl -s http://169.254.169.254/latest/meta-data/public-
 export LOCAL_HOSTNAME="$(hostname)"
 export SUBNET_ID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC/subnet-id)
 export SECURITY_GROUP_ID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC/security-group-ids)
+export PUBLIC_IP=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC/public-ipv4s)
 export INTERFACE_ID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC/interface-id)
 export VPC_ID=$(curl -s http://169.254.169.254/latest/meta-data/network/interfaces/macs/$MAC/vpc-id)
 export AVAILABILITY_ZONE=$(curl -s http://169.254.169.254/latest/meta-data/placement/availability-zone)
