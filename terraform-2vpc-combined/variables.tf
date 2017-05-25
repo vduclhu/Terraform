@@ -16,6 +16,10 @@ variable "ETCD_HOST" {
     description = "etcdhostname/will be passed in at runtime"
     default = "discover.blue-etcd.shared.prsn-dev.io"
 }
+variable "NAME_SPACE" {
+    description="add a name for vrouter L2VPN"
+    default = ""
+}
 variable "aws_region1" {
     description = "EC2 Region for the VPC"
     default = "us-west-2"

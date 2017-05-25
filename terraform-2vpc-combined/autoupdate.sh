@@ -4,6 +4,12 @@ export USERNAME=$1
 export PASSWORD=$2
 export ETCD_DISCOVER=$3
 export ROUTE_TABLE_ID=$4
+export NAME_SPACE=$5
+export SLASH="/"
+if  [ -z $NAMESPACE ]; then
+export NEWNAMESPACE=""
+else
+export NEWNAMESPACE=$NAMESPACE$SLASH
 
 
 
@@ -38,7 +44,7 @@ curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/routetableid" -d val
 
 getsecgroups () {
   echo "get secgroups"
-  CONFIG_DATA=$(curl -sS "${ETCDCTL_PEERS}/v2/keys/vrouters/?recursive=true")
+  CONFIG_DATA=$(curl -sS "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/?recursive=true")
   PEERS=$(echo $CONFIG_DATA | jq '.node.nodes[].key' | tr -d '"')
   for peer in $PEERS; do
     CONFIG=$(echo $CONFIG_DATA | jq '.node.nodes[] | select(.key == "'$peer'") | .nodes[] | select(.key == "'$peer/publicip'") | .value' | tr -d '"')
