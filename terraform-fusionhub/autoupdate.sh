@@ -10,7 +10,7 @@ if  [ -z $NAMESPACE ]; then
 export NEWNAMESPACE=""
 else
 export NEWNAMESPACE=$NAMESPACE$SLASH
-
+fi
 
 
 export ETCDCTL_PEERS=https://${USERNAME}:${PASSWORD}@$(dig +noall +answer ${ETCD_DISCOVER} srv | awk '{print $8 ":" $7}')
