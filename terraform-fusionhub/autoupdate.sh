@@ -4,7 +4,7 @@ export USERNAME=$1
 export PASSWORD=$2
 export ETCD_DISCOVER=$3
 export ROUTE_TABLE_ID=$4
-export NAME_SPACE=$5
+export NAMESPACE=$5
 export SLASH="/"
 if  [ -z $NAMESPACE ]; then
 export NEWNAMESPACE=""
