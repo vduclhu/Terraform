@@ -30,18 +30,18 @@ export LOCAL_IP="$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
 export ROUTE_TABLE_ID = ${ROUTE_TABLE_ID}
 export REGION="$(echo $AVAILABILITY_ZONE | rev | cut -c 2- | rev)"
 
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/publichostname" -d value=$PUBLIC_HOSTNAME
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/localhostname" -d value=$LOCAL_HOSTNAME
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/publicip" -d value=$PUBLIC_IP
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/eth0mac" -d value=$MAC
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/vpccidr" -d value=$CIDR
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/vpcid" -d value=$VPC_ID
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/subnetid" -d value=$SUBNET_ID
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/securitygroupid" -d value=$SECURITY_GROUP_ID
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/interfaceid" -d value=$INTERFACE_ID
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/availabilityzone" -d value=$AVAILABILITY_ZONE
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/localip" -d value=$LOCAL_IP
-curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/vrouters/${VPC_ID}/routetableid" -d value=$ROUTE_TABLE_ID
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/publichostname" -d value=$PUBLIC_HOSTNAME
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/localhostname" -d value=$LOCAL_HOSTNAME
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/publicip" -d value=$PUBLIC_IP
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/eth0mac" -d value=$MAC
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/vpccidr" -d value=$CIDR
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/vpcid" -d value=$VPC_ID
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/subnetid" -d value=$SUBNET_ID
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/securitygroupid" -d value=$SECURITY_GROUP_ID
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/interfaceid" -d value=$INTERFACE_ID
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/availabilityzone" -d value=$AVAILABILITY_ZONE
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/localip" -d value=$LOCAL_IP
+curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/routetableid" -d value=$ROUTE_TABLE_ID
 
 getsecgroups () {
   echo "get secgroups"
