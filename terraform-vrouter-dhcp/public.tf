@@ -295,7 +295,7 @@ provisioner "file" {
   type = "gp2"
 }
 
-resource "aws_volume_attachment" "cosmos-vrouter_ebs_attachment" {
+resource "aws_volume_attachment" "cosmos-vrouter-region2_ebs_attachment" {
     provider = "aws.ohio"
   count = "1"
   device_name = "/dev/sdh"
