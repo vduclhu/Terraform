@@ -303,7 +303,7 @@ resource "aws_volume_attachment" "cosmos-vrouter-region2_ebs_attachment" {
         provider = "aws.ohio"
         count = "${var.requirevrouter}"
         ami = "${var.ami_region2}"
-        availability_zone = "us-east-2a"
+        availability_zone = "us-east-2b"
         instance_type = "t2.small"
         key_name = "${aws_key_pair.cosmos-admin_region2.key_name}"
         vpc_security_group_ids = ["${aws_security_group.cosmos_vrouter_region2.id}"]
