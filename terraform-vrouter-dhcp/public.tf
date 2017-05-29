@@ -139,7 +139,7 @@ provisioner "file" {
   resource "aws_ebs_volume" "cosmos-vrouter_ebs_volume" {
   depends_on = ["aws_instance.cosmos-vrouter"]
   count = "1"
-  availability_zone = "${element(aws_instance.cosmos-vrouter.*.availability_zone, count.index)}"
+  availability_zone = "us-west-2a"
   size = "50"
   type = "gp2"
 }
@@ -287,7 +287,7 @@ provisioner "file" {
 resource "aws_ebs_volume" "cosmos-vrouter-region2_ebs_volume" {
   depends_on = ["aws_instance.cosmos-vrouter-region2"]
   count = "1"
-  availability_zone = "us-east-2b"
+  availability_zone = "us-east-2a"
   size = "50"
   type = "gp2"
 }
