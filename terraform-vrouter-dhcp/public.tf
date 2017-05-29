@@ -137,6 +137,7 @@ provisioner "file" {
 
   }
   resource "aws_ebs_volume" "cosmos-vrouter_ebs_volume" {
+  provider = "aws.oregon"
   depends_on = ["aws_instance.cosmos-vrouter"]
   count = "1"
   availability_zone = "us-west-2a"
@@ -145,6 +146,7 @@ provisioner "file" {
 }
 
 resource "aws_volume_attachment" "cosmos-vrouter_ebs_attachment" {
+    provider = "aws.oregon"
   count = "1"
   device_name = "/dev/sdh"
   volume_id = "${element(aws_ebs_volume.cosmos-vrouter_ebs_volume.*.id, count.index)}"
@@ -285,6 +287,7 @@ provisioner "file" {
       }
     }
 resource "aws_ebs_volume" "cosmos-vrouter-region2_ebs_volume" {
+    provider = "aws.ohio"
   depends_on = ["aws_instance.cosmos-vrouter-region2"]
   count = "1"
   availability_zone = "us-east-2a"
@@ -293,6 +296,7 @@ resource "aws_ebs_volume" "cosmos-vrouter-region2_ebs_volume" {
 }
 
 resource "aws_volume_attachment" "cosmos-vrouter-region2_ebs_attachment" {
+    provider = "aws.ohio"
   count = "1"
   device_name = "/dev/sdh"
   volume_id = "${element(aws_ebs_volume.cosmos-vrouter-region2_ebs_volume.*.id, count.index)}"
