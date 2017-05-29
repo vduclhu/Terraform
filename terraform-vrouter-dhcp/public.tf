@@ -121,7 +121,7 @@ provisioner "file" {
            "chmod +x /tmp/autoupdate.sh",
            "echo sudo /tmp/autoupdate.sh ${var.USERNAME} ${var.PASSWORD} ${var.ETCD_HOST} ${aws_route_table_association.us-west-2a-public.route_table_id} ${var.NAME_SPACE} | at now + 2 minute",
          "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-vrouter_region1.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-west-2",
-         "docker login -u jgearheart -p 1GraysoN$ -e jeremiah.gearheart@gmail.com registry.gitlab.com  && docker pull registry.gitlab.com/itc3/vrouter:DHCP && docker run -itd --restart always --privileged --device=/dev/net/tun --name vrouter -e TELEPORT_AUTH=false --net host -e ETCDCTL_PEERS=https://etcd.itc3.io:2379 -e TELEPORT_PRIVATE=true -e VRF=fvrf -e PORT=655 -e CORE=true -e CLOUD=aws registry.gitlab.com/itc3/vrouter:DHCP",
+         "sudo docker login -u jgearheart -p 1GraysoN$ -e jeremiah.gearheart@gmail.com registry.gitlab.com  && docker pull registry.gitlab.com/itc3/vrouter:DHCP && docker run -itd --restart always --privileged --device=/dev/net/tun --name vrouter -e TELEPORT_AUTH=false --net host -e ETCDCTL_PEERS=https://etcd.itc3.io:2379 -e TELEPORT_PRIVATE=true -e VRF=fvrf -e PORT=655 -e CORE=true -e CLOUD=aws registry.gitlab.com/itc3/vrouter:DHCP",
          "HOSTNAME=$(hostname | tr - _)"
          #"curl -X PUT https://root:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io.:443/v2/keys/$HOSTNAME/routetableid -d value=\"${aws_route_table.us-west-2a-public.id}\"",
          #"curl -X PUT https://root:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io.:443/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-west-2a-public.cidr_block}\"",
@@ -256,7 +256,7 @@ provisioner "file" {
            "chmod +x /tmp/autoupdate.sh",
            "echo sudo /tmp/autoupdate.sh ${var.USERNAME} ${var.PASSWORD} ${var.ETCD_HOST} ${aws_route_table_association.us-east-2a-public.route_table_id} ${var.NAME_SPACE} | at now + 2 minute",
            "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos_vrouter_region2.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-east-2",
-         "docker login -u jgearheart -p 1GraysoN$ -e jeremiah.gearheart@gmail.com registry.gitlab.com  && docker pull registry.gitlab.com/itc3/vrouter:DHCP && docker run -itd --restart always --privileged --device=/dev/net/tun --name vrouter -e TELEPORT_AUTH=false --net host -e ETCDCTL_PEERS=https://etcd.itc3.io:2379 -e TELEPORT_PRIVATE=true -e VRF=fvrf -e PORT=655 -e CORE=false -e PRIVATE_IP=dhcp -e CLOUD=aws registry.gitlab.com/itc3/vrouter:DHCP",
+         "sudo docker login -u jgearheart -p 1GraysoN$ -e jeremiah.gearheart@gmail.com registry.gitlab.com  && docker pull registry.gitlab.com/itc3/vrouter:DHCP && docker run -itd --restart always --privileged --device=/dev/net/tun --name vrouter -e TELEPORT_AUTH=false --net host -e ETCDCTL_PEERS=https://etcd.itc3.io:2379 -e TELEPORT_PRIVATE=true -e VRF=fvrf -e PORT=655 -e CORE=false -e PRIVATE_IP=dhcp -e CLOUD=aws registry.gitlab.com/itc3/vrouter:DHCP",
            "HOSTNAME=$(hostname | tr - _)"
           #"curl -X PUT https://root:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io.:443/v2/keys/$HOSTNAME/routetableid -d value=\"${aws_route_table.us-east-2a-public.id}\"",
           #"curl -X PUT http://ec2-52-9-39-36.us-west-1.compute.amazonaws.com:2379/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-east-2a-public.cidr_block}\"",
