@@ -287,7 +287,7 @@ provisioner "file" {
 resource "aws_ebs_volume" "cosmos-vrouter-region2_ebs_volume" {
   depends_on = ["aws_instance.cosmos-vrouter-region2"]
   count = "1"
-  availability_zone = "${element(aws_instance.cosmos-vrouter-region2.*.availability_zone, count.index)}"
+  availability_zone = "us-east-2b"
   size = "50"
   type = "gp2"
 }
