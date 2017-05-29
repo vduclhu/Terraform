@@ -93,11 +93,6 @@ resource "aws_instance" "cosmos-vrouter" {
     ami = "${var.ami_region1}"
     availability_zone = "us-west-2a"
     instance_type = "t2.small"
-    block_device {
-    device_name = "/dev/sda1"
-    volume_type = "gp2"
-    volume_size = 50
-    }
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
     vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region1.id}"]
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
@@ -141,6 +136,20 @@ provisioner "file" {
     }
 
   }
+  resource "aws_ebs_volume" "cosmos-vrouter_ebs_volume" {
+  depends_on = ["aws_instance.cosmos-vrouter"]
+  count = "1"
+  availability_zone = "${element(aws_instance.cosmos-vrouter.*.availability_zone, count.index)}"
+  size = "50"
+  type = "gp2"
+}
+
+resource "aws_volume_attachment" "cosmos-vrouter_ebs_attachment" {
+  count = "1"
+  device_name = "/dev/sdh"
+  volume_id = "${element(aws_ebs_volume.cosmos-vrouter_ebs_volume.*.id, count.index)}"
+  instance_id = "${element(aws_instance.cosmos-vrouter.*.id, count.index)}"
+}
 
   resource "aws_instance" "cosmos-testbox-region1" {
       provider = "aws.oregon"
@@ -231,11 +240,6 @@ provisioner "file" {
       ami = "${var.ami_region2}"
       availability_zone = "us-east-2a"
       instance_type = "t2.small"
-      block_device {
-      device_name = "/dev/sda1"
-      volume_type = "gp2"
-      volume_size = 50
-      }
       key_name = "${aws_key_pair.cosmos-admin_region2.key_name}"
       vpc_security_group_ids = ["${aws_security_group.cosmos_vrouter_region2.id}"]
       subnet_id = "${aws_subnet.us-east-2a-public.id}"
@@ -280,6 +284,20 @@ provisioner "file" {
         private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
       }
     }
+resource "aws_ebs_volume" "cosmos-vrouter-region2_ebs_volume" {
+  depends_on = ["aws_instance.cosmos-vrouter-region2"]
+  count = "1"
+  availability_zone = "${element(aws_instance.cosmos-vrouter-region2-region2.*.availability_zone, count.index)}"
+  size = "50"
+  type = "gp2"
+}
+
+resource "aws_volume_attachment" "cosmos-vrouter-region2_ebs_attachment" {
+  count = "1"
+  device_name = "/dev/sdh"
+  volume_id = "${element(aws_ebs_volume.cosmos-vrouter-region2_ebs_volume.*.id, count.index)}"
+  instance_id = "${element(aws_instance.cosmos-vrouter-region2.*.id, count.index)}"
+}
 
     resource "aws_instance" "cosmos-testbox-region2" {
         provider = "aws.ohio"
