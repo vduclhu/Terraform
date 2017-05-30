@@ -95,6 +95,11 @@ resource "aws_instance" "cosmos-vrouter" {
     instance_type = "t2.small"
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
     vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region1.id}"]
+    root_block_device {
+    volume_type = "gp2"
+    volume_size = "100"
+    delete_on_termination = "true"
+    }
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
@@ -136,6 +141,7 @@ provisioner "file" {
     }
 
   }
+  /*
   resource "aws_ebs_volume" "cosmos-vrouter_ebs_volume" {
   provider = "aws.oregon"
   depends_on = ["aws_instance.cosmos-vrouter"]
@@ -152,7 +158,7 @@ resource "aws_volume_attachment" "cosmos-vrouter_ebs_attachment" {
   volume_id = "${aws_ebs_volume.cosmos-vrouter_ebs_volume.id}"
   instance_id = "${aws_instance.cosmos-vrouter.id}"
 }
-
+*/
   resource "aws_instance" "cosmos-testbox-region1" {
       provider = "aws.oregon"
       ami = "${var.ami_region1}"
@@ -244,6 +250,11 @@ resource "aws_volume_attachment" "cosmos-vrouter_ebs_attachment" {
       instance_type = "t2.small"
       key_name = "${aws_key_pair.cosmos-admin_region2.key_name}"
       vpc_security_group_ids = ["${aws_security_group.cosmos_vrouter_region2.id}"]
+      root_block_device {
+        volume_type = "gp2"
+        volume_size = "100"
+        delete_on_termination = "true"
+      }
       subnet_id = "${aws_subnet.us-east-2a-public.id}"
       associate_public_ip_address = true
       source_dest_check = false
@@ -286,6 +297,7 @@ provisioner "file" {
         private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
       }
     }
+    /*
   resource "aws_ebs_volume" "cosmos-vrouter-region2_ebs_volume" {
   provider = "aws.ohio"
   depends_on = ["aws_instance.cosmos-vrouter-region2"]
@@ -302,7 +314,7 @@ resource "aws_volume_attachment" "cosmos-vrouter-region2_ebs_attachment" {
   volume_id = "${aws_ebs_volume.cosmos-vrouter-region2_ebs_volume.id}"
   instance_id = "${aws_instance.cosmos-vrouter-region2.id}"
 }
-
+*/
     resource "aws_instance" "cosmos-testbox-region2" {
         provider = "aws.ohio"
         count = "${var.requirevrouter}"
