@@ -26,39 +26,12 @@ variable "CORE" {
 }
 variable "aws_region1" {
     description = "EC2 Region for the VPC"
-    default = "us-west-2"
-}
-variable "aws_region2" {
-    description = "EC2 Region for the VPC"
-    default = "us-east-2"
+    default = "ca-central-1"
 }
 
 variable "ami_region1" {
     description = "AMIs by region"
-    default = "ami-efd0428f" # ubuntu-oregon 16.04 LTS
-}
-
-variable "ami_region2" {
-    description = "AMIs by region"
-    default = "ami-fcc19b99" # ubuntu-oregon 16.04 LTS
-}
-
-variable "vpc_cidr_region1" {
-    description = "CIDR for the whole VPC"
-    default = "10.20.0.0/16"
-}
-variable "vpc_cidr_region2" {
-    description = "CIDR for the whole VPC"
-    default = "10.30.0.0/16"
-}
-
-variable "public_subnet_cidr_region1" {
-    description = "Vrouter Eth0 Net"
-    default = "10.20.1.0/24"
-}
-variable "public_subnet_cidr_region2" {
-    description = "Vrouter Eth0 Net"
-    default = "10.30.1.0/24"
+    default = "ami-b3d965d7" # ubuntu-oregon 16.04 LTS
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
@@ -74,3 +47,21 @@ variable "requirevrouter" {
   default = "1"
 }
 
+
+variable "vpc_cidr_region1" {
+    description = "CIDR for the whole VPC"
+    default = "10.10.0.0/16"
+}
+variable "vpc_cidr_region2" {
+    description = "CIDR for the whole VPC"
+    default = "10.11.0.0/16"
+}
+
+variable "public_subnet_cidr_region1" {
+    description = "Vrouter Eth0 Net"
+    default = "10.10.0.0/24"
+}
+variable "public_subnet_cidr_region2" {
+    description = "Vrouter Eth0 Net"
+    default = "10.11.0.0/24"
+}

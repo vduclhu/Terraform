@@ -1,0 +1,15 @@
+[0m[1mprovider.aws.region[0m
+  The region where AWS operations will take place. Examples
+  are us-east-1, us-west-2, etc.
+
+  [1mDefault:[0m us-east-1
+  [1mEnter a value:[0m [0m
+[0m[1mprovider.aws.region[0m
+  The region where AWS operations will take place. Examples
+  are us-east-1, us-west-2, etc.
+
+  [1mDefault:[0m us-east-1
+  [1mEnter a value:[0m [0m
+There are warnings and/or errors related to your configuration. Please
+fix these before continuing.
+
