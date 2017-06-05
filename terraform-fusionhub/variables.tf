@@ -43,23 +43,6 @@ variable "ami_region2" {
     default = "ami-fcc19b99" # ubuntu-oregon 16.04 LTS
 }
 
-variable "vpc_cidr_region1" {
-    description = "CIDR for the whole VPC"
-    default = "10.20.0.0/16"
-}
-variable "vpc_cidr_region2" {
-    description = "CIDR for the whole VPC"
-    default = "10.30.0.0/16"
-}
-
-variable "public_subnet_cidr_region1" {
-    description = "Vrouter Eth0 Net"
-    default = "10.20.1.0/24"
-}
-variable "public_subnet_cidr_region2" {
-    description = "Vrouter Eth0 Net"
-    default = "10.30.1.0/24"
-}
 
 variable "PATH_TO_PRIVATE_KEY" {
   default = "~/.ssh/cosmos-admin"
@@ -74,3 +57,22 @@ variable "requirevrouter" {
   default = "1"
 }
 
+
+
+variable "vpc_cidr_region1" {
+    description = "CIDR for the whole VPC"
+    default = "10.16.0.0/16"
+}
+variable "vpc_cidr_region2" {
+    description = "CIDR for the whole VPC"
+    default = "10.17.0.0/16"
+}
+
+variable "public_subnet_cidr_region1" {
+    description = "Vrouter Eth0 Net"
+    default = "10.16.0.0/24"
+}
+variable "public_subnet_cidr_region2" {
+    description = "Vrouter Eth0 Net"
+    default = "10.17.0.0/24"
+}
