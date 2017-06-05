@@ -52,6 +52,7 @@ getsecgroups () {
     mask="/32"
     secentry=$CONFIG$mask
     ENTRYEXISTS=$( aws ec2 describe-security-groups --group-ids ${SECURITY_GROUP_ID} --region ${REGION} | grep -ic $secentry )
+    echo $secentry >> currententries
     if [ $ENTRYEXISTS -eq 0 ]
     then
     sudo aws ec2 authorize-security-group-ingress --group-id ${SECURITY_GROUP_ID} --protocol tcp --port 655 --cidr $secentry --region ${REGION}
