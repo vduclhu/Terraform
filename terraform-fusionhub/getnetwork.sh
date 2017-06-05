@@ -51,7 +51,7 @@ variable "servkey" {
 EOF
 sleep 2
 
-sudo terraform apply -var USERNAME=$USERNAME -var PASSWORD=$PASSWORD -var NAMESPACE=$NAMESPACE -var CORE=$CORE  -var-file terraform.tfvars
+sudo terraform apply -var USERNAME=$USERNAME -var PASSWORD=$PASSWORD -var NAME_SPACE=$NAMESPACE -var CORE=$CORE  -var-file terraform.tfvars
 
 fi
 if [ $STATE = "destroy" ]; then
