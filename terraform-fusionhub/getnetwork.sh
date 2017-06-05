@@ -3,9 +3,9 @@
 export USERNAME=$1
 export PASSWORD=$2
 export STATE=$3
+export servkey="$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)"
 
 if [ $STATE = "deploy" ]; then
-export servkey = "$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)"
 sudo echo $servkey > .servkey
 export block1="$(nsot networks list -c 10.0.0.0/10 next_network -p 16 -n 1)"
 sudo nsot networks add --site-id 1 --cidr $block1 --attributes owner=$servkey
