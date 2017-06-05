@@ -5,16 +5,16 @@ export PASSWORD=$2
 export STATE=$3
 
 if [ $STATE = "deploy" ]; then
-sudo export servkey = "$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)"
+export servkey = "$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)"
 sudo echo $servkey > .servkey
-sudo export block1="$(nsot networks list -c 10.0.0.0/10 next_network -p 16 -n 1)"
+export block1="$(nsot networks list -c 10.0.0.0/10 next_network -p 16 -n 1)"
 sudo nsot networks add --site-id 1 --cidr $block1 --attributes owner=$servkey
-sudo export subnet1="$(nsot networks list -c $block1 next_network -p 24 -n 1)"
+export subnet1="$(nsot networks list -c $block1 next_network -p 24 -n 1)"
 sudo nsot networks add --site-id 1 --cidr $subnet1 --attributes owner=$servkey
 
-sudo export block2="$(nsot networks list -c 10.0.0.0/10 next_network -p 16 -n 1)"
+export block2="$(nsot networks list -c 10.0.0.0/10 next_network -p 16 -n 1)"
 sudo nsot networks add --site-id 1 --cidr $block2 --attributes owner=$servkey
-sudo export subnet2="$(nsot networks list -c $block2 next_network -p 24 -n 1)"
+export subnet2="$(nsot networks list -c $block2 next_network -p 24 -n 1)"
 sudo sudo nsot networks add --site-id 1 --cidr $subnet2 --attributes owner=$servkey
 
 curl -Ss -XPUT https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network1 -d value=$subnet1
@@ -52,7 +52,7 @@ sudo terraform apply -var USERNAME=$USERNAME -var PASSWORD=$PASSWORD -var NAMESP
 
 fi
 if [ $STATE = "destroy" ]; then
-sudo export servkey = "$(terraform show | awk '/Servkey/ {print $3}')"
+export servkey = "$(terraform show | awk '/Servkey/ {print $3}')"
   net1=$(curl -Ss "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network1" | jq -r '.network1')
   net2=$(curl -Ss "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network2" | jq -r '.network2')
   net3=$(curl -Ss "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network3" | jq -r '.network3')
