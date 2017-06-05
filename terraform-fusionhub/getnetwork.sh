@@ -2,6 +2,7 @@
 
 export USERNAME=$1
 export PASSWORD=$2
+export STATE=$3
 
 if [$STATE = "deploy"]; then
 export servkey = "$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)"
