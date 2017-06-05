@@ -4,7 +4,7 @@ export USERNAME=$1
 export PASSWORD=$2
 export STATE=$3
 
-if [$STATE -eq "deploy"]; then
+if [ $STATE -eq "deploy" ]; then
 sudo export servkey = "$(tr -cd '[:alnum:]' < /dev/urandom | fold -w30 | head -n1)"
 sudo echo $servkey > .servkey
 sudo export block1="$(nsot networks list -c 10.0.0.0/10 next_network -p 16 -n 1)"
@@ -51,7 +51,7 @@ sleep 2
 sudo terraform apply -var USERNAME=$USERNAME -var PASSWORD=$PASSWORD -var NAMESPACE=$NAMESPACE -var CORE=$CORE  -var-file terraform.tfvars
 
 fi
-if [$STATE -eq "destroy"]; then
+if [ $STATE -eq "destroy" ]; then
 sudo export servkey = "$(terraform show | awk '/Servkey/ {print $3}')"
   net1=$(curl -Ss "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network1" | jq -r '.network1')
   net2=$(curl -Ss "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network2" | jq -r '.network2')
