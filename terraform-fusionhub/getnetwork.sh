@@ -52,11 +52,11 @@ sudo terraform apply -var USERNAME=$USERNAME -var PASSWORD=$PASSWORD -var NAMESP
 
 fi
 if [ $STATE = "destroy" ]; then
-export servkey = "$(terraform show | awk '/Servkey/ {print $3}')"
-  net1=$(curl -Ss "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network1" | jq -r '.network1')
-  net2=$(curl -Ss "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network2" | jq -r '.network2')
-  net3=$(curl -Ss "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network3" | jq -r '.network3')
-  net4=$(curl -Ss "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network4" | jq -r '.network4')
+export servkey="$(terraform show | awk '/Servkey/ {print $3}')"
+  net1=$(curl "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network1" | cut -d '"' -f14)
+  net2=$(curl "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network2" | cut -d '"' -f14)
+  net3=$(curl "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network3" | cut -d '"' -f14)
+  net4=$(curl "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network4" | cut -d '"' -f14)
 
   sudo nsot networks remove --site-id 1 --cidr $net1 
   sudo nsot networks remove --site-id 1 --cidr $net2 
