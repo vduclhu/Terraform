@@ -1,7 +1,5 @@
 #!/bin/bash
 
-WKq3dU9Q
-
 export USERNAME=$1
 export PASSWORD=$2
 
