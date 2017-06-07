@@ -58,21 +58,3 @@ variable "requirevrouter" {
 }
 
 
-
-variable "vpc_cidr_region1" {
-    description = "CIDR for the whole VPC"
-    default = "10.20.0.0/16"
-}
-variable "vpc_cidr_region2" {
-    description = "CIDR for the whole VPC"
-    default = "10.21.0.0/16"
-}
-
-variable "public_subnet_cidr_region1" {
-    description = "Vrouter Eth0 Net"
-    default = "10.20.0.0/24"
-}
-variable "public_subnet_cidr_region2" {
-    description = "Vrouter Eth0 Net"
-    default = "10.21.0.0/24"
-}
