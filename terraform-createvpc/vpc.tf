@@ -1,4 +1,5 @@
 resource "aws_vpc" "cosmos-vpc" {   
+    cidr_block = "10.0.0.0/16"
     enable_dns_hostnames = true
     tags {
         Name = "cosmos-vpc"
@@ -11,10 +12,10 @@ resource "aws_internet_gateway" "cosmos-vpc" {
 }
 
 resource "aws_subnet" "public" {
-    vpc_id = "${aws_vpc.cosmos--vpc.id}"
+    vpc_id = "${aws_vpc.cosmos-vpc.id}"
 
-    cidr_block = "10.0.0.0/16"
-    availability_zone = "${var.aws_availability_zones[var.aws_region]}"
+    cidr_block = "10.0.0.0/24"
+    availability_zone = "${var.aws_availability_zones[1]}"
 
     tags {
         Name = "Public Subnet"
