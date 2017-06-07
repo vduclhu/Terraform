@@ -55,6 +55,7 @@ sudo terraform apply -var USERNAME=$USERNAME -var PASSWORD=$PASSWORD -var NAME_S
 
 fi
 if [ $STATE = "destroy" ]; then
+echo $STATE
 export servkey="$(terraform show | awk '/Servkey/ {print $3}')"
   net1=$(curl "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network1" | cut -d '"' -f14)
   net2=$(curl "https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network2" | cut -d '"' -f14)
