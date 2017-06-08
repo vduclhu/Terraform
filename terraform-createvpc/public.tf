@@ -81,7 +81,6 @@ provisioner "file" {
     source      = "addint.sh"
     destination = "/tmp/addint.sh"
 }
-    }
     provisioner "remote-exec" {
         inline = [
            "echo Y | sudo apt-get update",
