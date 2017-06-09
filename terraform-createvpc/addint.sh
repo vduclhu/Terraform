@@ -1,8 +1,6 @@
 #!/bin/bash
 
-export REGION=$1
-export INSTANCE_ID=$2
-export eip=$3
+export eip=$1
 
 # associate Elastic IP
 INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
