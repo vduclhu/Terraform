@@ -72,7 +72,6 @@ resource "aws_instance" "cosmos-vrouter" {
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
-    iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
     tags {
         Name = "cosmos-test2int-TF"
     }
