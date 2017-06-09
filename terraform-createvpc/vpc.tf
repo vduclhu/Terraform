@@ -21,6 +21,16 @@ resource "aws_subnet" "public" {
         Name = "Public Subnet"
     }
 }
+resource "aws_subnet" "public2" {
+    vpc_id = "${aws_vpc.cosmos-vpc.id}"
+
+    cidr_block = "10.0.1.0/24"
+    availability_zone = "${var.aws_availability_zones[1]}"
+
+    tags {
+        Name = "eth1 net"
+    }
+}
 
 resource "aws_route_table" "public" {
     vpc_id = "${aws_vpc.cosmos-vpc.id}"
@@ -37,6 +47,7 @@ resource "aws_route_table" "public" {
 
 resource "aws_route_table_association" "public" {
     subnet_id = "${aws_subnet.public.id}"
+    subnet_id = "${aws_subnet.public2.id}"
     route_table_id = "${aws_route_table.public.id}"
 }
 

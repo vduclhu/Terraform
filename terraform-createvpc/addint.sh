@@ -1,4 +1,16 @@
-#!/usr/bin/env bash
+#!/bin/bash
+
+export REGION=$1
+export INSTANCE_ID=$2
+export eip=$3
+
+# associate Elastic IP
+INSTANCE_ID=$(curl -s http://169.254.169.254/latest/meta-data/instance-id)
+REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep region | awk '{print $3}' | tr -d \")
+aws ec2 attach-network-interface --network-interface-id "${eip}" --instance-id $INSTANCE_ID --device-index 1 --region $REGION
+echo "auto eth1" > /etc/network/interfaces.d/eth1.cfg
+echo "iface eth1 inet dhcp" >> /etc/network/interfaces.d/eth1.cfg
+sudo ifup eth1
 
 set -x
 

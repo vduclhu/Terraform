@@ -62,6 +62,11 @@ resource "aws_key_pair" "cosmos-admin" {
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
 }
 
+resource "aws_network_interface" "vrouter" {
+  subnet_id                   = "${aws_subnet.public2.id}"
+  security_groups             = ["${aws_security_group.vrouter.id}"]
+}
+
 resource "aws_instance" "cosmos-vrouter" {
     count = "${var.requirevrouter}"
     ami = "${var.ami_region1}"
@@ -82,9 +87,10 @@ provisioner "file" {
 }
     provisioner "remote-exec" {
         inline = [
-           "echo Y | sudo apt-get update",
+        "echo Y | sudo apt-get update",
            "chmod +x /tmp/addint.sh",
            "echo sudo /tmp/addint.sh"
+
 
       ]
   }
