@@ -89,7 +89,7 @@ provisioner "file" {
         inline = [
         "echo Y | sudo apt-get update",
            "chmod +x /tmp/addint.sh",
-           "echo sudo /tmp/addint.sh aws_network_interface.vrouter.id"
+           "echo sudo /tmp/addint.sh ${aws_network_interface.vrouter.id}"
 
 
       ]
