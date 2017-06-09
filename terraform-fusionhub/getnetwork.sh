@@ -1,5 +1,4 @@
 #!/bin/bash
-
 export USERNAME=$1
 export PASSWORD=$2
 export STATE=$3
