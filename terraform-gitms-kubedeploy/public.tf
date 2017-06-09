@@ -303,7 +303,6 @@ provisioner "file" {
 
 resource "aws_route" "route" {
   provider = "aws.oregon"
-  depends_on = ["aws_instance.cosmos-vrouter-region2"]
   route_table_id = "${aws_route_table_association.us-west-2a-public.route_table_id}"
   destination_cidr_block = "10.0.0.0/8"
   instance_id = "${aws_instance.cosmos-vrouter.id}"
