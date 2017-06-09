@@ -69,10 +69,9 @@ resource "aws_instance" "cosmos-vrouter" {
     instance_type = "t2.small"
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
     vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region1.id}"]
-    subnet_id = "${aws_subnet.us-west-2a-public.id}"
+    subnet_id = "${aws_subnet.public.id}"
     associate_public_ip_address = true
     source_dest_check = false
-    iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
     tags {
         Name = "cosmos-test2int-TF"
     }

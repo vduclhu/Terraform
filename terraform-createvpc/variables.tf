@@ -31,7 +31,13 @@ variable "aws_region" {
 
 variable "ami_region1" {
     description = "AMIs by region"
-    default = "ami-b3d965d7" # ubuntu-oregon 16.04 LTS
+    default = "ami-efd0428f" # ubuntu-oregon 16.04 LTS
+}
+
+
+variable "az" {
+    description = "az"
+    default = "us-west-2a"
 }
 
 variable "PATH_TO_PRIVATE_KEY" {

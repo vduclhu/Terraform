@@ -15,7 +15,7 @@ resource "aws_subnet" "public" {
     vpc_id = "${aws_vpc.cosmos-vpc.id}"
 
     cidr_block = "10.0.0.0/24"
-    availability_zone = "${var.aws_availability_zones[1]}"
+    availability_zone = "${var.az}"
 
     tags {
         Name = "Public Subnet"

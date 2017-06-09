@@ -3,6 +3,7 @@
 export USERNAME=$1
 export PASSWORD=$2
 export STATE=$3
+echo $STATE
 export NAMESPACE=$4
 export CORE=$5
 
