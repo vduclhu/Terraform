@@ -7,14 +7,12 @@
 #Create IAM role/policy
 resource "aws_iam_role" "cosmos_role" 
 {
-	provider ="aws.oregon"
         name = "cosmos_role"		    
 	assume_role_policy = "${file("cosmos_iam_role.json")}"	
 }
 
 resource "aws_iam_instance_profile" "cosmos_instance_profile" 
 {		   
-    provider ="aws.oregon" 
 	name = "cosmos_instance_profile"		    
 	roles = ["cosmos_role"]		
 }
@@ -23,7 +21,6 @@ resource "aws_iam_instance_profile" "cosmos_instance_profile"
 
 resource "aws_iam_role_policy" "cosmos_iam_role_policy" 
 {		  
-    provider ="aws.oregon"
 	name = "cosmos_iam_role_policy"		  
 	role = "${aws_iam_role.cosmos_role.id}"		  
 	policy = "${file("cosmos_iam_role_policy.json")}"
