@@ -64,7 +64,7 @@ resource "aws_key_pair" "cosmos-admin" {
 
 resource "aws_network_interface" "vrouter" {
   subnet_id                   = "${aws_subnet.public2.id}"
-  security_groups             = ["${aws_security_group.vrouter.id}"]
+  security_groups             = ["${aws_security_group.cosmos-vrouter_region1.id}"]
 }
 
 resource "aws_instance" "cosmos-vrouter" {
