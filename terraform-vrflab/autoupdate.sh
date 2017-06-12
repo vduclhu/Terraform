@@ -5,13 +5,13 @@ export PASSWORD=$2
 export ETCD_DISCOVER=$3
 export ROUTE_TABLE_ID=$4
 export NAMESPACE=$5
+export SUBNET3=$6
 export SLASH="/"
 if  [ -z $NAMESPACE ]; then
 export NEWNAMESPACE=""
 else
 export NEWNAMESPACE=$NAMESPACE$SLASH
 fi
-
 
 export ETCDCTL_PEERS=https://${USERNAME}:${PASSWORD}@$(dig +noall +answer ${ETCD_DISCOVER} srv | awk '{print $8 ":" $7}')
 
@@ -42,6 +42,8 @@ curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/inter
 curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/availabilityzone" -d value=$AVAILABILITY_ZONE
 curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/localip" -d value=$LOCAL_IP
 curl -Ss -XPUT "${ETCDCTL_PEERS}/v2/keys/${NEWNAMESPACE}vrouters/${VPC_ID}/routetableid" -d value=$ROUTE_TABLE_ID
+
+aws ec2 create-network-interface --subnet-id $SUBNET3 --description "cosmos eth1" --groups $SECURITY_GROUP_ID --region $REGION
 
 getsecgroups () {
   echo "get secgroups"

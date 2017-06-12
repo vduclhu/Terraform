@@ -43,9 +43,17 @@ variable "public_subnet_cidr_region1" {
     description = "Vrouter Eth0 Net"
     default = "$subnet1"
 }
+variable "public_subnet3_cidr_region1" {
+    description = "Vrouter Eth1 Net"
+    default = "$subnet3"
+}
 variable "public_subnet_cidr_region2" {
     description = "Vrouter Eth0 Net"
     default = "$subnet2"
+}
+variable "public_subne4_cidr_region2" {
+    description = "Vrouter Eth1 Net"
+    default = "$subnet4"
 }
 variable "servkey" {
     description = "UID for VPC networks"
