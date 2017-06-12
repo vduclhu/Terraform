@@ -80,6 +80,7 @@ resource "aws_network_interface" "vrouter" {
 
 resource "aws_network_interface_attachment" "vrouter" {
     instance     = "${aws_instance.cosmos-vrouter.id}"
+    aws_network_interface_id = "${aws_network_interface.vrouter.id}"
     device_index = 1
   }
 
