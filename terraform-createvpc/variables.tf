@@ -24,9 +24,13 @@ variable "CORE" {
     description="pass value here if core router is desired"
     default = ""
 }
-variable "aws_region" {
+variable "aws_region1" {
     description = "EC2 Region for the VPC"
     default = "us-west-2"
+}
+variable "aws_region2" {
+    description = "EC2 Region for the VPC"
+    default = "us-east-2"
 }
 
 variable "ami_region1" {
@@ -34,11 +38,11 @@ variable "ami_region1" {
     default = "ami-efd0428f" # ubuntu-oregon 16.04 LTS
 }
 
-
-variable "az" {
-    description = "az"
-    default = "us-west-2a"
+variable "ami_region2" {
+    description = "AMIs by region"
+    default = "ami-fcc19b99" # ubuntu-oregon 16.04 LTS
 }
+
 
 variable "PATH_TO_PRIVATE_KEY" {
   default = "~/.ssh/cosmos-admin"
@@ -56,9 +60,22 @@ variable "requirevrouter" {
 
 variable "vpc_cidr_region1" {
     description = "CIDR for the whole VPC"
-    default = "10.10.0.0/16"
+    default = "10.4.0.0/16"
 }
+variable "vpc_cidr_region2" {
+    description = "CIDR for the whole VPC"
+    default = "10.5.0.0/16"
+}
+
 variable "public_subnet_cidr_region1" {
     description = "Vrouter Eth0 Net"
-    default = "10.10.0.0/24"
+    default = "10.4.0.0/24"
+}
+variable "public_subnet_cidr_region2" {
+    description = "Vrouter Eth0 Net"
+    default = "10.5.0.0/24"
+}
+variable "servkey" {
+    description = "UID for VPC networks"
+    default = "UGMp68ngIuKhd0ryCTZ8jN3DJtKpGV"
 }
