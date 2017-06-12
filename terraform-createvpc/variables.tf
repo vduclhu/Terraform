@@ -79,3 +79,8 @@ variable "servkey" {
     description = "UID for VPC networks"
     default = "UGMp68ngIuKhd0ryCTZ8jN3DJtKpGV"
 }
+
+variable "az" {
+    description = "az"
+    default = "us-west-2a"
+}
