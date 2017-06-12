@@ -77,8 +77,8 @@ resource "aws_network_interface" "vrouter" {
   subnet_id       = "${aws_subnet.public2.id}"
   security_groups = ["${aws_security_group.cosmos-vrouter_region1.id}"]
   }
-  resource "aws_network_interface_attachment" "vrouter"
-  {
+
+resource "aws_network_interface_attachment" "vrouter" {
     instance     = "${aws_instance.cosmos-vrouter.id}"
     device_index = 1
   }
@@ -123,5 +123,3 @@ provisioner "file" {
     }
 
   }
-
-}
