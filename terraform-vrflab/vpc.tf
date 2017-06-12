@@ -25,7 +25,7 @@ resource "aws_subnet" "us-west-2a-public" {
     }
 }
 resource "aws_subnet" "us-west-2a-public3" {
-    vpc_id = "${aws_vpc.cosmos-vpc.id}"
+    vpc_id = "${aws_vpc.cosmos-vrouter-corerouter-region1-vpc.id}"
     cidr_block = "${var.public_subnet3_cidr_region1}"
     availability_zone = "us-west-2a"
 
