@@ -113,7 +113,7 @@ provisioner "file" {
            "echo Y | sudo apt-get install python",
            "echo Y | sudo apt-get install awscli",
            "echo Y | sudo apt-get install docker.io",
-           "echo Y | sudo apt-get install jq"
+           "echo Y | sudo apt-get install jq",
            "chmod +x /tmp/addint.sh",
            "echo sudo /tmp/addint.sh ${aws_network_interface.vrouter.id}"
       ]
