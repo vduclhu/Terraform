@@ -106,15 +106,15 @@ provisioner "file" {
     source      = "addint.sh"
     destination = "/tmp/addint.sh"
 }
-    provisioner "remote-exec" {
+ /*   provisioner "remote-exec" {
         inline = [
         "echo Y | sudo apt-get update",
            "chmod +x /tmp/addint.sh"
            #"echo sudo /tmp/addint.sh ${aws_network_interface.vrouter.id}"
 
-
       ]
   }
+  */
   connection {
       user = "${var.INSTANCE_USERNAME}"
       private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
