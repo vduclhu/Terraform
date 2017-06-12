@@ -13,14 +13,14 @@ export block1="$(nsot networks list -c 10.0.0.0/10 next_network -p 16 -n 1)"
 sudo nsot networks add --site-id 1 --cidr $block1 --attributes owner=$servkey
 export subnet1="$(nsot networks list -c $block1 next_network -p 24 -n 1)"
 sudo nsot networks add --site-id 1 --cidr $subnet1 --attributes owner=$servkey
-export subnet3="$(nsot networks list -c $block3 next_network -p 24 -n 1)"
+export subnet3="$(nsot networks list -c $block1 next_network -p 24 -n 1)"
 sudo nsot networks add --site-id 1 --cidr $subnet3 --attributes owner=$servkey
 
 export block2="$(nsot networks list -c 10.0.0.0/10 next_network -p 16 -n 1)"
 sudo nsot networks add --site-id 1 --cidr $block2 --attributes owner=$servkey
 export subnet2="$(nsot networks list -c $block2 next_network -p 24 -n 1)"
 sudo sudo nsot networks add --site-id 1 --cidr $subnet2 --attributes owner=$servkey
-export subnet4="$(nsot networks list -c $block4 next_network -p 24 -n 1)"
+export subnet4="$(nsot networks list -c $block2 next_network -p 24 -n 1)"
 sudo nsot networks add --site-id 1 --cidr $subnet4 --attributes owner=$servkey
 
 curl -Ss -XPUT https://$USERNAME:$PASSWORD@blue-etcd.shared.prsn-dev.io.:443/v2/keys/tfbuild/$servkey/network1 -d value=$subnet1
