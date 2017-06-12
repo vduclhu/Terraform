@@ -103,19 +103,19 @@ resource "aws_instance" "cosmos-vrouter" {
     tags {
         Name = "cosmos-vrouter-TF"
     }
-
+/*
 provisioner "file" {
     source      = "addint.sh"
     destination = "/tmp/addint.sh"
-}
+}*/
     provisioner "remote-exec" {
         inline = [
            "echo Y | sudo apt-get update",
            "echo Y | sudo apt-get install python",
            "echo Y | sudo apt-get install awscli",
            "echo Y | sudo apt-get install docker.io",
-           "echo Y | sudo apt-get install jq",
-           "chmod +x /tmp/addint.sh"
+           "echo Y | sudo apt-get install jq"
+           #"chmod +x /tmp/addint.sh"
            #"echo sudo /tmp/addint.sh ${aws_network_interface.vrouter.id}"
       ]
   }
