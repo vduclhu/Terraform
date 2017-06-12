@@ -24,6 +24,10 @@ variable "CORE" {
     description="pass value here if core router is desired"
     default = ""
 }
+variable "aws_region" {
+    description = "EC2 Region for the VPC"
+    default = "us-west-2"
+}
 variable "aws_region1" {
     description = "EC2 Region for the VPC"
     default = "us-west-2"
