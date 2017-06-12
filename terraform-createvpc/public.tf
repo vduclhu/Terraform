@@ -72,7 +72,7 @@ resource "aws_network_interface" "vrouter" {
   security_groups             = ["${aws_security_group.cosmos-vrouter_region1.id}"]
 }
 */
-resource "aws_network_interface" "test" {
+resource "aws_network_interface" "vrouter" {
   subnet_id       = "${aws_subnet.public2.id}"
   security_groups = ["${aws_security_group.cosmos-vrouter_region1.id}"]
 
