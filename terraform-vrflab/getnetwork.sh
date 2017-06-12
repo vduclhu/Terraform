@@ -51,7 +51,7 @@ variable "public_subnet_cidr_region2" {
     description = "Vrouter Eth0 Net"
     default = "$subnet2"
 }
-variable "public_subne4_cidr_region2" {
+variable "public_subnet4_cidr_region2" {
     description = "Vrouter Eth1 Net"
     default = "$subnet4"
 }
