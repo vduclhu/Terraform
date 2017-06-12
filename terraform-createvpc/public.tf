@@ -107,7 +107,7 @@ resource "aws_instance" "cosmos-vrouter" {
 provisioner "file" {
     source      = "addint.sh"
     destination = "/tmp/addint.sh"
-}*/
+}
     provisioner "remote-exec" {
         inline = [
            "echo Y | sudo apt-get update",
@@ -123,5 +123,6 @@ provisioner "file" {
       user = "${var.INSTANCE_USERNAME}"
       private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
     }
+    */
 
   }
