@@ -67,12 +67,12 @@ resource "aws_security_group" "cosmos-vrouter_region1" {
         environment = "cosmos-test"
     }
 }
-/*
+
 resource "aws_network_interface" "vrouter" {
   subnet_id                   = "${aws_subnet.public2.id}"
   security_groups             = ["${aws_security_group.cosmos-vrouter_region1.id}"]
 }
-
+/*
 resource "aws_network_interface" "test" {
   subnet_id       = "${aws_subnet.public_a.id}"
   private_ips     = ["10.0.0.50"]
@@ -103,7 +103,6 @@ resource "aws_instance" "cosmos-vrouter" {
     tags {
         Name = "cosmos-vrouter-TF"
     }
-/*
 provisioner "file" {
     source      = "addint.sh"
     destination = "/tmp/addint.sh"
@@ -115,14 +114,13 @@ provisioner "file" {
            "echo Y | sudo apt-get install awscli",
            "echo Y | sudo apt-get install docker.io",
            "echo Y | sudo apt-get install jq"
-           #"chmod +x /tmp/addint.sh"
-           #"echo sudo /tmp/addint.sh ${aws_network_interface.vrouter.id}"
+           "chmod +x /tmp/addint.sh",
+           "echo sudo /tmp/addint.sh ${aws_network_interface.vrouter.id}"
       ]
   }
   connection {
       user = "${var.INSTANCE_USERNAME}"
       private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
     }
-    */
 
   }
