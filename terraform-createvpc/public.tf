@@ -67,6 +67,12 @@ resource "aws_security_group" "cosmos-vrouter_region1" {
         environment = "cosmos-test"
     }
 }
+
+resource "aws_network_interface" "vrouter" {
+  subnet_id                   = "${aws_subnet.public2.id}"
+  security_groups             = ["${aws_security_group.cosmos-vrouter_region1.id}"]
+}
+
 resource "aws_key_pair" "cosmos-admin" {
   key_name = "cosmos-admin3"
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
