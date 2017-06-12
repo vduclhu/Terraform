@@ -1,9 +1,3 @@
-/*
-  Vrouter
-*/
-
-#Create user for boto
-
 #Create IAM role/policy
 resource "aws_iam_role" "cosmos_role" 
 {
@@ -26,10 +20,9 @@ resource "aws_iam_role_policy" "cosmos_iam_role_policy"
 	policy = "${file("cosmos_iam_role_policy.json")}"
 }
 
-
-
 resource "aws_security_group" "cosmos-vrouter_region1" {
-    name = "cosmos-sg"
+  
+    name = "cosmos-vrouter-sg"
     description = "Allow incoming traffic"
 
     ingress {
@@ -68,10 +61,7 @@ resource "aws_security_group" "cosmos-vrouter_region1" {
     protocol = "-1"
     cidr_blocks = ["0.0.0.0/0"]
     }
-
-
     vpc_id = "${aws_vpc.cosmos-vpc.id}"
-
     tags {
         Name = "cosmos-vrouter-SG"
         environment = "cosmos-test"
@@ -80,11 +70,6 @@ resource "aws_security_group" "cosmos-vrouter_region1" {
 resource "aws_key_pair" "cosmos-admin" {
   key_name = "cosmos-admin3"
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
-}
-
-resource "aws_network_interface" "vrouter" {
-  subnet_id                   = "${aws_subnet.public2.id}"
-  security_groups             = ["${aws_security_group.cosmos-vrouter_region1.id}"]
 }
 
 resource "aws_instance" "cosmos-vrouter" {
@@ -99,28 +84,27 @@ resource "aws_instance" "cosmos-vrouter" {
     source_dest_check = false
     iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
     tags {
-        Name = "cosmos-test2int-TF"
+        Name = "cosmos-vrouter-TF"
     }
 
 provisioner "file" {
     source      = "addint.sh"
     destination = "/tmp/addint.sh"
 }
- /*   provisioner "remote-exec" {
+    provisioner "remote-exec" {
         inline = [
-        "echo Y | sudo apt-get update",
-           "chmod +x /tmp/addint.sh"
-           #"echo sudo /tmp/addint.sh ${aws_network_interface.vrouter.id}"
-
+           "echo Y | sudo apt-get update",
+           "echo Y | sudo apt-get install python",
+           "echo Y | sudo apt-get install awscli",
+           "echo Y | sudo apt-get install docker.io",
+           "echo Y | sudo apt-get install jq",
+           "chmod +x /tmp/addint.sh",
+           "echo sudo /tmp/addint.sh ${aws_network_interface.vrouter.id}"
       ]
   }
-  */
   connection {
       user = "${var.INSTANCE_USERNAME}"
       private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
     }
 
   }
-
-
-
