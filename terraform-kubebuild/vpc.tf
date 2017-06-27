@@ -11,7 +11,7 @@ resource "aws_internet_gateway" "kubelab_vpc" {
     vpc_id = "${aws_vpc.kubelab_vpc.id}"
 }
 
-resource "aws_subnet" "kubminion1_subnet" {
+resource "aws_subnet" "kubminion_subnet1" {
     vpc_id = "${aws_vpc.kubelab_vpc.id}"
     cidr_block = "${var.kubminion1_subnet}"
     availability_zone = "${var.azone1}"
