@@ -74,7 +74,7 @@ resource "aws_network_interface_attachment" "vrouter" {
 */
 data "template_file" "kubbuild_host" {
   template = "${file("kubbuild-host.tpl")}"
-
+}
 resource "aws_key_pair" "kubelab-admin" {
   key_name = "kubelab-admin3"
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
