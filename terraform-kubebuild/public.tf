@@ -89,12 +89,11 @@ resource "aws_instance" "kubelab_kubbuilder" {
     subnet_id = "${aws_subnet.kubminion1_subnet.id}"
     associate_public_ip_address = true
     source_dest_check = false
-    iam_instance_profile = "${aws_iam_instance_profile.kubelab_instance_profile.name}"
     tags {
         Name = "kubelab_kubbuilder"
     }
     provisioner "remote-exec" {
-        inline = "${.template_file.kubbuild_host.rendered}"
+        inline = "${template_file.kubbuild_host.rendered}"
   }
   connection {
       user = "root"
