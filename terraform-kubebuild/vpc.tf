@@ -41,7 +41,7 @@ resource "aws_subnet" "kubminion_subnet3" {
 resource "aws_subnet" "kubminion_subnet4" {
     vpc_id = "${aws_vpc.kubelab_vpc.id}"
     cidr_block = "${var.kubminion4_subnet}"
-    availability_zone = "${var.azone4}"
+    availability_zone = "${var.azone3}"
 
     tags {
         Name = "kubelab_vpc_kubminion_subnet4"

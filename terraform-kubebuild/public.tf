@@ -82,7 +82,7 @@ resource "aws_key_pair" "kubelab-admin" {
 
 resource "aws_instance" "kubelab_kubbuilder" {
     ami = "${var.ami}"
-    availability_zone = "${var.az1}"
+    availability_zone = "${var.azone1}"
     instance_type = "t2.small"
     key_name = "${aws_key_pair.kubelab-admin.key_name}"
     vpc_security_group_ids = ["${aws_security_group.kubelab_vpc.id}"]
