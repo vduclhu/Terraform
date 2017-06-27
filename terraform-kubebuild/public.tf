@@ -86,7 +86,7 @@ resource "aws_instance" "kubelab_kubbuilder" {
     instance_type = "t2.small"
     key_name = "${aws_key_pair.kubelab-admin.key_name}"
     vpc_security_group_ids = ["${aws_security_group.kubelab_vpc.id}"]
-    subnet_id = "${aws_subnet.kubminion1_subnet.id}"
+    subnet_id = "${aws_subnet.kubminion_subnet1.id}"
     associate_public_ip_address = true
     source_dest_check = false
     tags {
