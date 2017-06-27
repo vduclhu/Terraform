@@ -50,15 +50,15 @@ variable "kubminion4_subnet" {
     default = "10.100.4.0/24"
 }
 
-variable "az1" {
+variable "azone1" {
     description = "az"
     default = "us-east-1a"
 }
-variable "az2" {
+variable "azone2" {
     description = "az"
     default = "us-east-1b"
 }
-variable "az3" {
+variable "azone3" {
     description = "az"
     default = "us-east-1c"
 }

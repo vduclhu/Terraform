@@ -72,7 +72,7 @@ resource "aws_network_interface_attachment" "vrouter" {
     device_index = 1
   }
 */
-data "template_file" "kubbuild_host" {
+resource "template_file" "kubbuild_host" {
   template = "${file("kubbuild-host.tpl")}"
 }
 resource "aws_key_pair" "kubelab-admin" {
