@@ -15,10 +15,10 @@ variable "ami" {
 
 
 variable "PATH_TO_PRIVATE_KEY" {
-  default = "~/.ssh/cosmos_admin"
+  default = "~/.ssh/cosmos-admin"
 }
 variable "PATH_TO_PUBLIC_KEY" {
-  default = "~/.ssh/cosmos_admin.pub"
+  default = "~/.ssh/cosmos-admin.pub"
 }
 variable "INSTANCE_USERNAME" {
   default = "ubuntu"
