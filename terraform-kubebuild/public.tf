@@ -22,7 +22,6 @@ resource "aws_iam_role_policy" "kubelab_iam_role_policy"
 }
 */
 
-data "aws_availability_zones" "available" {}
 
 resource "aws_security_group" "kubelab_vpc" {
   
