@@ -1,6 +1,7 @@
 #!/bin/bash 
 
 !Disable and stop the firewalld service 
+sudo -s 
 systemctl disable firewalld
 systemctl stop firewalld
  
