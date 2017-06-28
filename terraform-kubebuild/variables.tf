@@ -10,7 +10,7 @@ variable "aws_region" {
 
 variable "ami" {
     description = "AMIs by region"
-    default = "ami-92aa8284" # CoreOS-US-east
+    default = "ami-46c1b650" # CentOS-US-east
 }
 
 
