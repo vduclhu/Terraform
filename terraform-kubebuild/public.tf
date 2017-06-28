@@ -96,7 +96,7 @@ resource "aws_instance" "kubelab_kubbuilder" {
         inline = "${template_file.kubbuild_host.rendered}"
   }
   connection {
-      user = "core"
+      user = "centos"
       private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
     }
 
