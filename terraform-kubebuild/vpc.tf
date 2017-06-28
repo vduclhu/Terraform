@@ -6,6 +6,8 @@ resource "aws_vpc" "kubelab_vpc" {
 
     }
 }
+data "aws_availability_zones" "available" {}
+
 
 resource "aws_internet_gateway" "kubelab_vpc" {    
     vpc_id = "${aws_vpc.kubelab_vpc.id}"
@@ -14,7 +16,7 @@ resource "aws_internet_gateway" "kubelab_vpc" {
 resource "aws_subnet" "kubminion_subnet1" {
     vpc_id = "${aws_vpc.kubelab_vpc.id}"
     cidr_block = "${var.kubminion1_subnet}"
-    availability_zone = "${var.azone1}"
+    availability_zone = "${data.aws_availability_zones.available.names[0]}"
 
     tags {
         Name = "kubelab_vpc_kubminion_subnet1"
@@ -23,7 +25,7 @@ resource "aws_subnet" "kubminion_subnet1" {
 resource "aws_subnet" "kubminion_subnet2" {
     vpc_id = "${aws_vpc.kubelab_vpc.id}"
     cidr_block = "${var.kubminion2_subnet}"
-    availability_zone = "${var.azone2}"
+    availability_zone = "${data.aws_availability_zones.available.names[1]}"
 
     tags {
         Name = "kubelab_vpc_kubminion_subnet2"
@@ -32,7 +34,7 @@ resource "aws_subnet" "kubminion_subnet2" {
 resource "aws_subnet" "kubminion_subnet3" {
     vpc_id = "${aws_vpc.kubelab_vpc.id}"
     cidr_block = "${var.kubminion3_subnet}"
-    availability_zone = "${var.azone3}"
+    availability_zone = "${data.aws_availability_zones.available.names[2]}"
 
     tags {
         Name = "kubelab_vpc_kubminion_subnet3"
@@ -41,7 +43,7 @@ resource "aws_subnet" "kubminion_subnet3" {
 resource "aws_subnet" "kubminion_subnet4" {
     vpc_id = "${aws_vpc.kubelab_vpc.id}"
     cidr_block = "${var.kubminion4_subnet}"
-    availability_zone = "${var.azone3}"
+    availability_zone = "${data.aws_availability_zones.available.names[2]}"
 
     tags {
         Name = "kubelab_vpc_kubminion_subnet4"

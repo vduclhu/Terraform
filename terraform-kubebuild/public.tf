@@ -21,6 +21,9 @@ resource "aws_iam_role_policy" "kubelab_iam_role_policy"
 	policy = "${file("kubelab_iam_role_policy.json")}"
 }
 */
+
+data "aws_availability_zones" "available" {}
+
 resource "aws_security_group" "kubelab_vpc" {
   
     name = "kubelab-sg"
@@ -35,6 +38,12 @@ resource "aws_security_group" "kubelab_vpc" {
     ingress {
         from_port = 22
         to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        from_port = 80
+        to_port = 80
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
@@ -82,6 +91,38 @@ resource "aws_key_pair" "kubelab-admin" {
 
 resource "aws_instance" "kubelab_kubbuilder" {
     ami = "${var.ami}"
+    availability_zone = "${data.aws_availability_zones.available.names[0]}"
+    instance_type = "t2.small"
+    key_name = "${aws_key_pair.kubelab-admin.key_name}"
+    vpc_security_group_ids = ["${aws_security_group.kubelab_vpc.id}"]
+    subnet_id = "${aws_subnet.kubminion_subnet1.id}"
+    associate_public_ip_address = true
+    source_dest_check = false
+    tags {
+        Name = "kubelab_kubbuilder"
+    }
+    provisioner "remote-exec" {
+        inline = "${template_file.kubbuild_host.rendered}"
+  }
+  connection {
+      user = "centos"
+      private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+    }
+
+  }
+
+#Minion1
+/*
+resource "template_file" "kubbuild_minions" {
+  template = "${file("kubbuild-host.tpl")}"
+}
+resource "aws_key_pair" "kubelab-admin" {
+  key_name = "kubelab-admin3"
+  public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
+}
+
+resource "aws_instance" "kubelab_kubbuilder" {
+    ami = "${var.ami}"
     availability_zone = "${var.azone1}"
     instance_type = "t2.small"
     key_name = "${aws_key_pair.kubelab-admin.key_name}"
@@ -101,3 +142,6 @@ resource "aws_instance" "kubelab_kubbuilder" {
     }
 
   }
+
+
+*/
