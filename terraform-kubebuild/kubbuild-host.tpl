@@ -1,22 +1,22 @@
 #!/bin/bash 
 
-!Disable and stop the firewalld service 
-sudo -s 
-systemctl disable firewalld
-systemctl stop firewalld
+#Disable and stop the firewalld service 
  
-!Download git, docker, and Apache web server
-yum install -y git docker httpd
+sudo systemctl disable firewalld
+sudo systemctl stop firewalld
  
-!Configure docker to start on boot and start the service
-systemctl enable docker
-systemctl start docker
+#Download git, docker, and Apache web server
+sudo yum install -y git docker httpd
  
-!Configure Apache to start on boot and start the service
-systemctl enable httpd
-systemctl start httpd
+#Configure docker to start on boot and start the service
+sudo systemctl enable docker
+sudo systemctl start docker
+ 
+#Configure Apache to start on boot and start the service
+sudo systemctl enable httpd
+sudo systemctl start httpd
 
-git clone https://github.com/GoogleCloudPlatform/kubernetes.git
+sudo git clone https://github.com/GoogleCloudPlatform/kubernetes.git
 
 	
 cd kubernetes/build
@@ -27,4 +27,4 @@ cp * /var/www/html
 
 
 cd /var/www/html
-git clone https://github.com/jonlangemak/kubernetes_build.git
+sudo git clone https://github.com/jonlangemak/kubernetes_build.git
