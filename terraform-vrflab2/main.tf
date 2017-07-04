@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "./modules/vpc/"
+  source = "./modules/vpc"
 
   name = "cosmos-vrftest-tf"
 
