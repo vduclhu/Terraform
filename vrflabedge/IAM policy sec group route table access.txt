@@ -1,0 +1,138 @@
+step 1: terraform turns up vrouter on ec2 instance and records security group attached to ec2 instance in etcd. creates iam role only allowing
+        access from ec2 instance to security group/route tables with special tag. installs boto3 and jq
+step 2: terraform copies/runs bash script that configures boto3 w/ iam role. bash script checks every 30 seconds for new entries to etcd. boto3 
+        updates security group with 655 access from public ips in etcd (peering vrouter ips) and updates route table with new routes pointing cidrs discovered 
+        in etcd to use a next hop of local vrouter.
+
+
+
+8. Tagging Resources
+
+The following policy allows users to use the CreateTags action to apply tags to an instance only if the tag contains the key environment and the value production. The ForAllValues modifier is used with the aws:TagKeys condition key to indicate that only the key environment is allowed in the request (no other tags are allowed). The user cannot tag any other resource types.
+
+Copy
+
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:CreateTags"
+            ],
+            "Resource": "arn:aws:ec2:region:account:instance/*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:RequestTag/environment": "production"
+                },
+                "ForAllValues:StringEquals": {
+                    "aws:TagKeys": [
+                        "environment"
+                    ]
+                }
+            }
+        }
+    ]
+}
+
+6. Managing security groups in a VPC
+
+The following policy grants users permission to create and delete inbound and outbound rules for any security group within a specific VPC. The policy does this by applying a condition key (ec2:Vpc) to the security group resource for the Authorize and Revoke actions.
+
+The second statement grants users permission to describe all security groups. This is necessary in order for users to be able to modify security group rules using the CLI.
+
+Copy
+{
+"Version": "2012-10-17",
+  "Statement":[{
+    "Effect":"Allow",
+    "Action": [
+       "ec2:AuthorizeSecurityGroupIngress",
+       "ec2:AuthorizeSecurityGroupEgress",
+       "ec2:RevokeSecurityGroupIngress",
+       "ec2:RevokeSecurityGroupEgress"],
+     "Resource": "arn:aws:ec2:region:account:security-group/*",
+      "Condition": {
+        "StringEquals": {
+          "ec2:Vpc": "arn:aws:ec2:region:account:vpc/vpc-1a2b3c4d"
+        }
+      }
+    },
+    {
+      "Effect": "Allow",
+      "Action": "ec2:DescribeSecurityGroups",
+      "Resource": "*"
+    }
+  ]
+}
+
+
+For example, the following policy allows users to delete only route tables and Internet gateways that have the tag Purpose=Test. Users cannot delete individual route tables or Internet gateways that do not have this tag, and similarly, users cannot use the VPC console to delete a VPC that's associated with a different route table or Internet gateway.
+
+Copy
+{
+   "Version": "2012-10-17",
+   "Statement": [{
+      "Effect": "Allow",
+      "Action": [
+        "ec2:DescribeVpcs", "ec2:DescribeRouteTables", "ec2:DescribeVpnGateways", "ec2:DescribeInternetGateways", 
+        "ec2:DescribeSubnets", "ec2:DescribeDhcpOptions", "ec2:DescribeInstances", "ec2:DescribeVpcAttribute",
+        "ec2:DescribeNetworkAcls",  "ec2:DescribeNetworkInterfaces", "ec2:DescribeAddresses", 
+        "ec2:DescribeVpcPeeringConnections", "ec2:DescribeSecurityGroups",
+        "ec2:CreateVpc", "ec2:DeleteVpc", "ec2:DetachInternetGateway", 
+        "ec2:DisassociateRouteTable", "ec2:DeleteSubnet"
+      ],
+      "Resource": "*"
+    },
+    {
+      "Effect": "Allow",
+      "Action":  "ec2:DeleteInternetGateway",
+      "Resource": "arn:aws:ec2:region:account:internet-gateway/*",
+	  "Condition": {
+         "StringEquals": {
+            "ec2:ResourceTag/Purpose": "Test"
+         }
+       }
+      },
+      {
+      "Effect": "Allow",
+      "Action": "ec2:DeleteRouteTable",
+      "Resource": "arn:aws:ec2:region:account:route-table/*",
+	  "Condition": {
+         "StringEquals": {
+            "ec2:ResourceTag/Purpose": "Test"
+         }
+      }
+    }
+
+
+   ]
+}
+
+Option 1: VPC with a single public subnet
+
+The first VPC wizard configuration option creates a VPC with a single subnet. In your IAM policy, you must grant users permission to use the following actions so they can successfully use this wizard option:
+
+ec2:CreateVpc, ec2:CreateSubnet, ec2:CreateRouteTable, and ec2:CreateInternetGateway: To create a VPC, a subnet, a custom route table, and an Internet gateway.
+ec2:DescribeAvailabilityZones: To display the section of the wizard with the Availability Zone list and the CIDR block field for the subnet. Even if users intend to leave the default settings, they will not be able to create a VPC unless those options are displayed.
+ec2:DescribeVpcEndpointServices: To display the VPC endpoint section of the wizard.
+ec2:AttachInternetGateway: To attach the Internet gateway to the VPC.
+ec2:CreateRoute: To create a route in the custom route table. The route points traffic to the Internet gateway.
+ec2:AssociateRouteTable: To associate the custom route table to the subnet.
+ec2:ModifyVpcAttribute: To modify the VPC's attribute to enable DNS hostnames, so that each instance launched into this VPC receives a DNS hostname.
+None of the API actions in this policy support resource-level permissions, so you cannot control which specific resources users can use.
+
+Copy
+{
+   "Version": "2012-10-17",
+   "Statement": [{
+      "Effect": "Allow",
+      "Action": [
+        "ec2:CreateVpc", "ec2:CreateSubnet", "ec2:DescribeAvailabilityZones", "ec2:DescribeVpcEndpointServices",
+        "ec2:CreateRouteTable", "ec2:CreateRoute", "ec2:CreateInternetGateway", 
+        "ec2:AttachInternetGateway", "ec2:AssociateRouteTable", "ec2:ModifyVpcAttribute"
+      ],
+      "Resource": "*"
+    }
+   ]
+}
