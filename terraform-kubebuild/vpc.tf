@@ -69,6 +69,7 @@ resource "aws_route_table" "private" {
         environment = "kubelab_test_private"
     }
 }
+}
 
 resource "aws_route_table_association" "public1" {
     subnet_id = "${aws_subnet.kubminion_subnet1.id}"
