@@ -1,5 +1,5 @@
 module "vpc" {
-  source = "github.com/terraform-community-modules/tf_aws_vpc"
+  source = "./modules/vpc/"
 
   name = "cosmos-vrftest-tf"
 
