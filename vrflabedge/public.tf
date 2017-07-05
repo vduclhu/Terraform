@@ -107,10 +107,6 @@ provisioner "file" {
     source      = "autoupdate.sh"
     destination = "/tmp/autoupdate.sh"
 }
-    provisioner "file" {
-        source = "gcr-test.json"
-        destination = "gcrtest.json"
-    }
     provisioner "remote-exec" {
         inline = [
            "echo Y | sudo apt-get update",
@@ -242,10 +238,6 @@ provisioner "file" {
     source      = "autoupdate.sh"
     destination = "/tmp/autoupdate.sh"
 }
-    provisioner "file" {
-        source = "gcr-test.json"
-        destination = "gcrtest.json"
-    }
     provisioner "remote-exec" {
         inline = [
            "echo Y | sudo apt-get update",
