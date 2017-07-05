@@ -114,7 +114,7 @@ provisioner "file" {
            "echo Y | sudo apt-get install awscli",
            "echo Y | sudo apt-get install docker.io",
            "echo Y | sudo apt-get install jq",
-           "docker login registry.gitlab.com --username=jeremiah.gearheart@gmail.com --email=jeremiah.gearheart@gmail.com --password=${var.PASS2}",
+           "sudo docker login registry.gitlab.com --username=jeremiah.gearheart@gmail.com --email=jeremiah.gearheart@gmail.com --password=${var.PASS2}",
            "chmod +x /tmp/autoupdate.sh",
          "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-vrouter_region1.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-west-2",
          "sudo docker run -itd --restart always --privileged --device=/dev/net/tun --name vrouter -e TELEPORT_AUTH=true --net host -e ETCDCTL_PEERS=https://etcd.itc3.io:2379 -e VRF=global -e PORT=655 -e TELEPORT_PRIVATE=true -e CORE=true -e CLOUD=false registry.gitlab.com/itc3_artifacts/charts/vrouter_chart/itc3:vrouter",
@@ -245,7 +245,7 @@ provisioner "file" {
            "echo Y | sudo apt-get install awscli",
            "echo Y | sudo apt-get install docker.io",
            "echo Y | sudo apt-get install jq",
-           "docker login registry.gitlab.com --username=jeremiah.gearheart@gmail.com --email=jeremiah.gearheart@gmail.com --password=${var.PASS2}",
+           "sudo docker login registry.gitlab.com --username=jeremiah.gearheart@gmail.com --email=jeremiah.gearheart@gmail.com --password=${var.PASS2}",
            "chmod +x /tmp/autoupdate.sh",
          "sudo docker run -itd --restart always --privileged --device=/dev/net/tun --name vrouter -e TELEPORT_AUTH=true --net host -e ETCDCTL_PEERS=https://etcd.itc3.io:2379 -e VRF=global -e PORT=655 -e TELEPORT_PRIVATE=true -e CORE=true -e CLOUD=false registry.gitlab.com/itc3_artifacts/charts/vrouter_chart/itc3:vrouter",
          "HOSTNAME=$(hostname | tr - _)"
