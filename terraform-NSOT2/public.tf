@@ -1,35 +1,4 @@
-/*
-  Vrouter
-*/
 
-#Create user for boto
-
-
-
-#Create IAM role/policy
-resource "aws_iam_role" "cosmos_role" 
-{
-	provider ="aws.ohio"
-        name = "cosmos_role2"		    
-	assume_role_policy = "${file("cosmos_iam_role.json")}"	
-}
-
-resource "aws_iam_instance_profile" "cosmos_instance_profile" 
-{		   
-    provider ="aws.ohio" 
-	name = "cosmos_instance_profile2"		    
-	roles = ["cosmos_role2"]		
-}
-
-#Create cosmos IAM policy
-
-resource "aws_iam_role_policy" "cosmos_iam_role_policy" 
-{		  
-    provider ="aws.ohio"
-	name = "cosmos_iam_role_policy2"		  
-	role = "${aws_iam_role.cosmos_role.id}"		  
-	policy = "${file("cosmos_iam_role_policy.json")}"
-}
 
 resource "aws_security_group" "cosmos-NSOT_region1" {
     provider = "aws.ohio"
@@ -97,7 +66,7 @@ resource "aws_instance" "cosmos-NSOT" {
     subnet_id = "${aws_subnet.us-east-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
-    iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
+    iam_instance_profile = "cosmos_instance_profile2"
     tags {
         Name = "cosmos-NSOT-TF"
     }
