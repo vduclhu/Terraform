@@ -9,14 +9,14 @@
 #Create IAM role/policy
 resource "aws_iam_role" "cosmos_role" 
 {
-	provider ="aws.oregon"
+	provider ="aws.ohio"
         name = "cosmos_role2"		    
 	assume_role_policy = "${file("cosmos_iam_role.json")}"	
 }
 
 resource "aws_iam_instance_profile" "cosmos_instance_profile" 
 {		   
-    provider ="aws.oregon" 
+    provider ="aws.ohio" 
 	name = "cosmos_instance_profile2"		    
 	roles = ["cosmos_role2"]		
 }
@@ -25,14 +25,14 @@ resource "aws_iam_instance_profile" "cosmos_instance_profile"
 
 resource "aws_iam_role_policy" "cosmos_iam_role_policy" 
 {		  
-    provider ="aws.oregon"
+    provider ="aws.ohio"
 	name = "cosmos_iam_role_policy2"		  
 	role = "${aws_iam_role.cosmos_role.id}"		  
 	policy = "${file("cosmos_iam_role_policy.json")}"
 }
 
 resource "aws_security_group" "cosmos-NSOT_region1" {
-    provider = "aws.oregon"
+    provider = "aws.ohio"
     name = "cosmos-vrouter-sg"
     description = "Allow incoming traffic"
 
@@ -82,19 +82,19 @@ resource "aws_security_group" "cosmos-NSOT_region1" {
     }
 }
 resource "aws_key_pair" "cosmos-admin" {
-  provider = "aws.oregon"
+  provider = "aws.ohio"
   key_name = "cosmos-admin4"
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
 }
 
 resource "aws_instance" "cosmos-NSOT" {
-    provider = "aws.oregon"
+    provider = "aws.ohio"
     ami = "${var.ami_region1}"
-    availability_zone = "us-west-2a"
+    availability_zone = "us-east-2a"
     instance_type = "t2.small"
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
     vpc_security_group_ids = ["${aws_security_group.cosmos-NSOT_region1.id}"]
-    subnet_id = "${aws_subnet.us-west-2a-public.id}"
+    subnet_id = "${aws_subnet.us-east-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
     iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
@@ -124,7 +124,7 @@ resource "aws_instance" "cosmos-NSOT" {
            "chmod +x /tmp/generate-nsot-configs.sh",
            "echo sudo /tmp/generate-nsot-configs.sh ${var.RDS_NAME} ${var.RDS_USER} ${var.RDS_PASS} ${var.RDS_HOST} ${var.RDS_PORT}",
            "sudo nsot-server start",
-         "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-NSOT_region1.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-west-2"
+         "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-NSOT_region1.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-east-2"
       ]
   }
   connection {

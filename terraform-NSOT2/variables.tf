@@ -6,13 +6,13 @@ variable "aws_secret_key" {}
 
 variable "aws_region1" {
     description = "EC2 Region for the VPC"
-    default = "us-west-2"
+    default = "us-east-2"
 }
 
 
 variable "ami_region1" {
     description = "AMIs by region"
-    default = "ami-efd0428f" # ubuntu-oregon 16.04 LTS
+    default = "ami-fcc19b99" # ubuntu-ohio 16.04 LTS
 }
 
 variable "PATH_TO_PRIVATE_KEY" {
