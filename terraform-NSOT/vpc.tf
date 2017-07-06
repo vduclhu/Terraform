@@ -4,7 +4,6 @@ resource "aws_vpc" "cosmos-vrouter-corerouter-region1-vpc" {
     enable_dns_hostnames = true
     tags {
         Name = "cosmos-vrouter-corerouter-region1-vpc-FUSION-HUB-NONPROD-TF"
-        Servkey = "${var.servkey}"
     }
 }
 
