@@ -85,7 +85,7 @@ resource "aws_instance" "cosmos-NSOT" {
            "echo Y | sudo apt-get update",
            "echo Y | sudo apt-get -y install build-essential python-dev libffi-dev libssl-dev",
            "echo Y | sudo apt-get --yes install python-pip git",
-           "sudo curl https://pypi.python.org/packages/40/9b/0bc869f290b8f49a99b8d97927f57126a5d1befcf8bac92c60dc855f2523/mysqlclient-1.3.10.tar.gz",
+           "sudo wget --quiet https://pypi.python.org/packages/40/9b/0bc869f290b8f49a99b8d97927f57126a5d1befcf8bac92c60dc855f2523/mysqlclient-1.3.10.tar.gz",
            "sudo tar -xvzf mysqlclient-1.3.10.tar.gz",
            "echo Y | sudo apt install libmysqlclient-dev",
            "cd mysqlclient-1.3.10/",
