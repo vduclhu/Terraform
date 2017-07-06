@@ -85,7 +85,7 @@ resource "aws_instance" "cosmos-NSOT" {
            "echo Y | sudo apt-get update",
            "echo Y | sudo apt-get -y install build-essential python-dev libffi-dev libssl-dev",
            "echo Y | sudo apt-get --yes install python-pip git",
-           "sudo wget https://pypi.python.org/packages/40/9b/0bc869f290b8f49a99b8d97927f57126a5d1befcf8bac92c60dc855f2523/mysqlclient-1.3.10.tar.gz#md5=e7fb95c4055e2d8a3322db5c85ab6fc8",
+           "sudo wget https://pypi.python.org/packages/40/9b/0bc869f290b8f49a99b8d97927f57126a5d1befcf8bac92c60dc855f2523/mysqlclient-1.3.10.tar.gz",
            "sudo tar -xvzf mysqlclient-1.3.10.tar.gz",
            "echo Y | sudo apt install libmysqlclient-dev",
            "cd mysqlclient-1.3.10/",
@@ -96,7 +96,7 @@ resource "aws_instance" "cosmos-NSOT" {
            "sudo nsot-server init",
            "chmod +x /tmp/generate-nsot-configs.sh",
            "sudo /tmp/generate-nsot-configs.sh ${var.RDS_NAME} ${var.RDS_USER} ${var.RDS_PASS} ${var.RDS_HOST} ${var.RDS_PORT}",
-           "cat input.txt | sudo nsot-server start &"
+           "cat input.txt | sudo nohup nsot-server start"
       ]
   }
   connection {
