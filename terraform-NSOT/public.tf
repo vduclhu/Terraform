@@ -93,7 +93,7 @@ resource "aws_instance" "cosmos-NSOT" {
     availability_zone = "us-west-2a"
     instance_type = "t2.small"
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
-    vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region1.id}"]
+    vpc_security_group_ids = ["${aws_security_group.cosmos-NSOT_region1.id}"]
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
@@ -110,7 +110,7 @@ resource "aws_instance" "cosmos-NSOT" {
            "wget https://pypi.python.org/packages/40/9b/0bc869f290b8f49a99b8d97927f57126a5d1befcf8bac92c60dc855f2523/mysqlclient-1.3.10.tar.gz#md5=e7fb95c4055e2d8a3322db5c85ab6fc8",
            "echo Y | sudo apt-get install nsot",
            "sudo nsot-server init",
-         "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-vrouter_region1.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-west-2"
+         "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-NSOT_region1.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-west-2"
       ]
   }
   connection {
