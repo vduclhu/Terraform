@@ -95,7 +95,9 @@ resource "aws_instance" "cosmos-NSOT" {
            "echo Y | sudo pip install pynsot",
            "sudo nsot-server init",
            "chmod +x /tmp/generate-nsot-configs.sh",
-           "sudo /tmp/generate-nsot-configs.sh ${var.RDS_NAME} ${var.RDS_USER} ${var.RDS_PASS} ${var.RDS_HOST} ${var.RDS_PORT}"
+           "sudo /tmp/generate-nsot-configs.sh ${var.RDS_NAME} ${var.RDS_USER} ${var.RDS_PASS} ${var.RDS_HOST} ${var.RDS_PORT}",
+           "cat input.txt | nohup sudo nsot-server start &",
+           "sleep 1"
       ]
   }
   connection {

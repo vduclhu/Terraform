@@ -106,5 +106,3 @@ AUTH_TOKEN_EXPIRY = 600  # 10 minutes
 ALLOWED_HOSTS = ['*']
 
 EOF
-
-cat input.txt | sudo setsid nsot-server start &
