@@ -93,7 +93,7 @@ resource "aws_instance" "cosmos-NSOT" {
            "sudo python setup.py install",
            "echo Y | sudo pip install nsot",
            "echo Y | sudo pip install pynsot",
-           "cd ~/"
+           "cd ~/",
            "sudo nsot-server init",
            "chmod +x /tmp/generate-nsot-configs.sh",
            "sudo /tmp/generate-nsot-configs.sh ${var.RDS_NAME} ${var.RDS_USER} ${var.RDS_PASS} ${var.RDS_HOST} ${var.RDS_PORT}",
