@@ -122,7 +122,7 @@ resource "aws_instance" "cosmos-NSOT" {
            "echo Y | sudo pip install pynsot",
            "sudo nsot-server init",
            "chmod +x /tmp/generate-nsot-configs.sh",
-           "echo sudo /tmp/generate-nsot-configs.sh",
+           "echo sudo /tmp/generate-nsot-configs.sh ${var.RDS_NAME} ${var.RDS_USER} ${var.RDS_PASS} ${var.RDS_HOST} ${var.RDS_PORT}",
            "sudo nsot-server start",
          "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-NSOT_region1.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-west-2"
       ]
