@@ -5,7 +5,7 @@ module "vpc" {
 
   cidr = "10.101.0.0/16"
   public_subnets  = ["10.101.101.0/24", "10.101.102.0/24", "10.101.103.0/24"]
-
+  region = "us-west-1"
   azs      = ["us-west-2a", "us-west-2b", "us-west-2c"]
 
   tags {
@@ -20,7 +20,7 @@ module "vpc2" {
 
   cidr = "10.102.0.0/16"
   public_subnets  = ["10.102.101.0/24", "10.102.102.0/24", "10.102.103.0/24"]
-
+ region = "us-west-2"
   azs      = ["us-west-2a", "us-west-2b", "us-west-2c"]
 
   tags {
