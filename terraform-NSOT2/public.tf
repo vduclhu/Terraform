@@ -96,8 +96,7 @@ resource "aws_instance" "cosmos-NSOT" {
            "sudo nsot-server init",
            "chmod +x /tmp/generate-nsot-configs.sh",
            "echo sudo /tmp/generate-nsot-configs.sh ${var.RDS_NAME} ${var.RDS_USER} ${var.RDS_PASS} ${var.RDS_HOST} ${var.RDS_PORT}",
-           "cat input.txt | sudo nsot-server start &",
-           "sudo disown"
+           "cat input.txt | sudo nsot-server start & disown"
       ]
   }
   connection {
