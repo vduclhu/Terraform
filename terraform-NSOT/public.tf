@@ -17,7 +17,7 @@ resource "aws_iam_role" "cosmos_role"
 resource "aws_iam_instance_profile" "cosmos_instance_profile" 
 {		   
     provider ="aws.oregon" 
-	name = "cosmos_instance_profile"		    
+	name = "cosmos_instance_profile2"		    
 	roles = ["cosmos_role2"]		
 }
 
