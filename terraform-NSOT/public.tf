@@ -10,7 +10,7 @@
 resource "aws_iam_role" "cosmos_role" 
 {
 	provider ="aws.oregon"
-        name = "cosmos_role"		    
+        name = "cosmos_role2"		    
 	assume_role_policy = "${file("cosmos_iam_role.json")}"	
 }
 
@@ -18,7 +18,7 @@ resource "aws_iam_instance_profile" "cosmos_instance_profile"
 {		   
     provider ="aws.oregon" 
 	name = "cosmos_instance_profile"		    
-	roles = ["cosmos_role"]		
+	roles = ["cosmos_role2"]		
 }
 
 #Create cosmos IAM policy
@@ -26,7 +26,7 @@ resource "aws_iam_instance_profile" "cosmos_instance_profile"
 resource "aws_iam_role_policy" "cosmos_iam_role_policy" 
 {		  
     provider ="aws.oregon"
-	name = "cosmos_iam_role_policy"		  
+	name = "cosmos_iam_role_policy2"		  
 	role = "${aws_iam_role.cosmos_role.id}"		  
 	policy = "${file("cosmos_iam_role_policy.json")}"
 }
@@ -83,7 +83,7 @@ resource "aws_security_group" "cosmos-NSOT_region1" {
 }
 resource "aws_key_pair" "cosmos-admin" {
   provider = "aws.oregon"
-  key_name = "cosmos-admin3"
+  key_name = "cosmos-admin4"
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
 }
 
