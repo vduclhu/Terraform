@@ -66,7 +66,6 @@ resource "aws_instance" "cosmos-NSOT" {
     subnet_id = "${aws_subnet.us-east-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
-    iam_instance_profile = "cosmos_instance_profile2"
     tags {
         Name = "cosmos-NSOT-TF"
     }
