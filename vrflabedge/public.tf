@@ -117,7 +117,7 @@ provisioner "file" {
            "sudo docker login registry.gitlab.com --username=jeremiah.gearheart@gmail.com --email=jeremiah.gearheart@gmail.com --password=${var.PASS2}",
            "chmod +x /tmp/autoupdate.sh",
          "sudo aws ec2 authorize-security-group-ingress --group-id ${aws_security_group.cosmos-vrouter_region1.id} --protocol tcp --port 22 --cidr 203.0.113.0/24 --region us-west-2",
-         "sudo docker run -itd --restart always --privileged --device=/dev/net/tun --name vrouter -e TELEPORT_AUTH=true --net host -e ETCDCTL_PEERS=https://etcd.itc3.io:2379 -e VRF=global -e PORT=655 -e TELEPORT_PRIVATE=true -e CORE=true -e CLOUD=false registry.gitlab.com/itc3_artifacts/charts/vrouter_chart/itc3:vrouter",
+         "sudo docker pull registry.gitlab.com/itc3_artifacts/charts/vrouter_chart/itc3:vrouter && docker run -itd --restart always --privileged --device=/dev/net/tun --name vrouter -e TELEPORT_AUTH=false --net host -e ETCDCTL_PEERS=https://etcd.itc3.io:2379 -e VRF=global -e PORT=655 -e TELEPORT_PRIVATE=true -e CORE=false -e CLOUD=false registry.gitlab.com/itc3_artifacts/charts/vrouter_chart/itc3:vrouter",
          "HOSTNAME=$(hostname | tr - _)"
          #"curl -X PUT https://root:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io.:443/v2/keys/$HOSTNAME/routetableid -d value=\"${aws_route_table.us-west-2a-public.id}\"",
          #"curl -X PUT https://root:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io.:443/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-west-2a-public.cidr_block}\"",
@@ -247,7 +247,7 @@ provisioner "file" {
            "echo Y | sudo apt-get install jq",
            "sudo docker login registry.gitlab.com --username=jeremiah.gearheart@gmail.com --email=jeremiah.gearheart@gmail.com --password=${var.PASS2}",
            "chmod +x /tmp/autoupdate.sh",
-         "sudo docker run -itd --restart always --privileged --device=/dev/net/tun --name vrouter -e TELEPORT_AUTH=true --net host -e ETCDCTL_PEERS=https://etcd.itc3.io:2379 -e VRF=global -e PORT=655 -e TELEPORT_PRIVATE=true -e CORE=true -e CLOUD=false registry.gitlab.com/itc3_artifacts/charts/vrouter_chart/itc3:vrouter",
+         "sudo docker pull registry.gitlab.com/itc3_artifacts/charts/vrouter_chart/itc3:vrouter && docker run -itd --restart always --privileged --device=/dev/net/tun --name vrouter -e TELEPORT_AUTH=false --net host -e ETCDCTL_PEERS=https://etcd.itc3.io:2379 -e VRF=global -e PORT=655 -e TELEPORT_PRIVATE=true -e CORE=false -e CLOUD=false registry.gitlab.com/itc3_artifacts/charts/vrouter_chart/itc3:vrouter",
          "HOSTNAME=$(hostname | tr - _)"
           #"curl -X PUT https://root:${var.PASSWORD}@blue-etcd.shared.prsn-dev.io.:443/v2/keys/$HOSTNAME/routetableid -d value=\"${aws_route_table.us-east-2a-public.id}\"",
           #"curl -X PUT http://ec2-52-9-39-36.us-west-1.compute.amazonaws.com:2379/v2/keys/$HOSTNAME/cidrblock -d value=\"${aws_subnet.us-east-2a-public.cidr_block}\"",
