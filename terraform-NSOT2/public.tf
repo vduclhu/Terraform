@@ -162,7 +162,12 @@ resource "aws_instance" "cosmos-NSOT1" {
 resource "aws_elb" "cosmos-NSOT" {
   provider = "aws.ohio"
   name  = "cosmos-NSOT" 
-subnets = ["${aws_subnet.us-east-2a-public.id}"]
+ subnets = ["${aws_subnet.us-east-2a-public.id}"]
+  instances = ["${aws_instance.cosmos-NSOT1.id}","${aws_instance.cosmos-NSOT2.id}"]
+  cross_zone_load_balancing  = true
+  idle_timeout = 400
+  connection_draining = true
+  connection_draining_timeout = 400
   listener {
     instance_port     = 8990
     instance_protocol = "http"
@@ -177,12 +182,6 @@ subnets = ["${aws_subnet.us-east-2a-public.id}"]
     target              = "HTTP:8990/"
     interval            = 30
   }
-
-  instances                   = ["${aws_instance.cosmos-NSOT1.id}","${aws_instance.cosmos-NSOT2.id}"]
-  cross_zone_load_balancing   = true
-  idle_timeout                = 400
-  connection_draining         = true
-  connection_draining_timeout = 400
 
   tags {
     Name = "cosmos-nsot-elb-tf"
