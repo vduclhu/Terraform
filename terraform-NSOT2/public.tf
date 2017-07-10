@@ -56,7 +56,7 @@ resource "aws_key_pair" "cosmos-admin" {
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
 }
 
-resource "aws_instance" "cosmos-NSOT" {
+resource "aws_instance" "cosmos-NSOT1" {
     provider = "aws.ohio"
     ami = "${var.ami_region1}"
     availability_zone = "us-east-2a"
@@ -67,7 +67,7 @@ resource "aws_instance" "cosmos-NSOT" {
     associate_public_ip_address = true
     source_dest_check = false
     tags {
-        Name = "cosmos-NSOT-TF"
+        Name = "cosmos-NSOT-TF-${count.index}"
     }
 
     provisioner "file" {
@@ -95,7 +95,7 @@ resource "aws_instance" "cosmos-NSOT" {
            "cd ~/",
            "sudo nsot-server init",
            "chmod +x /tmp/generate-nsot-configs.sh",
-           "sudo /tmp/generate-nsot-configs.sh ${var.RDS_NAME} ${var.RDS_USER} ${var.RDS_PASS} ${var.RDS_HOST} ${var.RDS_PORT}",
+           "sudo /tmp/generate-nsot-configs.sh ${var.RDS_NAME} ${var.RDS_USER} ${var.RDS_PASS} ${var.RDS_HOST} ${var.RDS_PORT} ${var.NSOT_EMAIL} ${var.NSOT_PASS}",
            "cat input.txt | nohup sudo nsot-server start &",
            "sleep 1"
       ]
@@ -107,4 +107,85 @@ resource "aws_instance" "cosmos-NSOT" {
 
   }
 
+  resource "aws_instance" "cosmos-NSOT2" {
+    provider = "aws.ohio"
+    ami = "${var.ami_region1}"
+    availability_zone = "us-east-2b"
+    instance_type = "t2.small"
+    key_name = "${aws_key_pair.cosmos-admin.key_name}"
+    vpc_security_group_ids = ["${aws_security_group.cosmos-NSOT_region1.id}"]
+    subnet_id = "${aws_subnet.us-east-2b-public.id}"
+    associate_public_ip_address = true
+    source_dest_check = false
+    tags {
+        Name = "cosmos-NSOT-TF-${count.index}"
+    }
+
+    provisioner "file" {
+    source      = "generate-nsot-configs.sh"
+    destination = "/tmp/generate-nsot-configs.sh"
+   }
+    provisioner "file" {
+        source = "input.txt"
+        destination = "input.txt"
+    }
+
+    provisioner "remote-exec" {
+        inline = [
+           "echo Y | sudo apt-get update",
+           "echo Y | sudo apt-get -y install build-essential python-dev libffi-dev libssl-dev",
+           "echo Y | sudo apt-get --yes install python-pip git",
+           "sudo wget --quiet https://pypi.python.org/packages/40/9b/0bc869f290b8f49a99b8d97927f57126a5d1befcf8bac92c60dc855f2523/mysqlclient-1.3.10.tar.gz",
+           "sudo tar -xvzf mysqlclient-1.3.10.tar.gz",
+           "echo Y | sudo apt install libmysqlclient-dev",
+           "cd mysqlclient-1.3.10/",
+           "sudo python setup.py build",
+           "sudo python setup.py install",
+           "echo Y | sudo pip install nsot",
+           "echo Y | sudo pip install pynsot",
+           "cd ~/",
+           "sudo nsot-server init",
+           "chmod +x /tmp/generate-nsot-configs.sh",
+           "sudo /tmp/generate-nsot-configs.sh ${var.RDS_NAME} ${var.RDS_USER} ${var.RDS_PASS} ${var.RDS_HOST} ${var.RDS_PORT} ${var.NSOT_EMAIL} ${var.NSOT_PASS}",
+           "cat input.txt | nohup sudo nsot-server start &",
+           "sleep 1"
+      ]
+  }
+  connection {
+      user = "${var.INSTANCE_USERNAME}"
+      private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+    }
+
+  }
+
+# Create a new load balancer
+resource "aws_elb" "cosmos-NSOT" {
+  name               = "cosmos-NSOT"
+  availability_zones = ["us-east-2a", "us-east-2b"]
+
+  listener {
+    instance_port     = 8990
+    instance_protocol = "http"
+    lb_port           = 8990
+    lb_protocol       = "http"
+  }
+
+  health_check {
+    healthy_threshold   = 2
+    unhealthy_threshold = 2
+    timeout             = 3
+    target              = "HTTP:8990/"
+    interval            = 30
+  }
+
+  instances                   = ["${aws_instance.cosmos-NSOT1.id} ${aws_instance.cosmos-NSOT2.id}"]
+  cross_zone_load_balancing   = true
+  idle_timeout                = 400
+  connection_draining         = true
+  connection_draining_timeout = 400
+
+  tags {
+    Name = "cosmos-nsot-elb-tf"
+  }
+}
  

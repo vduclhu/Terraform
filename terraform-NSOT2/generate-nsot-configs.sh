@@ -5,9 +5,18 @@ export RDS_USER=$2
 export RDS_PASS=$3
 export RDS_HOST=$4
 export RDS_PORT=$5
-
+export NSOT_EMAIL=$6
+export NSOT_PASS=$7
 export LOCAL_IP="$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
 echo "ITS RUNNING YEAHHHHHHH!!!!"
+
+cat << EOF > input.txt
+yes
+$NSOT_EMAIL
+$NSOT_PASS
+$NSOT_PASS
+EOF
+
  cat << EOF > ~/.pynsotrc
 [pynsot]
 url = http://$LOCAL_IP:8990/api

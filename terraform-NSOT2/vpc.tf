@@ -16,8 +16,20 @@ resource "aws_subnet" "us-east-2a-public" {
     provider = "aws.ohio"
     vpc_id = "${aws_vpc.cosmos-vrouter-corerouter-region1-vpc.id}"
 
-    cidr_block = "${var.public_subnet_cidr_region1}"
+    cidr_block = "${var.public_subnet_cidr_az1}"
     availability_zone = "us-east-2a"
+
+    tags {
+        Name = "Public Subnet"
+    }
+}
+
+resource "aws_subnet" "us-east-2b-public" {
+    provider = "aws.ohio"
+    vpc_id = "${aws_vpc.cosmos-vrouter-corerouter-region1-vpc.id}"
+
+    cidr_block = "${var.public_subnet_cidr_az2}"
+    availability_zone = "us-east-2b"
 
     tags {
         Name = "Public Subnet"
@@ -41,6 +53,11 @@ resource "aws_route_table" "us-east-2a-public" {
 resource "aws_route_table_association" "us-east-2a-public" {
     provider = "aws.ohio"
     subnet_id = "${aws_subnet.us-east-2a-public.id}"
+    route_table_id = "${aws_route_table.us-east-2a-public.id}"
+}
+resource "aws_route_table_association" "us-east-2b-public" {
+    provider = "aws.ohio"
+    subnet_id = "${aws_subnet.us-east-2b-public.id}"
     route_table_id = "${aws_route_table.us-east-2a-public.id}"
 }
 

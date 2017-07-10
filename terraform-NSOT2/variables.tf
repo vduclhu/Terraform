@@ -29,9 +29,13 @@ variable "vpc_cidr_region1" {
     default = "10.4.0.0/16"
 }
 
-variable "public_subnet_cidr_region1" {
+variable "public_subnet_cidr_az1" {
     description = "Vrouter Eth0 Net"
     default = "10.4.0.0/24"
+}
+variable "public_subnet_cidr_az2" {
+    description = "Vrouter Eth0 Net"
+    default = "10.4.1.0/24"
 }
 variable "RDS_NAME" {
     description = "Name Given to RDS Instance"
@@ -52,4 +56,15 @@ variable "RDS_HOST" {
 variable "RDS_PORT" {
     description = "Port Used to access RDS Instance"
     default = ""
+}
+variable "NSOT_EMAIL" {
+    description = "This will be used as your NSOT Username"
+    default = ""
+}
+variable "NSOT_PASS" {
+    description = "This will be used as your NSOT Password"
+    default = ""
+}
+variable "requirensot" {
+  default = "2"
 }
