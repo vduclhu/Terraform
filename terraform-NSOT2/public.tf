@@ -161,8 +161,7 @@ resource "aws_instance" "cosmos-NSOT1" {
 # Create a new load balancer
 resource "aws_elb" "cosmos-NSOT" {
   provider = "aws.ohio"
-  name  = "cosmos-NSOT"
-  availability_zones = ["us-east-2a", "us-east-2b"]
+  name  = "cosmos-NSOT" 
 subnets = ["${aws_subnet.us-east-2a-public.id}"]
   listener {
     instance_port     = 8990
