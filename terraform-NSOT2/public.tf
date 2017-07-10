@@ -162,6 +162,7 @@ resource "aws_instance" "cosmos-NSOT1" {
 resource "aws_elb" "cosmos-NSOT" {
   name               = "cosmos-NSOT"
   availability_zones = ["us-east-2a", "us-east-2b"]
+  subnets = ["${aws_subnet.us-east-2a-public.id}","${aws_subnet.us-east-2b-public.id}"]
 
   listener {
     instance_port     = 8990
