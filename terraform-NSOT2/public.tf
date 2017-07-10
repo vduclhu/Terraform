@@ -178,7 +178,7 @@ resource "aws_elb" "cosmos-NSOT" {
     interval            = 30
   }
 
-  instances                   = ["${aws_instance.cosmos-NSOT1.id} ${aws_instance.cosmos-NSOT2.id}"]
+  instances                   = ["${aws_instance.cosmos-NSOT1.id} , ${aws_instance.cosmos-NSOT2.id}"]
   cross_zone_load_balancing   = true
   idle_timeout                = 400
   connection_draining         = true
