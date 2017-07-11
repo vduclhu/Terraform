@@ -190,14 +190,14 @@ resource "aws_elb" "cosmos-NSOT" {
 
 output "DNS" 
 {
-    value = ${aws_elb.cosmos-NSOT.dns_name}
+    value = "${aws_elb.cosmos-NSOT.dns_name}"
 }
 output "NSOTIP1" 
 {
-    value = ${aws_instance.cosmos-NSOT1.public_ip}
+    value = "${aws_instance.cosmos-NSOT1.public_ip}"
 }
 output "NSOTIP2" 
 {
-    value = ${aws_instance.cosmos-NSOT2.public_ip}
+    value = "${aws_instance.cosmos-NSOT2.public_ip}"
 }
  
