@@ -2,7 +2,7 @@
 
 resource "aws_security_group" "cosmos-NSOT_region1" {
     provider = "aws.ohio"
-    name = "cosmos-vrouter-sg"
+    name = "cosmos-nsot-sg"
     description = "Allow incoming traffic"
 
     ingress {
@@ -29,12 +29,6 @@ resource "aws_security_group" "cosmos-NSOT_region1" {
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
-    ingress {
-        from_port = 655
-        to_port = 655
-        protocol = "udp"
-        cidr_blocks = ["0.0.0.0/0"]
-    }
     egress { # allow all outbound
     from_port = 0
     to_port = 0
@@ -43,10 +37,10 @@ resource "aws_security_group" "cosmos-NSOT_region1" {
     }
 
 
-    vpc_id = "${aws_vpc.cosmos-vrouter-corerouter-region1-vpc.id}"
+    vpc_id = "${aws_vpc.cosmos-nsot-vpc.id}"
 
     tags {
-        Name = "cosmos-vrouter-SG"
+        Name = "cosmos-nsot-SG"
         environment = "cosmos-test"
     }
 }

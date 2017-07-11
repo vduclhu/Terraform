@@ -1,4 +1,4 @@
-resource "aws_vpc" "cosmos-vrouter-corerouter-region1-vpc" {
+resource "aws_vpc" "cosmos-nsot-vpc" {
     provider = "aws.ohio"
     cidr_block = "${var.vpc_cidr_region1}"
     enable_dns_hostnames = true
@@ -7,14 +7,14 @@ resource "aws_vpc" "cosmos-vrouter-corerouter-region1-vpc" {
     }
 }
 
-resource "aws_internet_gateway" "cosmos-vrouter-corerouter-region1-vpc" {
+resource "aws_internet_gateway" "cosmos-nsot-vpc" {
     provider = "aws.ohio"
-    vpc_id = "${aws_vpc.cosmos-vrouter-corerouter-region1-vpc.id}"
+    vpc_id = "${aws_vpc.cosmos-nsot-vpc.id}"
 }
 
 resource "aws_subnet" "us-east-2a-public" {
     provider = "aws.ohio"
-    vpc_id = "${aws_vpc.cosmos-vrouter-corerouter-region1-vpc.id}"
+    vpc_id = "${aws_vpc.cosmos-nsot-vpc.id}"
 
     cidr_block = "${var.public_subnet_cidr_az1}"
     availability_zone = "us-east-2a"
@@ -26,7 +26,7 @@ resource "aws_subnet" "us-east-2a-public" {
 
 resource "aws_subnet" "us-east-2b-public" {
     provider = "aws.ohio"
-    vpc_id = "${aws_vpc.cosmos-vrouter-corerouter-region1-vpc.id}"
+    vpc_id = "${aws_vpc.cosmos-nsot-vpc.id}"
 
     cidr_block = "${var.public_subnet_cidr_az2}"
     availability_zone = "us-east-2b"
@@ -38,11 +38,11 @@ resource "aws_subnet" "us-east-2b-public" {
 
 resource "aws_route_table" "us-east-2a-public" {
     provider = "aws.ohio"
-    vpc_id = "${aws_vpc.cosmos-vrouter-corerouter-region1-vpc.id}"
+    vpc_id = "${aws_vpc.cosmos-nsot-vpc.id}"
 
     route {
         cidr_block = "0.0.0.0/0"
-        gateway_id = "${aws_internet_gateway.cosmos-vrouter-corerouter-region1-vpc.id}"
+        gateway_id = "${aws_internet_gateway.cosmos-nsot-vpc.id}"
     }
     tags {
         Name = "Public Subnet"
