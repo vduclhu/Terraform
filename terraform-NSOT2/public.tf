@@ -188,13 +188,13 @@ resource "aws_elb" "cosmos-NSOT" {
   }
 }
 
-output "NSOT ELB DNS: " {
+output "NSOT-ELB-DNS" {
     value = ${aws_elb.cosmos-NSOT.dns_name}
 }
-output "NSOT App Server1 Public IP: " {
+output "NSOT-App-Server1-Public-IP" {
     value = ${aws_instance.cosmos-NSOT1.public_ip}
 }
-output "NSOT App Server2 Public IP: " {
+output "NSOT-App-Server2-Public-IP" {
     value = ${aws_instance.cosmos-NSOT2.public_ip}
 }
  
