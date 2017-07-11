@@ -30,11 +30,11 @@ variable "vpc_cidr_region1" {
 }
 
 variable "public_subnet_cidr_az1" {
-    description = "Vrouter Eth0 Net"
+    description = "nsot-app-server Eth0 Net"
     default = "10.4.0.0/24"
 }
 variable "public_subnet_cidr_az2" {
-    description = "Vrouter Eth0 Net"
+    description = "nsot-app-server Eth0 Net"
     default = "10.4.1.0/24"
 }
 variable "RDS_NAME" {
