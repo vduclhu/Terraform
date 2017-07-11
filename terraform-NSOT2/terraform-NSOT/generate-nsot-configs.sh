@@ -5,24 +5,15 @@ export RDS_USER=$2
 export RDS_PASS=$3
 export RDS_HOST=$4
 export RDS_PORT=$5
-export NSOT_EMAIL=$6
-export NSOT_PASS=$7
-export LOCAL_IP="$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
-echo "ITS RUNNING YEAHHHHHHH!!!!"
 
-cat << EOF > input.txt
-yes
-$NSOT_EMAIL
-$NSOT_PASS
-$NSOT_PASS
-EOF
+export LOCAL_IP="$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
 
  cat << EOF > ~/.pynsotrc
 [pynsot]
 url = http://$LOCAL_IP:8990/api
 auth_header = X-NSoT-Email
 default_domain = localhost
-email = $NSOT_EMAIL
+email = jeremiah.gearheart@pearson.com
 default_site = 1
 auth_method = auth_header
 EOF
@@ -115,15 +106,3 @@ AUTH_TOKEN_EXPIRY = 600  # 10 minutes
 ALLOWED_HOSTS = ['*']
 
 EOF
-
-export NSOT_PASS2=$(echo $NSOT_PASS | base64 --encode)
-echo NSOT_PASS2
-
-python set-nsot-user.py $RDS_NAME $RDS_USER $RDS_PASS $RDS_HOST $RDS_PORT $NSOT_EMAIL $NSOT_PASS2
-
-
-
-
-
-
-
