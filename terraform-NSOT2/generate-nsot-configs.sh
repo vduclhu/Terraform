@@ -116,10 +116,7 @@ ALLOWED_HOSTS = ['*']
 
 EOF
 
-export NSOT_PASS2=$(echo $NSOT_PASS | base64 --encode)
-echo NSOT_PASS2
 
-python set-nsot-user.py $RDS_NAME $RDS_USER $RDS_PASS $RDS_HOST $RDS_PORT $NSOT_EMAIL $NSOT_PASS2
 
 
 

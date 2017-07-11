@@ -1,0 +1,14 @@
+wget	https://dev.mysql.com/get/Downloads/Connector-Python/mysql-connector-python_2.0.5-1ubuntu16.04_all.deb		
+sudo	dpkg	#NAME?	mysql-connector-python_2.0.5-1ubuntu16.04_all.deb
+vi	config.ini		
+vi	python_mysql_dbconfig.py		
+cp	python_mysql_dbconfig.py	/usr/local/lib/python2.7/dist-packages/	
+pip	install	configparser		
+vi	python_mysql_connect2.py		
+cp	python_mysql_connect2.py	/usr/local/lib/python2.7/dist-packages/	
+python	python_mysql_connect2.py		
+cat	set-nsot-user.py		
+vi	set-nsot-user.py		
+python	set-nsot-user.py		
+python	query.py		
+python	set-nsot-user.py		
