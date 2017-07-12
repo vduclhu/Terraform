@@ -24,6 +24,15 @@ variable "PATH_TO_PUBLIC_KEY" {
 variable "INSTANCE_USERNAME" {
   default = "ubuntu"
 }
+variable "instance_type" {
+  default = "t2.small"
+}
+variable "az1" {
+  default = "us-east-2a"
+}
+variable "az2" {
+  default = "us-east-2b"
+}
 variable "vpc_cidr_region1" {
     description = "CIDR for the whole VPC"
     default = "10.4.0.0/16"

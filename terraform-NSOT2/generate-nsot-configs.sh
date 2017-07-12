@@ -8,7 +8,7 @@ export RDS_PORT=$5
 export NSOT_EMAIL=$6
 export NSOT_PASS=$7
 export LOCAL_IP="$(ip -4 addr show eth0 | grep -oP '(?<=inet\s)\d+(\.\d+){3}')"
-echo "ITS RUNNING YEAHHHHHHH!!!!"
+echo "Overwriting Default NSOT Config Files."
 
 cat << EOF > input.txt
 yes

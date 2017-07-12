@@ -53,15 +53,15 @@ resource "aws_key_pair" "cosmos-admin" {
 resource "aws_instance" "cosmos-NSOT1" {
     provider = "aws.ohio"
     ami = "${var.ami_region1}"
-    availability_zone = "us-east-2a"
-    instance_type = "t2.small"
+    availability_zone = "${var.az1}"
+    instance_type = "${var.instance_type}"
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
     vpc_security_group_ids = ["${aws_security_group.cosmos-NSOT_region1.id}"]
     subnet_id = "${aws_subnet.us-east-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
     tags {
-        Name = "cosmos-NSOT-TF-${count.index}"
+        Name = "cosmos-NSOT-TF-2"
     }
 
     provisioner "file" {
@@ -104,15 +104,15 @@ resource "aws_instance" "cosmos-NSOT1" {
   resource "aws_instance" "cosmos-NSOT2" {
     provider = "aws.ohio"
     ami = "${var.ami_region1}"
-    availability_zone = "us-east-2b"
-    instance_type = "t2.small"
+    availability_zone = "${var.az2}"
+    instance_type = "${var.instance_type}"
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
     vpc_security_group_ids = ["${aws_security_group.cosmos-NSOT_region1.id}"]
     subnet_id = "${aws_subnet.us-east-2b-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
     tags {
-        Name = "cosmos-NSOT-TF-${count.index}"
+        Name = "cosmos-NSOT-TF-2"
     }
 
     provisioner "file" {
