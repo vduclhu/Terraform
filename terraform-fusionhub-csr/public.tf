@@ -166,7 +166,7 @@ provisioner "file" {
            "sudo chmod -R 777 /tftpboot",
            "sudo chown -R nobody /tftpboot",
            "sudo cd /tftpboot",
-           "sudo git clone https://github.com/jgearheart/csr-configs.git"
+           "sudo git clone https://github.com/jgearheart/csr-configs.git",
            "sudo service xinetd restart"
       ]
   }
