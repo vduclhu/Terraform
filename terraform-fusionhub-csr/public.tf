@@ -161,10 +161,12 @@ provisioner "file" {
            "echo Y | sudo apt-get update",
            "echo Y | sudo apt-get install xinetd tftpd tftp",
            "sudo mkdir -p /etc/xinetd.d/",
-           "sudo cp tftp /etc/xinetd.d/"
+           "sudo cp tftp /etc/xinetd.d/",
            "sudo mkdir /tftpboot",
            "sudo chmod -R 777 /tftpboot",
            "sudo chown -R nobody /tftpboot",
+           "sudo cd /tftpboot",
+           "sudo git clone https://github.com/jgearheart/csr-configs.git"
            "sudo service xinetd restart"
       ]
   }
@@ -190,6 +192,27 @@ provisioner "file" {
       tags {
           Name = "cosmos-csr-TF"
       }
+
+    provisioner "remote-exec" {
+        inline = [
+           "conf t",
+           "copy tftp://${aws_instance.cosmos-testbox-region1}/csr-configs/test startup-config",
+           "",
+           "",
+           "",
+           "",
+           "reload",
+           ""
+      ]
+  }
+
+    connection {
+        user = "ec2-user"
+        private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+      }
+    }
+
+
      }
 
 #------------------------------------------    
