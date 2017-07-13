@@ -41,6 +41,7 @@ variable "ami_region1_csr" {
     description = "AMIs by region"
     default = "ami-119b0071" # cisco-csr-oregon BYOL
 }
+ 
 
 variable "ami_region2" {
     description = "AMIs by region"
