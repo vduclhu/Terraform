@@ -5,7 +5,7 @@
 #Create user for boto
 
 
-
+/*
 #Create IAM role/policy
 resource "aws_iam_role" "cosmos_role" 
 {
@@ -30,7 +30,7 @@ resource "aws_iam_role_policy" "cosmos_iam_role_policy"
 	role = "${aws_iam_role.cosmos_role.id}"		  
 	policy = "${file("cosmos_iam_role_policy.json")}"
 }
-
+*/
 resource "aws_security_group" "cosmos-vrouter_region1" {
     provider = "aws.oregon"
     name = "cosmos-vrouter-sg"
@@ -83,7 +83,7 @@ resource "aws_security_group" "cosmos-vrouter_region1" {
 }
 resource "aws_key_pair" "cosmos-admin" {
   provider = "aws.oregon"
-  key_name = "cosmos-admin3"
+  key_name = "cosmos-admin5"
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
 }
 
@@ -98,7 +98,7 @@ resource "aws_instance" "cosmos-vrouter" {
     subnet_id = "${aws_subnet.us-west-2a-public.id}"
     associate_public_ip_address = true
     source_dest_check = false
-    iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
+    iam_instance_profile = "cosmos_instance_profile"
     tags {
         Name = "cosmos-vrouter-TF"
     }
