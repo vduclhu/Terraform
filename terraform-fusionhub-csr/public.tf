@@ -172,6 +172,7 @@ provisioner "file" {
       tags {
           Name = "cosmos-csr-TF"
       }
+     }
 
 #------------------------------------------    
 #Vrouter Region2
