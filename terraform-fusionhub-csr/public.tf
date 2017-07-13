@@ -196,7 +196,7 @@ provisioner "file" {
     provisioner "remote-exec" {
         inline = [
            "conf t",
-           "copy tftp://${aws_instance.cosmos-testbox-region1}/csr-configs/test startup-config",
+           "copy tftp://${aws_instance.cosmos-testbox-region1.privateip}/csr-configs/test startup-config",
            "",
            "",
            "",
