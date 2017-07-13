@@ -136,6 +136,7 @@ provisioner "file" {
 
   }
 
+
   resource "aws_instance" "cosmos-testbox-region1" {
       provider = "aws.oregon"
       ami = "${var.ami_region1}"
@@ -151,12 +152,27 @@ provisioner "file" {
       tags {
           Name = "cosmos-testbox-TF"
       }
+    provisioner "file" {
+        source = "tftp"
+        destination = "/etc/xinetd.d/tftp"
+    }
+    provisioner "remote-exec" {
+        inline = [
+           "echo Y | sudo apt-get update",
+           "echo Y | sudo apt-get install xinetd tftpd tftp",
+           "sudo mkdir /tftpboot",
+           "sudo chmod -R 777 /tftpboot",
+           "sudo chown -R nobody /tftpboot",
+           "sudo service xinetd restart"
+      ]
+  }
 
     connection {
         user = "${var.INSTANCE_USERNAME}"
         private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
       }
     }
+    
      resource "aws_instance" "cosmos-csr-region1" {
       provider = "aws.oregon"
       ami = "${var.ami_region1_csr}"
