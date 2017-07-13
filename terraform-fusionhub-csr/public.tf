@@ -172,7 +172,7 @@ provisioner "file" {
         private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
       }
     }
-    
+
      resource "aws_instance" "cosmos-csr-region1" {
       provider = "aws.oregon"
       ami = "${var.ami_region1_csr}"
@@ -247,7 +247,7 @@ provisioner "file" {
   }
   resource "aws_key_pair" "cosmos-admin_region2" {
     provider = "aws.ohio"
-    key_name = "cosmos-admin3"
+    key_name = "cosmos-admin5"
     public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
   }
 
@@ -262,7 +262,7 @@ provisioner "file" {
       subnet_id = "${aws_subnet.us-east-2a-public.id}"
       associate_public_ip_address = true
       source_dest_check = false
-      iam_instance_profile = "${aws_iam_instance_profile.cosmos_instance_profile.name}"
+      iam_instance_profile = "cosmos_instance_profile"
 
 
       tags {
