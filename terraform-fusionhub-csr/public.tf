@@ -154,12 +154,14 @@ provisioner "file" {
       }
     provisioner "file" {
         source = "tftp"
-        destination = "/etc/xinetd.d/tftp"
+        destination = "tftp"
     }
     provisioner "remote-exec" {
         inline = [
            "echo Y | sudo apt-get update",
            "echo Y | sudo apt-get install xinetd tftpd tftp",
+           "sudo mkdir -p /etc/xinetd.d/",
+           "sudo cp tftp /etc/xinetd.d/"
            "sudo mkdir /tftpboot",
            "sudo chmod -R 777 /tftpboot",
            "sudo chown -R nobody /tftpboot",
