@@ -193,7 +193,7 @@ provisioner "file" {
           Name = "cosmos-csr-TF"
       }
 
-    provisioner "remote-exec" {
+  /*  provisioner "remote-exec" {
         inline = [
            "copy tftp://${aws_instance.cosmos-testbox-region1.private_ip}/csr-configs/test running-config",
            "",
@@ -208,6 +208,7 @@ provisioner "file" {
         user = "ec2-user"
         private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
       }
+    */
     }
 
 
