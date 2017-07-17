@@ -152,7 +152,6 @@ resource "aws_instance" "cosmos-NSOT1" {
     provisioner "local-exec" {
     command = "sudo verifybuild.sh ${aws_elb.cosmos-NSOT.dns_name}"
   }
-}
 
   }
 
