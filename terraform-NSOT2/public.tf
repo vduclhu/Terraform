@@ -149,6 +149,10 @@ resource "aws_instance" "cosmos-NSOT1" {
       user = "${var.INSTANCE_USERNAME}"
       private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
     }
+    provisioner "local-exec" {
+    command = "sudo verifybuild.sh ${aws_elb.cosmos-NSOT.dns_name}"
+  }
+}
 
   }
 
