@@ -180,7 +180,7 @@ resource "aws_elb" "cosmos-NSOT" {
     Name = "cosmos-nsot-elb-tf"
   }
       provisioner "local-exec" {
-    command = "sudo verifybuild.sh ${aws_elb.cosmos-NSOT.dns_name}"
+    command = "sudo ~/Pearson/Terraform/terraform-NSOT2/verifybuild.sh ${aws_elb.cosmos-NSOT.dns_name}"
   }
 }
 
