@@ -15,6 +15,10 @@ variable "region" {
   description = "Name to be used on all the resources as identifier"
   default     = "us-west-2"
 }
+variable "vrouter_instance_type" {
+    description = "instance size ex. t2.small"
+    default = "t2.small"
+}
 variable "name" {
   description = "Name to be used on all the resources as identifier"
   default     = ""

@@ -16,8 +16,10 @@ module "vpc" {
 }
 module "vrouter" {
   source = "./modules/vrouter"
+  provider = "oregon"
   vpc_id =  "${module.vpc.vpc_id}"
   name = "cosmos-vrftest-tf"
+  vrouter_instance_type = "t2.small"
   public_subnet  = "${module.vpc.public_subnet}"
   region = "us-west-2"
   azone      = "us-west-2a"
