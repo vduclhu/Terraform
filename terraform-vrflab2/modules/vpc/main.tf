@@ -32,7 +32,7 @@ resource "aws_subnet" "public" {
 }
 
 resource "aws_route_table_association" "public" {
-  count          = "${length(var.public_subnets)}"
+  count          =  "1" #"${length(var.public_subnet)}"
   subnet_id      = "${aws_subnet.public.id}"
   route_table_id = "${aws_route_table.public.id}"
 }
