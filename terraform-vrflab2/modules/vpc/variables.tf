@@ -1,3 +1,8 @@
+variable "provider" {
+    description = "aws creds for region"
+    default = ""
+}
+
 variable "region" {
   description = "Name to be used on all the resources as identifier"
   default     = "us-west-2"
