@@ -1,6 +1,6 @@
 
 resource "aws_security_group" "cosmos-vrouter_region" {
-    provider = "${var.provider}"
+    #provider = "${var.provider}"
     name = "cosmos-vrouter-sg"
     description = "Allow incoming traffic"
 
@@ -56,7 +56,7 @@ resource "aws_key_pair" "cosmos-admin" {
 }
 
 resource "aws_instance" "cosmos-vrouter" {
-    provider = "${var.provider}"
+   # provider = "${var.provider}"
     count = "${var.vroutercount}"
     ami = "${var.ami_region}"
     availability_zone = "${var.azone}"
@@ -100,7 +100,7 @@ provisioner "file" {
   }
 
   resource "aws_instance" "cosmos-testbox-region1" {
-      provider = "${var.provider}"
+      #provider = "${var.provider}"
       ami = "${var.ami_region}"
       availability_zone = "${var.azone}"
       instance_type = "${var.vrouter_instance_type}"
