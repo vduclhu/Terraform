@@ -1,9 +1,6 @@
 module "vpc" {
   source = "./modules/vpc"
-
   name = "cosmos-vrftest-tf"
-  provider = "aws"
-
   cidr = "10.101.0.0/16"
   public_subnet  = "10.101.101.0/24"
   region = "us-west-2"
