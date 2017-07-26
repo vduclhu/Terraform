@@ -24,17 +24,16 @@ resource "aws_route" "public_internet_gateway" {
 
 resource "aws_subnet" "public" {
   vpc_id            = "${aws_vpc.mod.id}"
-  cidr_block        = "${var.public_subnets[count.index]}"
-  availability_zone = "${element(var.azs, count.index)}"
-  count             = "${length(var.public_subnets)}"
-  tags              = "${merge(var.tags, var.public_subnet_tags, map("Name", format("%s-subnet-public-%s", var.name, element(var.azs, count.index))))}"
+  cidr_block        = "${var.public_subnet}"
+  availability_zone = "${var.azone}"
+  tags              = "${merge(var.tags, var.public_subnet_tags, map("Name", format("%s-subnet-public-%s", var.name))}"
 
   map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
 }
 
 resource "aws_route_table_association" "public" {
   count          = "${length(var.public_subnets)}"
-  subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
+  subnet_id      = "${aws_subnet.public.id}"
   route_table_id = "${aws_route_table.public.id}"
 }
 

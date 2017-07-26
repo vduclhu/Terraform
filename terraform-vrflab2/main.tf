@@ -2,29 +2,29 @@ module "vpc" {
   source = "./modules/vpc"
 
   name = "cosmos-vrftest-tf"
+  provider = "oregon"
 
   cidr = "10.101.0.0/16"
-  public_subnets  = ["10.101.101.0/24", "10.101.102.0/24", "10.101.103.0/24"]
-  region = "us-west-1"
-  azs      = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  public_subnet  = "10.101.101.0/24"
+  region = "us-west-2"
+  azone      = "us-west-2a"
 
   tags {
     "Terraform" = "true"
     "Environment" = "cosmos-test-vrfs"
   }
 }
-module "vpc2" {
-  source = "./modules/vpc"
-
+module "vrouter" {
+  source = "./modules/vrouter"
+  vpc_id =  "${module.vpc.vpc_id}"
   name = "cosmos-vrftest-tf"
-
-  cidr = "10.102.0.0/16"
-  public_subnets  = ["10.102.101.0/24", "10.102.102.0/24", "10.102.103.0/24"]
- region = "us-west-2"
-  azs      = ["us-west-2a", "us-west-2b", "us-west-2c"]
+  public_subnet  = "${module.vpc.public_subnet}"
+  region = "us-west-2"
+  azone      = "us-west-2a"
 
   tags {
     "Terraform" = "true"
     "Environment" = "cosmos-test-vrfs"
   }
+ 
 }

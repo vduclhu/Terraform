@@ -17,14 +17,14 @@ variable "instance_tenancy" {
   default     = "default"
 }
 
-variable "public_subnets" {
+variable "public_subnet" {
   description = "A list of public subnets inside the VPC."
-  default     = []
+  default     = ""
 }
 
-variable "azs" {
+variable "azone" {
   description = "A list of Availability zones in the region"
-  default     = []
+  default     = ""
 }
 
 variable "enable_dns_hostnames" {

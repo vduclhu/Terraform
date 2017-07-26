@@ -1,41 +1,122 @@
-resource "aws_vpc" "mod" {
-  cidr_block           = "${var.cidr}"
-  instance_tenancy     = "${var.instance_tenancy}"
-  enable_dns_hostnames = "${var.enable_dns_hostnames}"
-  enable_dns_support   = "${var.enable_dns_support}"
-  tags                 = "${merge(var.tags, map("Name", format("%s", var.name)))}"
+
+resource "aws_security_group" "cosmos-vrouter_region" {
+    provider = "${var.providercreds}"
+    name = "cosmos-vrouter-sg"
+    description = "Allow incoming traffic"
+
+    ingress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["10.0.0.0/8"]
+    }
+    ingress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["100.64.0.0/10"]
+    }
+    ingress {
+        from_port = 22
+        to_port = 22
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        from_port = 655
+        to_port = 655
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        from_port = 655
+        to_port = 655
+        protocol = "udp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    egress { # allow all outbound
+    from_port = 0
+    to_port = 0
+    protocol = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+    }
+
+
+    vpc_id = "${var.vpc_id}"
+
+    tags {
+        Name = "cosmos-vrouter-SG"
+        environment = "cosmos-test"
+    }
+}
+resource "aws_key_pair" "cosmos-admin" {
+  provider = "${var.providercreds}"
+  key_name = "cosmos-admin4"
+  public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
 }
 
-resource "aws_internet_gateway" "mod" {
-  vpc_id = "${aws_vpc.mod.id}"
-  tags   = "${merge(var.tags, map("Name", format("%s-igw", var.name)))}"
+resource "aws_instance" "cosmos-vrouter" {
+    provider = "${var.provider}"
+    count = "${var.vroutercount}"
+    ami = "${var.ami_region}"
+    availability_zone = "${var.azone}"
+    instance_type = "${var.vrouter_instance_type}"
+    key_name = "${aws_key_pair.cosmos-admin.key_name}"
+    vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region.id}"]
+    subnet_id = "${aws_subnet.public.id}"
+    associate_public_ip_address = true
+    source_dest_check = false
+    tags {
+        Name = "cosmos-vrouter-TF"
+    }
+
+provisioner "file" {
+    source      = "autoupdate.sh"
+    destination = "/tmp/autoupdate.sh"
 }
+    provisioner "file" {
+        source = "gcr-test.json"
+        destination = "gcrtest.json"
+    }
+    provisioner "remote-exec" {
+        inline = [
+           "echo Y | sudo apt-get update",
+           "echo Y | sudo apt-get install python",
+           "echo Y | sudo apt-get install awscli",
+           "echo Y | sudo apt-get install docker.io",
+           "echo Y | sudo apt-get install jq",
+         "sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
+         "sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-29",
+         "sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.blue-etcd.shared.prsn-dev.io -e NAMESPACE=${var.NAME_SPACE} -e CORE=${var.CORE} --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-29",
+         "HOSTNAME=$(hostname | tr - _)"
+        
+      ]
+  }
+  connection {
+      user = "${var.INSTANCE_USERNAME}"
+      private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+    }
 
-resource "aws_route_table" "public" {
-  vpc_id           = "${aws_vpc.mod.id}"
-  tags             = "${merge(var.tags, map("Name", format("%s-rt-public", var.name)))}"
-}
+  }
 
-resource "aws_route" "public_internet_gateway" {
-  route_table_id         = "${aws_route_table.public.id}"
-  destination_cidr_block = "0.0.0.0/0"
-  gateway_id             = "${aws_internet_gateway.mod.id}"
-}
-
-resource "aws_subnet" "public" {
-  vpc_id            = "${aws_vpc.mod.id}"
-  cidr_block        = "${var.public_subnets[count.index]}"
-  availability_zone = "${element(var.azs, count.index)}"
-  count             = "${length(var.public_subnets)}"
-  tags              = "${merge(var.tags, var.public_subnet_tags, map("Name", format("%s-subnet-public-%s", var.name, element(var.azs, count.index))))}"
-
-  map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
-}
-
-resource "aws_route_table_association" "public" {
-  count          = "${length(var.public_subnets)}"
-  subnet_id      = "${element(aws_subnet.public.*.id, count.index)}"
-  route_table_id = "${aws_route_table.public.id}"
-}
+  resource "aws_instance" "cosmos-testbox-region1" {
+      provider = "${var.provider}"
+      ami = "${var.ami_region}"
+      availability_zone = "${var.azone}"
+      instance_type = "${var.vrouter_instance_type}"
+      key_name = "${aws_key_pair.cosmos-admin.key_name}"
+     vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region.id}"]
+     subnet_id = "${aws_subnet.public.id}"
+      associate_public_ip_address = true
+      source_dest_check = false
 
 
+      tags {
+          Name = "cosmos-testbox-TF"
+      }
+
+    connection {
+        user = "${var.INSTANCE_USERNAME}"
+        private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
+      }
+    }
