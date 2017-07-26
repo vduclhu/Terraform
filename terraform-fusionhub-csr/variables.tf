@@ -62,3 +62,25 @@ variable "requirevrouter" {
   default = "1"
 }
 
+
+variable "vpc_cidr_region1" {
+    description = "CIDR for the whole VPC"
+    default = "10.44.0.0/16"
+}
+variable "vpc_cidr_region2" {
+    description = "CIDR for the whole VPC"
+    default = "10.45.0.0/16"
+}
+
+variable "public_subnet_cidr_region1" {
+    description = "Vrouter Eth0 Net"
+    default = "10.44.0.0/24"
+}
+variable "public_subnet_cidr_region2" {
+    description = "Vrouter Eth0 Net"
+    default = "10.45.0.0/24"
+}
+variable "servkey" {
+    description = "UID for VPC networks"
+    default = "ejGJ694iAXMHzqqdpfq2EEfL4dDqRG"
+}
