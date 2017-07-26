@@ -71,3 +71,7 @@ variable "INSTANCE_USERNAME" {
 variable "vroutercount" {
   default = "1"
 }
+variable "tags" {
+  description = "A map of tags to add to all resources"
+  default     = {}
+}
