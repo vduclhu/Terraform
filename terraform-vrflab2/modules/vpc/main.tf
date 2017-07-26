@@ -26,7 +26,7 @@ resource "aws_subnet" "public" {
   vpc_id            = "${aws_vpc.mod.id}"
   cidr_block        = "${var.public_subnet}"
   availability_zone = "${var.azone}"
-  tags              = "${merge(var.tags, var.public_subnet_tags, map("Name", format("%s-subnet-public-%s", var.name))}"
+  tags              = "${merge(var.tags, var.public_subnet_tags, map("Name", format("%s-subnet-public-%s", var.name)))}"
 
   map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
 }
