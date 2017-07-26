@@ -2,7 +2,7 @@ module "vpc" {
   source = "./modules/vpc"
 
   name = "cosmos-vrftest-tf"
-  provider = "oregon"
+  provider = "aws"
 
   cidr = "10.101.0.0/16"
   public_subnet  = "10.101.101.0/24"
@@ -16,7 +16,7 @@ module "vpc" {
 }
 module "vrouter" {
   source = "./modules/vrouter"
-  provider = "oregon"
+  provider = "aws"
   vpc_id =  "${module.vpc.vpc_id}"
   name = "cosmos-vrftest-tf"
   vrouter_instance_type = "t2.small"

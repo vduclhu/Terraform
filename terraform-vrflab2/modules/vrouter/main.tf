@@ -1,6 +1,6 @@
 
 resource "aws_security_group" "cosmos-vrouter_region" {
-    provider = "${var.providercreds}"
+    provider = "${var.provider}"
     name = "cosmos-vrouter-sg"
     description = "Allow incoming traffic"
 
@@ -50,7 +50,7 @@ resource "aws_security_group" "cosmos-vrouter_region" {
     }
 }
 resource "aws_key_pair" "cosmos-admin" {
-  provider = "${var.providercreds}"
+  provider = "${var.provider}"
   key_name = "cosmos-admin4"
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
 }
