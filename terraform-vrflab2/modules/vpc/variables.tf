@@ -1,7 +1,8 @@
 variable "provider" {
-    description = "aws creds for region"
-    default = ""
+  description = "vpc id to be used"
+  default     = ""
 }
+
 
 variable "region" {
   description = "Name to be used on all the resources as identifier"

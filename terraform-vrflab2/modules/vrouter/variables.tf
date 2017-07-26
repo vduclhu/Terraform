@@ -4,9 +4,10 @@
 #variable "aws_key_name" {}
 
 variable "provider" {
-    description = "aws creds for region"
-    default = ""
+  description = "vpc id to be used"
+  default     = ""
 }
+
 variable "vpc_id" {
   description = "vpc id to be used"
   default     = ""
