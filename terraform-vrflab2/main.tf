@@ -21,7 +21,7 @@ module "vrouter" {
   region = "us-west-2"
   azone      = "us-west-2a"
   USERNAME="root"
-  PASSWORD="WKq3d"
+  PASSWORD="WKq3dU9Q"
   NAME_SPACE="pog11"
   CORE="yes"
 
