@@ -63,7 +63,7 @@ resource "aws_instance" "cosmos-vrouter" {
     instance_type = "${var.vrouter_instance_type}"
     key_name = "${aws_key_pair.cosmos-admin.key_name}"
     vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region.id}"]
-    subnet_id = "${aws_subnet.public.id}"
+    subnet_id = "${var.public_subnet}"
     associate_public_ip_address = true
     source_dest_check = false
     tags {
@@ -106,7 +106,7 @@ provisioner "file" {
       instance_type = "${var.vrouter_instance_type}"
       key_name = "${aws_key_pair.cosmos-admin.key_name}"
      vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region.id}"]
-     subnet_id = "${aws_subnet.public.id}"
+     subnet_id = "${var.public_subnet}"
       associate_public_ip_address = true
       source_dest_check = false
 
