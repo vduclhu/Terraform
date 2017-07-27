@@ -117,5 +117,5 @@ provisioner "file" {
       tags {
           Name = "cosmos-csr-TF"
       }
-
+  }
 
