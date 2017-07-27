@@ -2,7 +2,7 @@
 resource "aws_security_group" "cosmos-vrouter_region" {
     #provider = "${var.provider}"
 
-    provider = "${var.sgcount}"
+    count = "${var.sgcount}"
     name = "cosmos-vrouter-sg"
     description = "Allow incoming traffic"
 
