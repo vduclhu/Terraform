@@ -58,6 +58,7 @@ module "services" {
   source = "./modules/services"
   vpc_id =  "${module.vpc.vpc_id}"
   name = "cosmos-devnet-services"
+  ami_services = "ami-9db8cff1"
   vrouter_instance_type = "t2.small"
   public_subnet  = "${module.vpc.public_subnet}"
   region = "sa-east-1"
@@ -76,8 +77,8 @@ module "vpc2" {
   cidr = "10.112.0.0/16"
   public_subnet  = "10.112.0.0/24"
   public_subnet2  = "10.112.1.0/24"
-  region = "sa-east-1"
-  azone      = "sa-east-1a"
+  region = "us-west-2"
+  azone      = "us-west-2a"
 
   tags {
     "Terraform" = "true"
