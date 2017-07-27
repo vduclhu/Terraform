@@ -28,6 +28,7 @@ module "vrouter1" {
   NAME_SPACE="pog11"
   CORE="yes"
   ami_csr="ami-43b6da2f"
+  ami_region="ami-34afc458"
 
   tags {
     "Terraform" = "true"
@@ -48,6 +49,7 @@ module "vrouter2" {
   NAME_SPACE="pog11"
   CORE="yes"
   ami_csr="ami-43b6da2f"
+  ami_region="ami-34afc458"
 
   tags {
     "Terraform" = "true"
@@ -80,6 +82,7 @@ module "vpc2" {
   public_subnet2  = "10.112.1.0/24"
   region = "us-west-2"
   azone      = "us-west-2a"
+  azone2 = "us-west-2b"
 
   tags {
     "Terraform" = "true"
@@ -116,7 +119,7 @@ module "vrouter4" {
   vrouter_instance_type = "t2.small"
   public_subnet  = "${module.vpc2.public_subnet2}"
   region = "us-west-2"
-  azone      = "us-west-2c"
+  azone      = "us-west-2b"
   USERNAME="root"
   PASSWORD="WKq3dU9Q"
   NAME_SPACE="pog11"
