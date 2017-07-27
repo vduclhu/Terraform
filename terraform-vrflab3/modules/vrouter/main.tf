@@ -1,9 +1,12 @@
 
+resource "random_id" "sshkey" {
+  byte_length = 8
+}
+
 resource "aws_security_group" "cosmos-vrouter_region" {
     #provider = "${var.provider}"
 
-    count = "${var.sgcount}"
-    name = "cosmos-vrouter-sg"
+    name = "cosmos-vrouter-sg ${random_id.sshkey.hex}"
     description = "Allow incoming traffic"
 
     ingress {
@@ -51,9 +54,7 @@ resource "aws_security_group" "cosmos-vrouter_region" {
         environment = "cosmos-test"
     }
 }
-resource "random_id" "sshkey" {
-  byte_length = 8
-}
+
 
 resource "aws_key_pair" "cosmos-admin" {
   #provider = "${var.provider}"
