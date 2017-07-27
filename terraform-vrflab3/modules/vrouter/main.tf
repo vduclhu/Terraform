@@ -49,9 +49,14 @@ resource "aws_security_group" "cosmos-vrouter_region" {
         environment = "cosmos-test"
     }
 }
+resource "random_id" "sshkey" {
+  byte_length = 8
+}
+
+
 resource "aws_key_pair" "cosmos-admin" {
   #provider = "${var.provider}"
-  key_name = "cosmos-admin4"
+  key_name = "cosmos ${random_id.sshkey.hex}"
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
 }
 
