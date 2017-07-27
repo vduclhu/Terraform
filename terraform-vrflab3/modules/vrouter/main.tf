@@ -53,7 +53,6 @@ resource "random_id" "sshkey" {
   byte_length = 8
 }
 
-
 resource "aws_key_pair" "cosmos-admin" {
   #provider = "${var.provider}"
   key_name = "cosmos ${random_id.sshkey.hex}"
