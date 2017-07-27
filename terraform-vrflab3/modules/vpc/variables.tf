@@ -36,7 +36,7 @@ variable "azone" {
   description = "A list of Availability zones in the region"
   default     = ""
 }
-variable "azon2" {
+variable "azone2" {
   description = "A list of Availability zones in the region"
   default     = ""
 }
