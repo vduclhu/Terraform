@@ -1,3 +1,9 @@
+provider "aws" {
+  access_key = "AWS ACCESS KEY"
+  secret_key = "AWS SECRET KEY"
+  region     = "AWS REGION"
+}
+
 module "vpc" {
   source = "./modules/vpc"
   provider = "aws.oregon"
