@@ -41,7 +41,7 @@ module "vrouter2" {
   vrouter_instance_type = "t2.small"
   public_subnet  = "${module.vpc.public_subnet2}"
   region = "sa-east-1"
-  azone2 = "sa-east-1c"
+  azone = "sa-east-1c"
   USERNAME="root"
   PASSWORD="WKq3dU9Q"
   NAME_SPACE="pog11"
