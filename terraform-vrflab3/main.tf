@@ -16,6 +16,7 @@ module "vpc" {
 }
 module "vrouter1" {
   source = "./modules/vrouter"
+  sgcount = "1"
   vpc_id =  "${module.vpc.vpc_id}"
   name = "cosmos-devnet-vrouter1-tf"
   vrouter_instance_type = "t2.small"
@@ -87,6 +88,7 @@ module "vpc2" {
 }
 module "vrouter3" {
   source = "./modules/vrouter"
+  sgcount = "1"
   vpc_id =  "${module.vpc2.vpc_id}"
   ami_region = "ami-835b4efa"
   name = "cosmos-vrftest-tf"

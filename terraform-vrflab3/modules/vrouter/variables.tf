@@ -7,6 +7,10 @@ variable "provider" {
   description = "vpc id to be used"
   default     = ""
 }
+variable "sgcount" {
+  description = "vpc id to be used"
+  default     = "0"
+}
 
 variable "vpc_id" {
   description = "vpc id to be used"
