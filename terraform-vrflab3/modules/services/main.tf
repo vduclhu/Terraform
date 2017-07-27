@@ -81,3 +81,12 @@ resource "aws_key_pair" "cosmos-admin" {
         private_key = "${file("${var.PATH_TO_PRIVATE_KEY}")}"
       }
     }
+
+    resource "aws_route53_record" "www" {
+  zone_id = "ZJUW1FLH7BIEB"
+  name    = "sandbox2"
+  type    = "A"
+  ttl     = "300"
+  records = ["${aws_instance.cosmos-devnet-services.public_ip}"]
+}
+
