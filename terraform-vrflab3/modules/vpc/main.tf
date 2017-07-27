@@ -35,11 +35,26 @@ resource "aws_subnet" "public" {
 
   map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
 }
+resource "aws_subnet" "public2" {
+  #provider = "${var.provider}"
+  vpc_id            = "${aws_vpc.mod.id}"
+  cidr_block        = "${var.public_subnet2}"
+  availability_zone = "${var.azone2}"
+  tags              = "${merge(var.tags, var.public_subnet_tags, map("Name", format("%s-subnet-public-%s", var.name)))}"
+
+  map_public_ip_on_launch = "${var.map_public_ip_on_launch}"
+}
 
 resource "aws_route_table_association" "public" {
   #provider = "${var.provider}"
   count          =  "1" #"${length(var.public_subnet)}"
   subnet_id      = "${aws_subnet.public.id}"
+  route_table_id = "${aws_route_table.public.id}"
+}
+resource "aws_route_table_association" "public2" {
+  #provider = "${var.provider}"
+  count          =  "1" #"${length(var.public_subnet)}"
+  subnet_id      = "${aws_subnet.public2.id}"
   route_table_id = "${aws_route_table.public.id}"
 }
 

@@ -59,6 +59,10 @@ variable "ami_region" {
     description = "AMIs by region"
     default = "ami-835b4efa" # ubuntu-oregon 16.04 LTS
 }
+variable "ami_csr" {
+    description = "AMIs by region"
+    default = "ami-835b4efa" # ubuntu-oregon 16.04 LTS
+}
 
 variable "PATH_TO_PRIVATE_KEY" {
   default = "~/.ssh/cosmos-admin"

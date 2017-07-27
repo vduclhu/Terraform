@@ -27,8 +27,16 @@ variable "public_subnet" {
   description = "A list of public subnets inside the VPC."
   default     = ""
 }
+variable "public_subnet2" {
+  description = "A list of public subnets inside the VPC."
+  default     = ""
+}
 
 variable "azone" {
+  description = "A list of Availability zones in the region"
+  default     = ""
+}
+variable "azon2" {
   description = "A list of Availability zones in the region"
   default     = ""
 }

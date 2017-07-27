@@ -103,5 +103,19 @@ provisioner "file" {
     }
 
   }
+  resource "aws_instance" "cosmos-csr" {
+    ami = "${var.ami_csr}"
+    availability_zone = "${var.azone}"
+    instance_type = "t2.medium"
+    key_name = "${aws_key_pair.cosmos-admin.key_name}"
+    vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region.id}"]
+    subnet_id = "${var.public_subnet}"
+    associate_public_ip_address = true
+    source_dest_check = false
+
+
+      tags {
+          Name = "cosmos-csr-TF"
+      }
 
 

@@ -1,6 +1,9 @@
 output "public_subnet" {
   value = "${aws_subnet.public.id}"
 }
+output "public_subnet2" {
+  value = "${aws_subnet.public2.id}"
+}
 
 output "vpc_id" {
   value = "${aws_vpc.mod.id}"
