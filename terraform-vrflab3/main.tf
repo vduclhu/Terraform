@@ -87,7 +87,7 @@ module "vpc2" {
 module "vrouter3" {
   source = "./modules/vrouter"
   vpc_id =  "${module.vpc2.vpc_id}"
-  ami_region = "ami-48bccb24"
+  ami_region = "ami-835b4efa"
   name = "cosmos-vrftest-tf"
   vrouter_instance_type = "t2.small"
   public_subnet  = "${module.vpc2.public_subnet}"
@@ -108,7 +108,7 @@ module "vrouter3" {
 module "vrouter4" {
   source = "./modules/vrouter"
   vpc_id =  "${module.vpc2.vpc_id}"
-  ami_region = "ami-48bccb24"
+  ami_region = "ami-835b4efa"
   name = "cosmos-vrftest-tf"
   vrouter_instance_type = "t2.small"
   public_subnet  = "${module.vpc2.public_subnet2}"
@@ -119,7 +119,6 @@ module "vrouter4" {
   NAME_SPACE="pog11"
   CORE="yes"
   ami_csr="ami-119b0071"
-
   tags {
     "Terraform" = "true"
     "Environment" = "cosmos-devnet"
