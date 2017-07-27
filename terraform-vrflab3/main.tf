@@ -1,15 +1,13 @@
 provider "aws" {
-  access_key = "AWS ACCESS KEY"
-  secret_key = "AWS SECRET KEY"
-  region     = "AWS REGION"
+region = "us-east-1"
 }
 
 module "vpc" {
   source = "./modules/vpc"
   provider = "aws.oregon"
   name = "cosmos-devnet-tf"
-  cidr = "10.101.0.0/16"
-  public_subnet  = "10.101.0.0/24"
+  cidr = "10.109.0.0/16"
+  public_subnet  = "10.109.0.0/24"
   region = "us-west-2"
   azone      = "us-west-2a"
 
