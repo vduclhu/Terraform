@@ -77,14 +77,6 @@ resource "aws_instance" "cosmos-vrouter" {
         Name = "cosmos-vrouter-TF"
     }
 
-provisioner "file" {
-    source      = "autoupdate.sh"
-    destination = "/tmp/autoupdate.sh"
-}
-    provisioner "file" {
-        source = "gcr-test.json"
-        destination = "gcrtest.json"
-    }
     provisioner "remote-exec" {
         inline = [
            "echo Y | sudo apt-get update",
@@ -92,9 +84,6 @@ provisioner "file" {
            "echo Y | sudo apt-get install awscli",
            "echo Y | sudo apt-get install docker.io",
            "echo Y | sudo apt-get install jq",
-         #"sudo docker login -e jeremiah.gearheart@pearson.com -u _json_key -p \"$(cat gcrtest.json)\" https://gcr.io",
-         #"sudo docker pull gcr.io/pearson-techops/cosmos/vrouter:COS-29",
-         #"sudo docker run --net host --privileged -e USERNAME=${var.USERNAME} -e PASSWORD=${var.PASSWORD} -e ETCD_DISCOVER=discover.green-etcd.shared.prsn-dev.io -e NAMESPACE=${var.NAME_SPACE} -e CORE=${var.CORE} --name vrouter -itd gcr.io/pearson-techops/cosmos/vrouter:COS-29",
          "sudo docker run -itd --net host --privileged --name vrouter -e LAB_ETCD=http://sandbox.shared.prsn-dev.io:2379 sandbox.shared.prsn-dev.io:5000/vrouter:lab",
          "HOSTNAME=$(hostname | tr - _)"
         
