@@ -148,4 +148,5 @@ resource "aws_instance" "cosmos-testbox" {
     tags {
         Name = "cosmos-vrouter-TF"
     }
+}
 
