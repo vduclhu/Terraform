@@ -105,6 +105,6 @@ resource "aws_instance" "cosmos-testbox" {
     associate_public_ip_address = true
     source_dest_check = false
     tags {
-        Name = "cosmos-vrouter-TF"
+        Name = "cosmos-edge-testbox"
     }
 } 
