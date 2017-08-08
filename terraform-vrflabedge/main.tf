@@ -2,9 +2,9 @@
 module "vpc" {
   source = "./modules/vpc"
   name = "cosmos-devnet-edge1-tf"
-  cidr = "10.200.0.0/16"
-  public_subnet  = "10.200.0.0/24"
-  public_subnet2  = "10.200.1.0/24"
+  cidr = "10.140.0.0/16"
+  public_subnet  = "10.140.0.0/24"
+  public_subnet2  = "10.140.1.0/24"
   region = "sa-east-1"
   azone      = "sa-east-1a"
 
@@ -37,9 +37,9 @@ module "vrouter1" {
 module "vpc2" {
   source = "./modules/vpc"
   name = "cosmos-devnet-edge2-tf"
-  cidr = "10.201.0.0/16"
-  public_subnet  = "10.201.0.0/24"
-  public_subnet2  = "10.201.1.0/24"
+  cidr = "10.150.0.0/16"
+  public_subnet  = "10.150.0.0/24"
+  public_subnet2  = "10.150.1.0/24"
   region = "sa-east-1"
   azone      = "sa-east-1a"
 
