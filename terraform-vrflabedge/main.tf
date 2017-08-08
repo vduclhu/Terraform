@@ -51,7 +51,7 @@ module "vpc2" {
 module "vrouter2" {
   source = "./modules/vrouter"
   sgcount = "1"
-  vpc_id =  "${module.vpc.vpc_id}"
+  vpc_id =  "${module.vpc2.vpc_id}"
   name = "cosmos-devnet-vrouter2-edge-tf"
   vrouter_instance_type = "t2.small"
   public_subnet  = "${module.vpc2.public_subnet}"
