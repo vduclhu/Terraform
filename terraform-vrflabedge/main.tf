@@ -54,7 +54,7 @@ module "vrouter2" {
   vpc_id =  "${module.vpc.vpc_id}"
   name = "cosmos-devnet-vrouter2-edge-tf"
   vrouter_instance_type = "t2.small"
-  public_subnet  = "${module.vpc.public_subnet}"
+  public_subnet  = "${module.vpc2.public_subnet}"
   region = "sa-east-1"
   azone      = "sa-east-1a"
   CORE="yes"
