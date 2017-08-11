@@ -28,7 +28,7 @@ module "vrouter1" {
   NAME_SPACE="pog11"
   CORE="yes"
   ami_csr="ami-7b27f814"
-  ami_region="ami-82be18ed"
+  ami_region="ami-1e339e71"
 
   tags {
     "Terraform" = "true"
@@ -49,7 +49,7 @@ module "vrouter2" {
   NAME_SPACE="pog11"
   CORE="yes"
   ami_csr="ami-7b27f814"
-  ami_region="ami-82be18ed"
+  ami_region="ami-1e339e71"
 
   tags {
     "Terraform" = "true"
@@ -103,7 +103,7 @@ module "vrouter3" {
   NAME_SPACE="pog11"
   CORE="yes"
   ami_csr="ami-7b27f814"
-  ami_region="ami-82be18ed"
+  ami_region="ami-1e339e71"
 
   tags {
     "Terraform" = "true"
@@ -124,7 +124,7 @@ module "vrouter4" {
   NAME_SPACE="pog11"
   CORE="yes"
   ami_csr="ami-7b27f814"
-  ami_region="ami-82be18ed"
+  ami_region="ami-1e339e71"
 
   tags {
     "Terraform" = "true"
