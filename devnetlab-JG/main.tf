@@ -64,8 +64,8 @@ module "services" {
   ami_services = "ami-1e339e71"
   vrouter_instance_type = "t2.small"
   public_subnet  = "${module.vpc.public_subnet}"
-  region = "sa-east-1"
-  azone      = "sa-east-1a"
+  region = "eu-central-1"
+  azone  = "eu-central-1a"
 
   tags {
     "Terraform" = "true"
