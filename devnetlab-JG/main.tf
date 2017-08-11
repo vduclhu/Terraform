@@ -16,6 +16,7 @@ module "vpc" {
 }
 module "vrouter1" {
   source = "./modules/vrouter"
+  counter = "1"
   sgcount = "1"
   vpc_id =  "${module.vpc.vpc_id}"
   name = "cosmos-devnet-vrouter1-tf"
@@ -38,6 +39,7 @@ module "vrouter1" {
 }
 module "vrouter2" {
   source = "./modules/vrouter"
+  counter = "2"
   vpc_id =  "${module.vpc.vpc_id}"
   name = "cosmos-devnet-JG-tf"
   env = "cosmos-devnet-JG-TF"
@@ -92,6 +94,7 @@ module "vpc2" {
 }
 module "vrouter3" {
   source = "./modules/vrouter"
+  counter = "3"
   sgcount = "1"
   vpc_id =  "${module.vpc2.vpc_id}"
   name = "cosmos-devnet-JG-tf"
@@ -116,6 +119,7 @@ module "vrouter3" {
 module "vrouter4" {
   source = "./modules/vrouter"
   vpc_id =  "${module.vpc2.vpc_id}"
+  counter = "4"
   name = "cosmos-devnet-JG-tf"
   env = "cosmos-devnet-JG-TF"
   vrouter_instance_type = "t2.small"
