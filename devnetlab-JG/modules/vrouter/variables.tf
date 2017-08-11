@@ -11,6 +11,15 @@ variable "sgcount" {
   description = "vpc id to be used"
   default     = "0"
 }
+variable "counter" {
+  description = "added to name tag on instances"
+  default     = "0"
+}
+variable "env" {
+  description = "env tag"
+  default     = ""
+}
+
 
 variable "vpc_id" {
   description = "vpc id to be used"

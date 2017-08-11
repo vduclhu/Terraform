@@ -50,8 +50,8 @@ resource "aws_security_group" "cosmos-vrouter_region" {
     vpc_id = "${var.vpc_id}"
 
     tags {
-        Name = "cosmos-vrouter-SG"
-        environment = "cosmos-test"
+        Name = "${var.name}-SG-${var.counter}"
+        Environment = "${var.env}"
     }
 }
 
@@ -74,7 +74,8 @@ resource "aws_instance" "cosmos-vrouter" {
     associate_public_ip_address = true
     source_dest_check = false
     tags {
-        Name = "cosmos-vrouter-TF"
+        Name = "${var.name}-Core-vRouter-${var.counter}"
+        Environment = "${var.env}"
     }
 
 provisioner "file" {
@@ -118,7 +119,8 @@ provisioner "file" {
 
 
       tags {
-          Name = "cosmos-csr-TF"
+          Name = "${var.name}-cosmos-csr-${var.counter}"
+        Environment = "${var.env}"
       }
   }
 resource "aws_instance" "cosmos-testbox" {
@@ -131,7 +133,8 @@ resource "aws_instance" "cosmos-testbox" {
     associate_public_ip_address = true
     source_dest_check = false
     tags {
-        Name = "cosmos-vrouter-TF"
+        Name = "${var.name}-testbox-${var.counter}"
+        Environment = "${var.env}"
     }
 }
 
