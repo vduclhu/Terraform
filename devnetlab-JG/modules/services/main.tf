@@ -55,7 +55,7 @@ resource "random_id" "sshkey" {
 
 
 resource "aws_key_pair" "cosmos-admin" {
-  #provider = "${var.provider}"
+  # provider = "${var.provider}"
   key_name = "cosmos ${random_id.sshkey.hex}"
   public_key = "${file("${var.PATH_TO_PUBLIC_KEY}")}"
 }
