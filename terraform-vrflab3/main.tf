@@ -27,7 +27,7 @@ module "vrouter1" {
   PASSWORD="WKq3dU9Q"
   NAME_SPACE="pog11"
   CORE="yes"
-  ami_csr="ami-43b6da2f"
+  ami_csr="ami-3036475c"
   ami_region="ami-34afc458"
 
   tags {

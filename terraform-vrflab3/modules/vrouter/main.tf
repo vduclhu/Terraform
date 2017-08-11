@@ -22,6 +22,18 @@ resource "aws_security_group" "cosmos-vrouter_region" {
         cidr_blocks = ["100.64.0.0/10"]
     }
     ingress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["159.182.183.9/32"]
+    }
+    ingress {
+        from_port = 0
+        to_port = 0
+        protocol = "-1"
+        cidr_blocks = ["159.182.183.13/32"]
+    }
+    ingress {
         from_port = 22
         to_port = 22
         protocol = "tcp"
@@ -119,21 +131,6 @@ provisioner "file" {
 
       tags {
           Name = "cosmos-csr-TF"
-      }
-  }
-    resource "aws_instance" "cosmos-csr-cosmosteam" {
-    ami = "${var.ami_csr}"
-    availability_zone = "${var.azone}"
-    instance_type = "t2.medium"
-    key_name = "${aws_key_pair.cosmos-admin.key_name}"
-    vpc_security_group_ids = ["${aws_security_group.cosmos-vrouter_region.id}"]
-    subnet_id = "${var.public_subnet}"
-    associate_public_ip_address = true
-    source_dest_check = false
-
-
-      tags {
-          Name = "cosmos-csr-cosmosteam-TF"
       }
   }
 resource "aws_instance" "cosmos-testbox" {
