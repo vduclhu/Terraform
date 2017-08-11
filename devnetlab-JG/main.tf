@@ -61,7 +61,7 @@ module "services" {
   source = "./modules/services"
   vpc_id =  "${module.vpc.vpc_id}"
   name = "cosmos-devnet-services"
-  ami_services = "ami-1e339e71"
+  ami_services = "ami-dba20bb4"
   vrouter_instance_type = "t2.small"
   public_subnet  = "${module.vpc.public_subnet}"
   region = "eu-central-1"
