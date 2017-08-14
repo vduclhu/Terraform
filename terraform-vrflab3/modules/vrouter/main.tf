@@ -118,6 +118,7 @@ provisioner "file" {
     }
 
   }
+ 
   resource "aws_instance" "cosmos-csr" {
     ami = "${var.ami_csr}"
     availability_zone = "${var.azone}"
@@ -133,6 +134,11 @@ provisioner "file" {
           Name = "cosmos-csr-TF"
       }
   }
+   resource "aws_eip" "cosmos-csr" {
+  instance = "${aws_instance.cosmos-csr.id}"
+  vpc      = true
+}
+
 resource "aws_instance" "cosmos-testbox" {
     ami = "${var.ami_region}"
     availability_zone = "${var.azone}"
