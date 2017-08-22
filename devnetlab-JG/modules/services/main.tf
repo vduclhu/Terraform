@@ -34,6 +34,18 @@ resource "aws_security_group" "cosmos-vrouter_region" {
         protocol = "tcp"
         cidr_blocks = ["0.0.0.0/0"]
     }
+        ingress {
+        from_port = 2380
+        to_port = 2380
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
+    ingress {
+        from_port = 4001
+        to_port = 4001
+        protocol = "tcp"
+        cidr_blocks = ["0.0.0.0/0"]
+    }
     egress { # allow all outbound
     from_port = 0
     to_port = 0
@@ -70,7 +82,13 @@ resource "aws_key_pair" "cosmos-admin" {
      subnet_id = "${var.public_subnet}"
       associate_public_ip_address = true
       source_dest_check = false
-
+        provisioner "remote-exec" {
+        inline = [
+      "sudo apt update", 
+      "sudo apt install docker.io",
+      "sudo docker run -d -v /usr/share/ca-certificates/:/etc/ssl/certs -p 4001:4001 -p 2380:2380 -p 2379:2379 --name etcd quay.io/coreos/etcd:v2.3.8 -name etcd0 -advertise-client-urls http://${HostIP}:2379,http://${HostIP}:4001 -listen-client-urls http://0.0.0.0:2379,http://0.0.0.0:4001 -initial-advertise-peer-urls http://${HostIP}:2380 -listen-peer-urls http://0.0.0.0:2380 -initial-cluster-token etcd-cluster-1 -initial-cluster etcd0=http://${HostIP}:2380 -initial-cluster-state new",
+   ]
+  }
 
       tags {
           Name = "cosmos-devnet-services-TF"
